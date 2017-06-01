@@ -44,7 +44,7 @@ public class CreateAdmin extends JPanel {
         lblMatkhau.setFont(new Font("Serif", Font.PLAIN, 24));
         JPasswordField txtMatkhau = new JPasswordField();
         txtMatkhau.setBounds(540, 130, 200, 40);
-
+        
         
 //       Button Reset 
         JButton btnReset = new JButton();
@@ -57,7 +57,7 @@ public class CreateAdmin extends JPanel {
         btnCreate.setText("Đăng Kí");       
         btnCreate.setBounds(640,190, 120,50);    
         btnCreate.setFont(new Font("Serif", Font.PLAIN, 24));
-      
+//       tao su kien cho created admin      
         
         
         add(title);
