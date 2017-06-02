@@ -149,6 +149,9 @@
     </Component>
     <Component class="javax.swing.JButton" name="jButton1">
       <Properties>
+        <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
+          <Image iconType="2" name="C:\Users\minht\Documents\NetBeansProjects\ProjectJava\Image\exit.jpg"/>
+        </Property>
         <Property name="text" type="java.lang.String" value="THO&#xc1;T"/>
       </Properties>
       <Events>
@@ -157,6 +160,9 @@
     </Component>
     <Component class="javax.swing.JButton" name="jButton2">
       <Properties>
+        <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
+          <Image iconType="2" name="C:\Users\minht\Documents\NetBeansProjects\ProjectJava\Image\reset.jpg"/>
+        </Property>
         <Property name="text" type="java.lang.String" value="L&#xc0;M L&#x1ea0;I"/>
       </Properties>
       <Events>
@@ -165,6 +171,9 @@
     </Component>
     <Component class="javax.swing.JButton" name="jButton3">
       <Properties>
+        <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
+          <Image iconType="2" name="C:\Users\minht\Documents\NetBeansProjects\ProjectJava\Image\login1.jpg"/>
+        </Property>
         <Property name="text" type="java.lang.String" value="&#x110;&#x102;NG NH&#x1eac;P"/>
       </Properties>
       <Events>

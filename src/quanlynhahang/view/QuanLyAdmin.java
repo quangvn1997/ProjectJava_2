@@ -37,18 +37,18 @@ public class QuanLyAdmin extends JPanel {
     public DeleteAdmin deleteadmin = new DeleteAdmin();
 
     public QuanLyAdmin() {
-        setBackground(new Color(250, 250, 250));
-        setBounds(350, 110, 1220, 560);
+        setBackground(new Color(250,250,250));
+        setBounds(300, 110, 1000, 480);
 
         this.title = new JLabel();
         this.title.setText("QUẢN LÝ ADMIN");
-        this.title.setBounds(490, 0, 280, 70);
-        this.title.setFont(new Font("Serif", Font.PLAIN, 34));
+        this.title.setBounds(360, 0, 280, 70);
+        this.title.setFont(new Font("Serif", Font.PLAIN, 30));
 
 //      Button Thông tin Admin
         this.thongtinAdmin = new JButton();
-        this.thongtinAdmin.setText("DANH SÁCH ADMIN");
-        this.thongtinAdmin.setBounds(150, 70, 200, 100);
+        this.thongtinAdmin.setText("Danh sách admin");
+        this.thongtinAdmin.setBounds(80, 70, 170, 70);
         this.thongtinAdmin.setFont(new Font("Serif", Font.PLAIN, 18));
 //      Bắt sự kiện danh sách admin
         thongtinAdmin.addActionListener(new ActionListener() {
@@ -63,8 +63,8 @@ public class QuanLyAdmin extends JPanel {
 
         // Button tạo mới admin
         this.taomoiAdmin = new JButton();
-        this.taomoiAdmin.setText("TẠO MỚI ADMIN");
-        this.taomoiAdmin.setBounds(390, 70, 200, 100);
+        this.taomoiAdmin.setText("Tạo mới admin");
+        this.taomoiAdmin.setBounds(280, 70, 170, 70);
         this.taomoiAdmin.setFont(new Font("Serif", Font.PLAIN, 18));
         // Bắt sự kiện tạo mới admin
         taomoiAdmin.addActionListener(new ActionListener() {
@@ -80,8 +80,8 @@ public class QuanLyAdmin extends JPanel {
 
         // Button sửa admin
         this.suaAdmin = new JButton();
-        this.suaAdmin.setText("SỬA ADMIN");
-        this.suaAdmin.setBounds(630, 70, 200, 100);
+        this.suaAdmin.setText("Sửa admin");
+        this.suaAdmin.setBounds(480, 70, 170, 70);
         this.suaAdmin.setFont(new Font("Serif", Font.PLAIN, 18));
         // Bắt sự kiện sửa admin
         suaAdmin.addActionListener(new ActionListener() {
@@ -97,8 +97,8 @@ public class QuanLyAdmin extends JPanel {
 
         // Button xóa admin
         this.xoaAdmin = new JButton();
-        this.xoaAdmin.setText("XÓA ADMIN");
-        this.xoaAdmin.setBounds(870, 70, 200, 100);
+        this.xoaAdmin.setText("Xóa admin");
+        this.xoaAdmin.setBounds(680, 70, 170, 70);
         this.xoaAdmin.setFont(new Font("Serif", Font.PLAIN, 18));
         xoaAdmin.addActionListener(new ActionListener() {
             @Override

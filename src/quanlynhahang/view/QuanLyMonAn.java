@@ -25,18 +25,18 @@ public class QuanLyMonAn extends JPanel {
     public DeleteMonAn deleteMonAn = new DeleteMonAn();
 
     public QuanLyMonAn() {
-        setBackground(new Color(250, 250, 250));
-        setBounds(350, 110, 1220, 560);
+        setBackground(new Color(250,250,250));
+        setBounds(310, 110, 1000, 485);
 
         JLabel tittle = new JLabel();
         tittle.setText("QUẢN LÝ MÓN ĂN");
-        tittle.setBounds(450, 10, 300, 60);
+        tittle.setBounds(350, 10, 300, 60);
         tittle.setFont(new Font("Serif", Font.PLAIN, 34));
 
         //Button Danh sách món ăn
         JButton danhsachMonAn = new JButton();
-        danhsachMonAn.setText("DANH SÁCH MÓN ĂN");
-        danhsachMonAn.setBounds(150, 70, 220, 100);
+        danhsachMonAn.setText("Danh sách món ăn");
+        danhsachMonAn.setBounds(70, 70, 170, 70);
         danhsachMonAn.setFont(new Font("Serif", Font.PLAIN, 18));
 
 //      Bắt sự kiện danh sách món ăn
@@ -52,8 +52,8 @@ public class QuanLyMonAn extends JPanel {
 
         // Button tạo mới món ăn
         JButton taomoiMonAn = new JButton();
-        taomoiMonAn.setText("THÊM MÓN ĂN");
-        taomoiMonAn.setBounds(390, 70, 200, 100);
+        taomoiMonAn.setText("Thêm món ăn");
+        taomoiMonAn.setBounds(260, 70, 170, 70);
         taomoiMonAn.setFont(new Font("Serif", Font.PLAIN, 18));
 
         // Bắt sự kiện tạo mới món ăn
@@ -70,8 +70,8 @@ public class QuanLyMonAn extends JPanel {
 
         // Button sửa món ăn
         JButton suaMonan = new JButton();
-        suaMonan.setText("SỬA MÓN ĂN");
-        suaMonan.setBounds(630, 70, 200, 100);
+        suaMonan.setText("Sửa món ăn");
+        suaMonan.setBounds(450, 70, 170, 70);
         suaMonan.setFont(new Font("Serif", Font.PLAIN, 18));
 
 //      Bắt sự kiện sửa admin
@@ -87,8 +87,8 @@ public class QuanLyMonAn extends JPanel {
 
         // Button xóa món ăn
         JButton xoaMonAn = new JButton();
-        xoaMonAn.setText("XÓA MÓN ĂN");
-        xoaMonAn.setBounds(870, 70, 200, 100);
+        xoaMonAn.setText("Xóa món ăn");
+        xoaMonAn.setBounds(650, 70, 170, 70);
         xoaMonAn.setFont(new Font("Serif", Font.PLAIN, 18));
 
         xoaMonAn.addActionListener(new ActionListener() {

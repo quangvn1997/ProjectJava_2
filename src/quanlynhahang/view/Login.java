@@ -83,6 +83,7 @@ public class Login extends javax.swing.JFrame {
         jLabel3.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         jLabel3.setText("MẬT KHẨU :");
 
+        jButton1.setIcon(new javax.swing.ImageIcon("C:\\Users\\minht\\Documents\\NetBeansProjects\\ProjectJava\\Image\\exit.jpg")); // NOI18N
         jButton1.setText("THOÁT");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -90,6 +91,7 @@ public class Login extends javax.swing.JFrame {
             }
         });
 
+        jButton2.setIcon(new javax.swing.ImageIcon("C:\\Users\\minht\\Documents\\NetBeansProjects\\ProjectJava\\Image\\reset.jpg")); // NOI18N
         jButton2.setText("LÀM LẠI");
         jButton2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -97,6 +99,7 @@ public class Login extends javax.swing.JFrame {
             }
         });
 
+        jButton3.setIcon(new javax.swing.ImageIcon("C:\\Users\\minht\\Documents\\NetBeansProjects\\ProjectJava\\Image\\login1.jpg")); // NOI18N
         jButton3.setText("ĐĂNG NHẬP");
         jButton3.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {

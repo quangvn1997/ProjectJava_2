@@ -10,6 +10,8 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Font;
+import javax.swing.BorderFactory;
+import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
@@ -25,25 +27,33 @@ public class ListAdmin extends JPanel {
     JTable table;
 
     public ListAdmin() {
-        setBackground(new Color(250,250,250));
-        setBounds(0, 180, 1220, 440);
+//        this.setBorder(BorderFactory.createLineBorder(Color.black));
+
+        this.setBackground(new Color(250, 250, 250));
+        this.setBounds(0, 150, 1220, 380);
 
 //        Tittle 
         JLabel title = new JLabel();
         title.setText("THÔNG TIN ADMIN");
-        title.setBounds(490, 0, 300, 50);
+        title.setBounds(350, 0, 300, 50);
         title.setFont(new Font("Serif", Font.PLAIN, 28));
-
+        
 //        Table
-        String[] columnNames = {"Tài khoản", "Mật khẩu", "Ngày tạo"};
-        Object[][] data = {{"tien", "tien123", "22-10-2012"}, {"tuan", "1", "22-10-2012"}, {"hoang", "2", "22-10-2012"}};
-        table = new JTable(data, columnNames);
-//        table.setPreferredScrollableViewportSize(new Dimension(200,100));
-        table.setBounds(400, 550, 200, 100);
-        JScrollPane scrollPane = new JScrollPane(table);
+        String[] columnNames = {"ID","Tài khoản", "Mật khẩu", "Ngày tạo"};
+        Object[][] data = {{"1","tien", "tien123", "22-10-2012"}, {"2","tuan", "1", "22-10-2012"}, {"3","hoang", "2", "22-10-2012"}};
+        this.table = new JTable(data, columnNames);
 
-        add(scrollPane);
+//      Hiển thị kích thước bảng
+        JScrollPane scrollPane = new JScrollPane(table);
+        scrollPane.setBounds(250, 50, 400, 200);
+        
+        JButton btnShow = new JButton();
+        btnShow.setText("Hiển Thị");
+        btnShow.setBounds(420, 270, 100, 50);
+        this.add(scrollPane);
         add(title);
-        setVisible(true);
+        add(btnShow);
+        this.setLayout(null);
+        this.setVisible(true);
     }
 }

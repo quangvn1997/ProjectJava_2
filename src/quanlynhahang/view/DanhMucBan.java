@@ -40,13 +40,13 @@ public class DanhMucBan extends javax.swing.JPanel {
             }
         };
          // xử lí tự động chỉnh khi thêm bàn hoặc xóa bàn
-        int x = 30;
+        int x = 15;
         int y = 20;
         int count = 1;
         for (int i = 0; i < tongSoBan; i++) {
             // chỉnh vị trí bàn
             listBan[i] = new JButton("Bàn " + (i + 1));
-            listBan[i].setBounds(x, y, 200, 150);
+            listBan[i].setBounds(x, y, 170, 120);
             listBan[i].setBackground(new Color(142, 242, 144));
             listBan[i].setForeground(Color.black);
             listBan[i].setFont(new Font("Serif", Font.PLAIN, 24));
@@ -54,12 +54,12 @@ public class DanhMucBan extends javax.swing.JPanel {
             listBan[i].addActionListener(listener);
             
             // xử lí khi thêm 1 bàn mới và add bàn vào danh sách list bàn
-            x += 240;
+            x += 200;
             // chỉnh tọa độ danh sách bàn
             if (i + 1 == count * length) {
                 count++;
-                y += 170;
-                x = 30;
+                y += 140;
+                x = 15;
             }
 
             this.add(listBan[i]);
@@ -103,11 +103,11 @@ public class DanhMucBan extends javax.swing.JPanel {
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 1129, Short.MAX_VALUE)
+            .addGap(0, 1036, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 619, Short.MAX_VALUE)
+            .addGap(0, 569, Short.MAX_VALUE)
         );
     }// </editor-fold>//GEN-END:initComponents
 
