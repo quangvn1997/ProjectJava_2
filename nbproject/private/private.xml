@@ -3,21 +3,8 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/Users/minht/Documents/NetBeansProjects/ProjectJava/src/quanlynhahang/view/QuanLyThanhToan.java</file>
-            <file>file:/C:/Users/minht/Documents/NetBeansProjects/ProjectJava/src/quanlynhahang/view/ListAdmin.java</file>
-            <file>file:/C:/Users/minht/Documents/NetBeansProjects/ProjectJava/src/quanlynhahang/view/QuanLyBan.java</file>
-            <file>file:/C:/Users/minht/Documents/NetBeansProjects/ProjectJava/src/quanlynhahang/view/CreateMonAn.java</file>
-            <file>file:/C:/Users/minht/Documents/NetBeansProjects/ProjectJava/src/quanlynhahang/view/EditAdmin.java</file>
-            <file>file:/C:/Users/minht/Documents/NetBeansProjects/ProjectJava/src/quanlynhahang/view/EditMonAn.java</file>
-            <file>file:/C:/Users/minht/Documents/NetBeansProjects/ProjectJava/src/quanlynhahang/view/DanhMucBan.java</file>
-            <file>file:/C:/Users/minht/Documents/NetBeansProjects/ProjectJava/src/quanlynhahang/view/PanelQuanLy.java</file>
-            <file>file:/C:/Users/minht/Documents/NetBeansProjects/ProjectJava/src/quanlynhahang/view/CreateAdmin.java</file>
-            <file>file:/C:/Users/minht/Documents/NetBeansProjects/ProjectJava/src/quanlynhahang/view/ListMonAn.java</file>
-            <file>file:/C:/Users/minht/Documents/NetBeansProjects/ProjectJava/src/quanlynhahang/view/Login.java</file>
-            <file>file:/C:/Users/minht/Documents/NetBeansProjects/ProjectJava/src/quanlynhahang/view/QuanLyAdmin.java</file>
-            <file>file:/C:/Users/minht/Documents/NetBeansProjects/ProjectJava/src/quanlynhahang/view/DeleteAdmin.java</file>
-            <file>file:/C:/Users/minht/Documents/NetBeansProjects/ProjectJava/src/quanlynhahang/view/QuanLyMonAn.java</file>
-            <file>file:/C:/Users/minht/Documents/NetBeansProjects/ProjectJava/src/quanlynhahang/view/DeleteMonAn.java</file>
+            <file>file:/D:/ProjectJava/src/console/restaurant/view/PanelQuanLy.java</file>
+            <file>file:/D:/ProjectJava/src/console/restaurant/view/ManagerAdmin.java</file>
         </group>
     </open-files>
 </project-private>
