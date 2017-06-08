@@ -52,7 +52,6 @@ public class ManagerAdmin extends JPanel {
     private JTable table;
     private DefaultTableModel model1aTable;
     private JScrollPane scrollPane;
-    private JButton btnReset;
 
     ;
 
@@ -120,8 +119,6 @@ public class ManagerAdmin extends JPanel {
         //Hiển thị kích thước bảng
         this.scrollPane = new JScrollPane(table);
         this.scrollPane.setBounds(50, 100, 900, 280);
-        //set title table
-        this.scrollPane.setBorder(BorderFactory.createTitledBorder(BorderFactory.createEtchedBorder(), "danh sách admins", TitledBorder.LEFT, TitledBorder.ABOVE_TOP, new Font("Serif", Font.PLAIN, 20)));
         //them su kien
         //table action
         TableModel tblModel = table.getModel();

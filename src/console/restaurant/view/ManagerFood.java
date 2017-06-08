@@ -6,8 +6,10 @@
 package console.restaurant.view;
 
 import console.restaurant.entities.Admin;
+import console.restaurant.entities.Food;
 import console.restaurant.entities.SessionAdmin;
 import console.restaurant.models.AdminsModel;
+import console.restaurant.models.FoodsModel;
 import console.restaurant.utilities.ValidateUtilities;
 import java.awt.Color;
 import java.awt.Component;
@@ -42,10 +44,10 @@ public class ManagerFood extends JPanel {
     private JButton btndeleteFood;
     private JButton btnSearch;
     private JTextField txtSearch;
-    private JLabel lblAcount;
-    private JLabel lblPassword;
-    private JTextField txtAcount;
-    private JPasswordField txtPassword;
+    private JLabel lblName;
+    private JLabel lblValue;
+    private JTextField txtName;
+    private JTextField txtValue;
     private JTable table;
     private DefaultTableModel model1aTable;
     private JScrollPane scrollPane;
@@ -67,18 +69,18 @@ public class ManagerFood extends JPanel {
         this.txtSearch.setBounds(50, 60, 500, 34);
         this.txtSearch.setFont(new Font("Serif", Font.PLAIN, 18));
         //acount and password
-        this.lblAcount = new JLabel("Name");
-        this.lblAcount.setBounds(50, 400, 100, 34);
-        this.lblPassword = new JLabel("gia");
-        this.lblPassword.setBounds(50, 450, 100, 34);
-        this.txtAcount = new JTextField();
-        this.txtAcount.setBounds(160, 400, 200, 34);
-        this.txtPassword = new JPasswordField();
-        this.txtPassword.setBounds(160, 450, 200, 34);
-        this.lblAcount.setFont(new Font("Serif", Font.PLAIN, 18));
-        this.lblPassword.setFont(new Font("Serif", Font.PLAIN, 18));
-        this.txtAcount.setFont(new Font("Serif", Font.PLAIN, 18));
-        this.txtPassword.setFont(new Font("Serif", Font.PLAIN, 18));
+        this.lblName = new JLabel("Name");
+        this.lblName.setBounds(50, 400, 100, 34);
+        this.lblValue = new JLabel("Giá");
+        this.lblValue.setBounds(50, 450, 100, 34);
+        this.txtName = new JTextField();
+        this.txtName.setBounds(160, 400, 200, 34);
+        this.txtValue = new JTextField();
+        this.txtValue.setBounds(160, 450, 200, 34);
+        this.lblName.setFont(new Font("Serif", Font.PLAIN, 18));
+        this.lblValue.setFont(new Font("Serif", Font.PLAIN, 18));
+        this.txtName.setFont(new Font("Serif", Font.PLAIN, 18));
+        this.txtValue.setFont(new Font("Serif", Font.PLAIN, 18));
 
         // Button tạo mới admin
         this.btncreateFood = new JButton();
@@ -108,8 +110,6 @@ public class ManagerFood extends JPanel {
         //Hiển thị kích thước bảng
         this.scrollPane = new JScrollPane(table);
         this.scrollPane.setBounds(50, 100, 900, 280);
-        //set title table
-        this.scrollPane.setBorder(BorderFactory.createTitledBorder(BorderFactory.createEtchedBorder(), "danh sách món ăn", TitledBorder.LEFT, TitledBorder.ABOVE_TOP, new Font("Serif", Font.PLAIN, 20)));
         //them su kien
         //table action
         TableModel tblModel = table.getModel();
@@ -119,13 +119,13 @@ public class ManagerFood extends JPanel {
                     JTable target = (JTable) e.getSource();
                     int row = target.getSelectedRow();
                     if (row != -1) {
-                        SessionAdmin.setStrToAction(txtAcount.getText());
+                        SessionAdmin.setStrToAction(txtName.getText());
                         TableModel tblModel = table.getModel();
                         String checkName = tblModel.getValueAt(row, 1).toString();
-                        String pass = tblModel.getValueAt(row, 2).toString();
+                        String value = tblModel.getValueAt(row, 2).toString();
                         // thêm vào textField
-                        txtAcount.setText(checkName);
-                        txtPassword.setText(pass);
+                        txtName.setText(checkName);
+                        txtValue.setText(value);
                     }
                 }
             }
@@ -141,9 +141,9 @@ public class ManagerFood extends JPanel {
                     Component form = null;
                     int n = JOptionPane.showOptionDialog(form, "Do you like to delete the record for ID:  " + tblModel.getValueAt(row, 1).toString() + " ?", "Exit Confirmation", JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE, null, options, options);
                     if (n == JOptionPane.YES_OPTION) {
-                        AdminsModel.deleteAdmin(tblModel.getValueAt(row, 0).toString());
+                        FoodsModel.deleteFood(tblModel.getValueAt(row, 0).toString());
                         JOptionPane.showMessageDialog(null, "The record has been deleted successfully.");
-                        AdminsModel.loadAdmins(table);
+                        FoodsModel.loadFood(table);
                     }
                 }
             }
@@ -152,50 +152,50 @@ public class ManagerFood extends JPanel {
         this.btncreateFood.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                if (txtAcount.getText().isEmpty()) {
+                if (txtName.getText().isEmpty()) {
                     JOptionPane.showMessageDialog(null, "vui lòng điền.");
                     return;
                 }
-                if (new String(txtPassword.getPassword()).isEmpty()) {
+                if (new String(txtValue.getText()).isEmpty()) {
                     JOptionPane.showMessageDialog(null, "vui lòng điền.");
                     return;
                 }
-                if (ValidateUtilities.checkExistanceAdmin(txtAcount.getText())) {
+                if (ValidateUtilities.checkExistanceAdmin(txtName.getText())) {
                     JOptionPane.showMessageDialog(null, "tên đã tồn tại, vui lòng điền tên khác");
                     return;
                 }
-                Admin admin = new Admin();
-                admin.setUsername(txtAcount.getText());
-                admin.setPassword(new String(txtPassword.getPassword()));
-                AdminsModel.insertAdmin(admin);
-                AdminsModel.loadAdmins(table);
+                Food food = new Food();
+                food.setName(txtName.getText());
+                food.setUnitPrice(Float.valueOf(txtValue.getText()));
+                FoodsModel.insertFood(food);
+                FoodsModel.loadFood(table);
             }
         });
         this.btnfixFood.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                Admin admin = new Admin();
+                Food food = new Food();
                 int row = table.getSelectedRow();
                 if (row != -1) {
                     String checkid = tblModel.getValueAt(row, 0).toString();
-                    admin.setId(Integer.valueOf(checkid));
+                    food.setId(Integer.valueOf(checkid));
                 }
-                if (txtAcount.getText().isEmpty()) {
+                if (txtName.getText().isEmpty()) {
                     JOptionPane.showMessageDialog(null, "vui lòng điền.");
                     return;
                 }
-                if (new String(txtPassword.getPassword()).isEmpty()) {
+                if (new String(txtValue.getText()).isEmpty()) {
                     JOptionPane.showMessageDialog(null, "vui lòng điền.");
                     return;
                 }
-                if (ValidateUtilities.checkExistanceAdmin(txtAcount.getText()) && !txtAcount.getText().equals(tblModel.getValueAt(row, 1).toString())) {
+                if (ValidateUtilities.checkExistanceAdmin(txtName.getText()) && !txtName.getText().equals(tblModel.getValueAt(row, 1).toString())) {
                     JOptionPane.showMessageDialog(null, "tên đã tồn tại, vui lòng điền tên khác");
                     return;
                 }
-                admin.setUsername(txtAcount.getText());
-                admin.setPassword(new String(txtPassword.getPassword()));
-                AdminsModel.update(admin);
-                AdminsModel.loadAdmins(table);
+                food.setName(txtName.getText());
+                food.setUnitPrice(Float.valueOf(txtValue.getText()));
+                FoodsModel.update(food);
+                FoodsModel.loadFood(table);
 
             }
         });
@@ -203,11 +203,11 @@ public class ManagerFood extends JPanel {
             @Override
             public void actionPerformed(ActionEvent e) {
                 if (txtSearch.getText().trim().matches("^(?=.*[a-zA-Z])(?=.*[0-9])[a-zA-Z0-9]+$") || txtSearch.getText().trim().matches("[a-zA-Z]+")) {
-                    AdminsModel.loadAdminsSearch(table, AdminsModel.searchAdmin(txtSearch.getText(), 2));
+                    FoodsModel.loadFoodsSearch(table, FoodsModel.searchFood(txtSearch.getText(), 2));
                 } else if (txtSearch.getText().matches("^-?\\d+$")) {
-                    AdminsModel.loadAdminsSearch(table, AdminsModel.searchAdmin(txtSearch.getText(), 1));
+                    FoodsModel.loadFoodsSearch(table, FoodsModel.searchFood(txtSearch.getText(), 1));
                 } else if (txtSearch.getText().isEmpty()) {
-                    AdminsModel.loadAdmins(table);
+                    FoodsModel.loadFood(table);
                     JOptionPane.showMessageDialog(null, " vui lòng điền id hoac name");
                 } else {
                     JOptionPane.showMessageDialog(null, "không tồn tại");
@@ -219,10 +219,10 @@ public class ManagerFood extends JPanel {
         this.add(this.btnfixFood);
         this.add(this.btndeleteFood);
         this.add(this.btncreateFood);
-        this.add(this.lblAcount);
-        this.add(this.lblPassword);
-        this.add(this.txtAcount);
-        this.add(this.txtPassword);
+        this.add(this.lblName);
+        this.add(this.lblValue);
+        this.add(this.txtName);
+        this.add(this.txtValue);
         this.add(this.lbltitle);
         this.add(this.btnSearch);
         this.add(this.txtSearch);
