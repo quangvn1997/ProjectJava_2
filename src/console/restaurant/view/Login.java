@@ -13,6 +13,7 @@ import java.util.Date;
 import javax.swing.JOptionPane;
 import console.restaurant.models.JModel;
 import java.awt.Font;
+import java.awt.event.KeyEvent;
 
 /**
  *
@@ -95,6 +96,11 @@ public class Login extends javax.swing.JFrame {
 
         txtPasswordCharArray.setFont(new java.awt.Font("Times New Roman", 0, 24)); // NOI18N
         txtPasswordCharArray.setBorder(null);
+        txtPasswordCharArray.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                txtPasswordCharArrayKeyPressed(evt);
+            }
+        });
 
         jLabel1.setFont(new java.awt.Font("Brush Script MT", 2, 36)); // NOI18N
         jLabel1.setText("Furious Food & Drinks");
@@ -262,6 +268,35 @@ public class Login extends javax.swing.JFrame {
     private void txtAccountActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtAccountActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_txtAccountActionPerformed
+
+    private void txtPasswordCharArrayKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtPasswordCharArrayKeyPressed
+        if(evt.getKeyCode() == KeyEvent.VK_ENTER){
+            if (txtAccount.getText().isEmpty()) {
+//              JOptionPane.showMessageDialog(null, "Hãy nhập Account!", "Failure", JOptionPane.ERROR_MESSAGE);
+            fixAccount.setText("* Nhập tài khoản hợp lệ.");
+            fixAccount.setForeground(Color.red);
+            fixAccount.setFont(new Font("Serif", Font.PLAIN, 20));
+            return;
+        }
+        if (txtPasswordCharArray.getPassword().length == 0) {
+            fixPassword.setText("* Nhập mật khẩu hợp lệ.");
+            fixPassword.setForeground(Color.red);
+            fixPassword.setFont(new Font("Serif", Font.PLAIN, 20));
+            return;
+        }
+        int login = JModel.loginAdmin(txtAccount.getText(), new String(txtPasswordCharArray.getPassword()));
+        if (login > 0) {
+//	       JOptionPane.showMessageDialog(this, "Đăng nhập thành công!");
+
+        } else {
+            JOptionPane.showMessageDialog(this, "Sai thông tin đăng nhập!\n Vui lòng thử lại!");
+            return;
+        }
+        PanelQuanLy danhmucban = new PanelQuanLy();
+        danhmucban.setVisible(true);
+        setVisible(false);
+        }
+    }//GEN-LAST:event_txtPasswordCharArrayKeyPressed
 
     /**
      * @param args the command line arguments
