@@ -53,7 +53,7 @@ public class AdminsController {
                 admin.setId(Integer.valueOf(rs.getString("id")));
                 admin.setUsername(rs.getString("username"));
                 admin.setPassword(rs.getString("password"));
-                admin.setCreatedAt(rs.getString("createdAt"));
+                admin.setCreatedAt(rs.getString("created_at"));
                 adminList.add(admin);
             }
         } catch (SQLException ex) {

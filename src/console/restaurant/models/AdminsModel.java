@@ -24,7 +24,7 @@ public class AdminsModel {
 
     public static void update(Admin admin) {
         try {
-            PreparedStatement pstmt = DAO.getConnection().prepareStatement("UPDATE admins SET username=?,password=?,updatedAt=NOW() WHERE id = ?");
+            PreparedStatement pstmt = DAO.getConnection().prepareStatement("UPDATE admins SET username=?,password=?,updated_at=NOW() WHERE id = ?");
             pstmt.setString(1, admin.getUsername());
             pstmt.setString(2, admin.getPassword());
             pstmt.setString(3, String.valueOf(admin.getId()));
@@ -65,7 +65,7 @@ public class AdminsModel {
                 admin.setId(Integer.valueOf(rs.getString("id")));
                 admin.setUsername(rs.getString("username"));
                 admin.setPassword(rs.getString("password"));
-                admin.setCreatedAt(rs.getString("createdAt"));
+                admin.setCreatedAt(rs.getString("created_at"));
                 adminList.add(admin);
             }
         } catch (SQLException ex) {

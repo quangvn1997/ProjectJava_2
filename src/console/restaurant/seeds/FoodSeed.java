@@ -5,17 +5,18 @@
  */
 package console.restaurant.seeds;
 
+import console.restaurant.models.DAO;
 import java.sql.SQLException;
 import java.sql.Statement;
-import console.restaurant.models.DAO;
 
-public class AdminSeed {
-
-     public static void main(String[] args) throws SQLException {
+public class FoodSeed {
+    public static void main(String[] args) throws SQLException {
 	  // Database: online_shop
 	  Statement stt = DAO.getConnection().createStatement();
 	  // Thêm dữ liệu mẫu
-	  stt.execute("INSERT INTO admins (username,password) VALUES ('admin','admin');");
+          stt.execute("INSERT INTO categories (name) VALUES ('Meat');");
+
+          stt.execute("INSERT INTO foods (name, category_id, description, unit_price, status) VALUES ('Cow Attack', '1','Cow Spicy','100.000', '1');");
 	  System.out.println("------ Chèn dữ liệu mẫu thành công! ------");
 	  // Đăng nhập với tài khoản: admin/admin hoặc guest/guest
      }
