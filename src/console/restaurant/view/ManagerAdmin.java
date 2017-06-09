@@ -9,7 +9,6 @@ import console.restaurant.entities.Admin;
 import console.restaurant.entities.SessionAdmin;
 import console.restaurant.models.AdminsModel;
 import console.restaurant.utilities.ValidateUtilities;
-import static console.restaurant.utilities.ValidateUtilities.checkBlank;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Font;
@@ -17,10 +16,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.sql.SQLException;
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
-import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
@@ -29,7 +26,6 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.ListSelectionModel;
-import javax.swing.border.TitledBorder;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
 
@@ -103,7 +99,7 @@ public class ManagerAdmin extends JPanel {
         this.xoaAdmin.setFont(new Font("Serif", Font.PLAIN, 18));
         // Table        
         String[] columnNames = {"ID", "Tài khoản", "Mật khẩu", "Ngày tạo"};
-        Object[][] data = {{"1", "tien", "tien123", "22-10-2012"}, {"2", "tuan", "1", "22-10-2012"}, {"3", "hoang", "2", "22-10-2012"}};
+        Object[][] data = {};
         this.model1aTable = new DefaultTableModel(data, columnNames);
         this.table = new JTable(model1aTable);
         this.table.setFont(new Font("Serif", Font.PLAIN, 20));

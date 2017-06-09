@@ -23,7 +23,7 @@ import javax.swing.JLabel;
  *
  * @author Anh Tiến ơi.Có Trộm!
  */
-public class PanelQuanLy extends JFrame {
+public class PanelManager extends JFrame {
 
     /**
      * Creates new form quanlyban
@@ -32,12 +32,12 @@ public class PanelQuanLy extends JFrame {
     public ManagerAdmin quanlyadmin = new ManagerAdmin();
 
 //  Quản lý món ăn    
-    public DanhMucBan panelBan = new DanhMucBan();
-    public QuanLyBan quanlyban = new QuanLyBan();
+    public ListTable panelBan = new ListTable();
+    public ManagerTable quanlyban = new ManagerTable();
     public ManagerFood quanlymonan = new ManagerFood();
-    public QuanLyThongKe quanlythongke = new QuanLyThongKe();
+    public ManagerStatistic quanlythongke = new ManagerStatistic();
 
-    public  PanelQuanLy() {
+    public  PanelManager() {
         initComponents();
 
 //        danh mục bàn
@@ -159,7 +159,6 @@ public class PanelQuanLy extends JFrame {
 
         btnDatBan.setBackground(new java.awt.Color(255, 255, 255));
         btnDatBan.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
-        btnDatBan.setIcon(new javax.swing.ImageIcon("C:\\Users\\minht\\Documents\\NetBeansProjects\\ProjectJava\\Image\\list.jpg")); // NOI18N
         btnDatBan.setText("Đặt Bàn");
         btnDatBan.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -169,7 +168,6 @@ public class PanelQuanLy extends JFrame {
 
         btnAdmin.setBackground(new java.awt.Color(255, 255, 255));
         btnAdmin.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
-        btnAdmin.setIcon(new javax.swing.ImageIcon("C:\\Users\\minht\\Documents\\NetBeansProjects\\ProjectJava\\Image\\admin1.jpg")); // NOI18N
         btnAdmin.setText("Quản Lý Admin");
         btnAdmin.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -179,7 +177,6 @@ public class PanelQuanLy extends JFrame {
 
         btnThongke.setBackground(new java.awt.Color(255, 255, 255));
         btnThongke.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
-        btnThongke.setIcon(new javax.swing.ImageIcon("C:\\Users\\minht\\Documents\\NetBeansProjects\\ProjectJava\\Image\\thongke.jpg")); // NOI18N
         btnThongke.setText("Quản Lý Thống Kê");
         btnThongke.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -189,7 +186,6 @@ public class PanelQuanLy extends JFrame {
 
         btnMonan.setBackground(new java.awt.Color(255, 255, 255));
         btnMonan.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
-        btnMonan.setIcon(new javax.swing.ImageIcon("C:\\Users\\minht\\Documents\\NetBeansProjects\\ProjectJava\\Image\\food.jpg")); // NOI18N
         btnMonan.setText("Quản Lý Món Ăn");
         btnMonan.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -199,7 +195,6 @@ public class PanelQuanLy extends JFrame {
 
         btnBan.setBackground(new java.awt.Color(255, 255, 255));
         btnBan.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
-        btnBan.setIcon(new javax.swing.ImageIcon("C:\\Users\\minht\\Documents\\NetBeansProjects\\ProjectJava\\Image\\table.jpg")); // NOI18N
         btnBan.setText("Quản Lý Bàn");
         btnBan.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -244,7 +239,6 @@ public class PanelQuanLy extends JFrame {
         time.setFont(new java.awt.Font("Tahoma", 0, 28)); // NOI18N
 
         jButton2.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
-        jButton2.setIcon(new javax.swing.ImageIcon("C:\\Users\\minht\\Documents\\NetBeansProjects\\ProjectJava\\Image\\datban.jpg")); // NOI18N
         jButton2.setText("Đặt Bàn");
         jButton2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -253,7 +247,6 @@ public class PanelQuanLy extends JFrame {
         });
 
         jButton3.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
-        jButton3.setIcon(new javax.swing.ImageIcon("C:\\Users\\minht\\Documents\\NetBeansProjects\\ProjectJava\\Image\\exit.jpg")); // NOI18N
         jButton3.setText("Thoát");
 
         jLabel2.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
@@ -263,7 +256,6 @@ public class PanelQuanLy extends JFrame {
         jTextField1.setText("  Vũ Minh Tiến");
 
         btnLogOut.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
-        btnLogOut.setIcon(new javax.swing.ImageIcon("C:\\Users\\minht\\Documents\\NetBeansProjects\\ProjectJava\\Image\\login.jpg")); // NOI18N
         btnLogOut.setText("Đăng Xuất");
         btnLogOut.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -537,14 +529,30 @@ public class PanelQuanLy extends JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(PanelQuanLy.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(PanelManager.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(PanelQuanLy.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(PanelManager.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(PanelQuanLy.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(PanelManager.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(PanelQuanLy.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(PanelManager.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
         //</editor-fold>
         //</editor-fold>
         //</editor-fold>
@@ -565,7 +573,7 @@ public class PanelQuanLy extends JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new PanelQuanLy().setVisible(true);
+                new PanelManager().setVisible(true);
             }
         });
     }

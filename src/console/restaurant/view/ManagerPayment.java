@@ -14,12 +14,12 @@ import javax.swing.JFrame;
  *
  * @author Anh Tiến ơi.Có Trộm!
  */
-public class QuanLyThanhToan extends javax.swing.JFrame {
+public class ManagerPayment extends javax.swing.JFrame {
 
     /**
      * Creates new form QuanLyThanhToan
      */
-    public QuanLyThanhToan() {
+    public ManagerPayment() {
         initComponents();
         setLocationRelativeTo(null);
         clockThanhToan();
@@ -122,7 +122,6 @@ public class QuanLyThanhToan extends javax.swing.JFrame {
         jLabel4.setText("Furious Food & Drink");
 
         btnReturn.setFont(new java.awt.Font("Arial", 1, 18)); // NOI18N
-        btnReturn.setIcon(new javax.swing.ImageIcon("C:\\Users\\minht\\Documents\\NetBeansProjects\\ProjectJava\\Image\\return.jpg.png")); // NOI18N
         btnReturn.setText("QUAY LẠI");
         btnReturn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -249,16 +248,12 @@ public class QuanLyThanhToan extends javax.swing.JFrame {
         jLabel2.setText("Tìm Kiếm");
 
         jButton3.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
-        jButton3.setIcon(new javax.swing.ImageIcon("C:\\Users\\minht\\Documents\\NetBeansProjects\\ProjectJava\\Image\\exit.jpg")); // NOI18N
         jButton3.setText("THOÁT");
 
         jButton4.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
-        jButton4.setIcon(new javax.swing.ImageIcon("C:\\Users\\minht\\Documents\\NetBeansProjects\\ProjectJava\\Image\\table.jpg")); // NOI18N
         jButton4.setText("CHUYỂN BÀN");
 
         time.setFont(new java.awt.Font("Arial", 1, 36)); // NOI18N
-
-        jButton10.setIcon(new javax.swing.ImageIcon("C:\\Users\\minht\\Documents\\NetBeansProjects\\ProjectJava\\Image\\seach.jpg")); // NOI18N
 
         jLabel7.setFont(new java.awt.Font("Arial", 0, 18)); // NOI18N
         jLabel7.setText("Mọi ý kiến thắc mắc xin liên hệ : 0987654321");
@@ -267,11 +262,9 @@ public class QuanLyThanhToan extends javax.swing.JFrame {
         jLabel6.setText(" VNĐ");
 
         jButton11.setFont(new java.awt.Font("Arial", 1, 18)); // NOI18N
-        jButton11.setIcon(new javax.swing.ImageIcon("C:\\Users\\minht\\Documents\\NetBeansProjects\\ProjectJava\\Image\\pay.jpg")); // NOI18N
         jButton11.setText("THANH TOÁN");
 
         jButton6.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
-        jButton6.setIcon(new javax.swing.ImageIcon("C:\\Users\\minht\\Documents\\NetBeansProjects\\ProjectJava\\Image\\add.jpg")); // NOI18N
         jButton6.setText("ĐẶT HÀNG");
 
         jLabel1.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
@@ -507,7 +500,7 @@ public class QuanLyThanhToan extends javax.swing.JFrame {
 //        jPanel1.setVisible(false);
         this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
         this.setVisible(false);
-        PanelQuanLy quanly = new PanelQuanLy();
+        PanelManager quanly = new PanelManager();
         quanly.setVisible(true);
     }//GEN-LAST:event_btnReturnActionPerformed
 
@@ -532,21 +525,23 @@ public class QuanLyThanhToan extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(QuanLyThanhToan.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(ManagerPayment.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(QuanLyThanhToan.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(ManagerPayment.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(QuanLyThanhToan.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(ManagerPayment.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(QuanLyThanhToan.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(ManagerPayment.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
+        //</editor-fold>
         //</editor-fold>
         //</editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new QuanLyThanhToan().setVisible(true);
+                new ManagerPayment().setVisible(true);
             }
         });
     }
