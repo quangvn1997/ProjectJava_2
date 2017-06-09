@@ -248,7 +248,7 @@ public class Login extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(this, "Sai thông tin đăng nhập!\n Vui lòng thử lại!");
             return;
         }
-        PanelQuanLy danhmucban = new PanelQuanLy();
+        PanelManager danhmucban = new PanelManager();
         danhmucban.setVisible(true);
         setVisible(false);
 
@@ -292,7 +292,7 @@ public class Login extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(this, "Sai thông tin đăng nhập!\n Vui lòng thử lại!");
             return;
         }
-        PanelQuanLy danhmucban = new PanelQuanLy();
+        PanelManager danhmucban = new PanelManager();
         danhmucban.setVisible(true);
         setVisible(false);
         }

@@ -5,7 +5,6 @@
  */
 package console.restaurant.view;
 
-import console.restaurant.entities.Admin;
 import console.restaurant.entities.Food;
 import console.restaurant.entities.SessionAdmin;
 import console.restaurant.models.AdminsModel;
@@ -23,12 +22,10 @@ import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import javax.swing.JPasswordField;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.ListSelectionModel;
-import javax.swing.border.TitledBorder;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
 
@@ -99,7 +96,7 @@ public class ManagerFood extends JPanel {
         this.btndeleteFood.setFont(new Font("Serif", Font.PLAIN, 18));
         // Table        
         String[] columnNames = {"ID", "tên món", "giá","miêu tả", "Ngày tạo"};
-        Object[][] data = {{"1", "ga", "100","nothing", "22-10-2012"}};
+        Object[][] data = {};
         this.model1aTable = new DefaultTableModel(data, columnNames);
         this.table = new JTable(model1aTable);
         this.table.setFont(new Font("Serif", Font.PLAIN, 20));
@@ -112,6 +109,7 @@ public class ManagerFood extends JPanel {
         this.scrollPane.setBounds(50, 100, 900, 280);
         //them su kien
         //table action
+        
         TableModel tblModel = table.getModel();
         this.table.addMouseListener(new MouseAdapter() {
             public void mouseClicked(MouseEvent e) {
@@ -215,6 +213,8 @@ public class ManagerFood extends JPanel {
 
             }
         });
+        
+        FoodsModel.loadFood(table);
         //add element
         this.add(this.btnfixFood);
         this.add(this.btndeleteFood);

@@ -6,23 +6,18 @@
 package console.restaurant.view;
 
 import console.restaurant.entities.SessionAdmin;
-import console.restaurant.models.AdminsModel;
 import java.awt.Color;
-import java.awt.Component;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JLabel;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import javax.swing.JPasswordField;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.ListSelectionModel;
-import javax.swing.border.TitledBorder;
 import javax.swing.table.DefaultTableModel;
 import console.restaurant.models.TableModel;
 import console.restaurant.entities.Table;
@@ -33,7 +28,7 @@ import java.awt.event.MouseEvent;
  *
  * @author Anh Tiến ơi.Có Trộm!
  */
-public class QuanLyBan extends JPanel {
+public class ManagerTable extends JPanel {
     
     private JLabel title;
     private JButton btnnewTb;
@@ -51,7 +46,7 @@ public class QuanLyBan extends JPanel {
     
     ;
 
-    public QuanLyBan() {
+    public ManagerTable() {
         
         this.setBackground(new Color(250, 250, 250));
         this.setBounds(300, 90, 1000, 520);
@@ -123,7 +118,7 @@ public class QuanLyBan extends JPanel {
         this.btndeleteTb.setFont(new Font("Serif", Font.PLAIN, 18));
         // Table        
         String[] columnNames = {"ID", "tên bàn", "trạng thái"};
-        Object[][] data = {{"1", "bàn 1", "1"}, {"2", "bàn số 2", "0"}, {"3", "bàn 3", "2"}};
+        Object[][] data = {};
         this.model1aTable = new DefaultTableModel(data, columnNames);
         this.table = new JTable(model1aTable);
         this.table.setFont(new Font("Serif", Font.PLAIN, 20));

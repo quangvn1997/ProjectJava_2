@@ -12,9 +12,9 @@ import javax.swing.JPanel;
  *
  * @author Anh Tiến ơi.Có Trộm!
  */
-public class QuanLyThongKe extends JPanel {
+public class ManagerStatistic extends JPanel {
 
-    public QuanLyThongKe() {
+    public ManagerStatistic() {
         setBackground(new Color(250,250,250));
         setBounds(350, 110, 1220, 560);
         setLayout(null);

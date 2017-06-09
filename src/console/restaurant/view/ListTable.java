@@ -15,7 +15,7 @@ import javax.swing.JButton;
  *
  * @author Anh Tiến ơi.Có Trộm!
  */
-public class DanhMucBan extends javax.swing.JPanel {
+public class ListTable extends javax.swing.JPanel {
 
     /**
      * Creates new form abc
@@ -36,7 +36,7 @@ public class DanhMucBan extends javax.swing.JPanel {
         this.kk = kk;
     }
 
-    public DanhMucBan() {
+    public ListTable() {
         initComponents();
         int sohang = tongSoBan / length;
 
@@ -44,9 +44,9 @@ public class DanhMucBan extends javax.swing.JPanel {
             @Override
             public void actionPerformed(ActionEvent e) {
                 if (e.getSource() instanceof JButton) {
-                    QuanLyThanhToan quanlythanhtoan = new QuanLyThanhToan();
+                    ManagerPayment quanlythanhtoan = new ManagerPayment();
                     quanlythanhtoan.setVisible(true);
-                    PanelQuanLy aa = new PanelQuanLy();
+                    PanelManager aa = new PanelManager();
                     setKk(1);
                     
                 }
@@ -83,7 +83,7 @@ public class DanhMucBan extends javax.swing.JPanel {
             @Override
             public void actionPerformed(ActionEvent e) {
                 if (e.getSource() instanceof JButton) {
-                    QuanLyThanhToan quanlythanhtoan = new QuanLyThanhToan();
+                    ManagerPayment quanlythanhtoan = new ManagerPayment();
                     quanlythanhtoan.setVisible(true);
                         
                 }

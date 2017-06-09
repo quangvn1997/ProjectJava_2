@@ -14,7 +14,7 @@ import javax.swing.table.DefaultTableModel;
 public class FoodsModel {
     public static void update(Food food) {
         try {
-            PreparedStatement pstmt = DAO.getConnection().prepareStatement("UPDATE admins SET username=?,password=?,updatedAt=NOW() WHERE id = ?");
+            PreparedStatement pstmt = DAO.getConnection().prepareStatement("UPDATE foods SET name=?,unitPrice=?,updatedAt=NOW() WHERE id = ?");
             pstmt.setString(1, food.getName());
             pstmt.setFloat(2, food.getUnitPrice());
             pstmt.setString(3, String.valueOf(food.getId()));
@@ -30,7 +30,7 @@ public class FoodsModel {
     public static void insertFood(Food food) {
         try {
             PreparedStatement pstmt = DAO.getConnection().prepareStatement(""
-                    + "Insert into admins(username,password"
+                    + "Insert into foods(name,unitPrice"
                     + ") values(?,?)");
             pstmt.setString(1, food.getName());
             pstmt.setFloat(2, food.getUnitPrice());
@@ -49,7 +49,7 @@ public class FoodsModel {
         ResultSet rs;
         int total;
         try {
-            rs = DAO.getConnection().createStatement().executeQuery("select * from admins ");
+            rs = DAO.getConnection().createStatement().executeQuery("select * from foods ");
             while (rs.next()) {
                 Food food = new Food();
                 food.setId(Integer.valueOf(rs.getString("id")));
@@ -67,7 +67,7 @@ public class FoodsModel {
 
     public static void deleteFood(String id) {
         try {
-            String sql = "DELETE FROM admins WHERE id =?";
+            String sql = "DELETE FROM foods WHERE id =?";
             PreparedStatement prest = DAO.getConnection().prepareStatement(sql);
             prest.setString(1, id);
             int val = prest.executeUpdate();
@@ -85,22 +85,22 @@ public class FoodsModel {
                 column = "id";
                 break;
             case 2:
-                column = "username";
+                column = "name";
                 break;
             default:
                 column = "";
                 break;
         }
         
-        String strQuery = "SELECT * FROM admins WHERE " + column + " LIKE '%"
+        String strQuery = "SELECT * FROM foods WHERE " + column + " LIKE '%"
                 + keyword + "%';";
         try {
             rs = DAO.getConnection().createStatement().executeQuery(strQuery);
             while (rs.next()) {
                 Food food = new Food();
                 food.setId(Integer.valueOf(rs.getString("id")));
-                food.setName(rs.getString("username"));
-                food.setUnitPrice(rs.getFloat("password"));
+                food.setName(rs.getString("name"));
+                food.setUnitPrice(rs.getFloat("unitPrice"));
                 food.setCreatedAt(rs.getString("createdAt"));
                 foodList.add(food);
             }

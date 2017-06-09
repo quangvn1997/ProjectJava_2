@@ -92,4 +92,8 @@ public class Food {
     public void setStatus(int status) {
         this.status = status;
     }
+
+    public void Name(String text) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
 }
