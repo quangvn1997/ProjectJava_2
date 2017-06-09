@@ -33,11 +33,12 @@ public class PanelQuanLy extends JFrame {
 
 //  Quản lý món ăn    
     public DanhMucBan panelBan = new DanhMucBan();
-    public QuanLyBan quanlyban = new QuanLyBan();
+    public ManagerTable quanlyban = new ManagerTable();
     public ManagerFood quanlymonan = new ManagerFood();
-    public QuanLyThongKe quanlythongke = new QuanLyThongKe();
+    public ManagerStatistic quanlythongke = new ManagerStatistic();
 
-    public  PanelQuanLy() {
+    public CreateHoaDon craetehoadon = new CreateHoaDon();
+    public PanelQuanLy() {
         initComponents();
 
 //        danh mục bàn
@@ -82,6 +83,7 @@ public class PanelQuanLy extends JFrame {
 //        Thêm giao diện quản lý thông kê
         panel.add(this.quanlythongke);
 
+        
         quanlyadmin.setVisible(false);
         quanlyban.setVisible(false);
         quanlymonan.setVisible(false);
@@ -90,9 +92,10 @@ public class PanelQuanLy extends JFrame {
         setLocationRelativeTo(null);
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-                
+
     }
 
+//    Hiện thời gian góc phải màn hình
     public void clockBan() {
         Thread clock = new Thread() {
             public void run() {
@@ -143,12 +146,11 @@ public class PanelQuanLy extends JFrame {
         btnLogOut = new javax.swing.JButton();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
-        jMenuItem1 = new javax.swing.JMenuItem();
-        jMenuItem2 = new javax.swing.JMenuItem();
-        jMenuItem3 = new javax.swing.JMenuItem();
-        jMenuItem4 = new javax.swing.JMenuItem();
-        jMenuItem5 = new javax.swing.JMenuItem();
-        jMenu2 = new javax.swing.JMenu();
+        menuDatBan = new javax.swing.JMenuItem();
+        menuAdmin = new javax.swing.JMenuItem();
+        menuBan = new javax.swing.JMenuItem();
+        menuMonAn = new javax.swing.JMenuItem();
+        menuThongKe = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -241,7 +243,7 @@ public class PanelQuanLy extends JFrame {
 
         date.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
 
-        time.setFont(new java.awt.Font("Tahoma", 0, 28)); // NOI18N
+        time.setFont(new java.awt.Font("Tahoma", 0, 36)); // NOI18N
 
         jButton2.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         jButton2.setIcon(new javax.swing.ImageIcon("C:\\Users\\minht\\Documents\\NetBeansProjects\\ProjectJava\\Image\\datban.jpg")); // NOI18N
@@ -255,6 +257,11 @@ public class PanelQuanLy extends JFrame {
         jButton3.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         jButton3.setIcon(new javax.swing.ImageIcon("C:\\Users\\minht\\Documents\\NetBeansProjects\\ProjectJava\\Image\\exit.jpg")); // NOI18N
         jButton3.setText("Thoát");
+        jButton3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton3ActionPerformed(evt);
+            }
+        });
 
         jLabel2.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         jLabel2.setText("Thu Ngân : ");
@@ -285,16 +292,6 @@ public class PanelQuanLy extends JFrame {
                         .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGap(18, 18, 18)
                 .addGroup(panelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(panelLayout.createSequentialGroup()
-                        .addComponent(jLabel1)
-                        .addGroup(panelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(panelLayout.createSequentialGroup()
-                                .addGap(145, 145, 145)
-                                .addComponent(date, javax.swing.GroupLayout.PREFERRED_SIZE, 252, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(panelLayout.createSequentialGroup()
-                                .addGap(203, 203, 203)
-                                .addComponent(time, javax.swing.GroupLayout.PREFERRED_SIZE, 171, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addContainerGap(24, Short.MAX_VALUE))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelLayout.createSequentialGroup()
                         .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 143, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -302,8 +299,19 @@ public class PanelQuanLy extends JFrame {
                         .addGap(18, 18, 18)
                         .addComponent(btnLogOut)
                         .addGap(18, 18, 18)
-                        .addComponent(jButton3)
-                        .addGap(61, 61, 61))))
+                        .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 129, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(47, 47, 47))
+                    .addGroup(panelLayout.createSequentialGroup()
+                        .addComponent(jLabel1)
+                        .addGroup(panelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(panelLayout.createSequentialGroup()
+                                .addGap(145, 145, 145)
+                                .addComponent(date, javax.swing.GroupLayout.PREFERRED_SIZE, 252, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addContainerGap(24, Short.MAX_VALUE))
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelLayout.createSequentialGroup()
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(time, javax.swing.GroupLayout.PREFERRED_SIZE, 147, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(93, 93, 93))))))
         );
         panelLayout.setVerticalGroup(
             panelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -333,35 +341,47 @@ public class PanelQuanLy extends JFrame {
 
         jMenu1.setText("Quản Lý");
 
-        jMenuItem1.setText("Quản Lý Đặt Bàn");
-        jMenuItem1.addActionListener(new java.awt.event.ActionListener() {
+        menuDatBan.setText("Quản Lý Đặt Bàn");
+        menuDatBan.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuItem1ActionPerformed(evt);
+                menuDatBanActionPerformed(evt);
             }
         });
-        jMenu1.add(jMenuItem1);
+        jMenu1.add(menuDatBan);
 
-        jMenuItem2.setText("Quản Lý Admin");
-        jMenuItem2.addActionListener(new java.awt.event.ActionListener() {
+        menuAdmin.setText("Quản Lý Admin");
+        menuAdmin.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuItem2ActionPerformed(evt);
+                menuAdminActionPerformed(evt);
             }
         });
-        jMenu1.add(jMenuItem2);
+        jMenu1.add(menuAdmin);
 
-        jMenuItem3.setText("Quản Lý Bàn");
-        jMenu1.add(jMenuItem3);
+        menuBan.setText("Quản Lý Bàn");
+        menuBan.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                menuBanActionPerformed(evt);
+            }
+        });
+        jMenu1.add(menuBan);
 
-        jMenuItem4.setText("Quản Lý Món Ăn");
-        jMenu1.add(jMenuItem4);
+        menuMonAn.setText("Quản Lý Món Ăn");
+        menuMonAn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                menuMonAnActionPerformed(evt);
+            }
+        });
+        jMenu1.add(menuMonAn);
 
-        jMenuItem5.setText("Quản Lý Thông Kê");
-        jMenu1.add(jMenuItem5);
+        menuThongKe.setText("Quản Lý Thông Kê");
+        menuThongKe.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                menuThongKeActionPerformed(evt);
+            }
+        });
+        jMenu1.add(menuThongKe);
 
         jMenuBar1.add(jMenu1);
-
-        jMenu2.setText("Thoát");
-        jMenuBar1.add(jMenu2);
 
         setJMenuBar(jMenuBar1);
 
@@ -382,73 +402,165 @@ public class PanelQuanLy extends JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnDatBanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDatBanActionPerformed
-        btnDatBan.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                panelBan.setVisible(true);
-//                monan.setVisible(false);
-                quanlyadmin.setVisible(false);
-                quanlyban.setVisible(false);
-                quanlymonan.setVisible(false);
-                quanlythongke.setVisible(false);
 
-                btnDatBan.setBackground(new Color(176, 183, 159));
-                btnAdmin.setBackground(Color.white);
-                btnBan.setBackground(Color.white);
-                btnMonan.setBackground(Color.white);
-                btnThongke.setBackground(Color.white);
-                if(panelBan.getKk()==1){
-                    setVisible(false);
-                }
-                        
-            }
-        });
+//      Bắt sự kiện button đặt bàn        
+        panelBan.setVisible(true);
+//                monan.setVisible(false);
+        quanlyadmin.setVisible(false);
+        quanlyban.setVisible(false);
+        quanlymonan.setVisible(false);
+        quanlythongke.setVisible(false);
+
+        btnDatBan.setBackground(new Color(74, 135, 178));
+        btnAdmin.setBackground(Color.white);
+        btnBan.setBackground(Color.white);
+        btnMonan.setBackground(Color.white);
+        btnThongke.setBackground(Color.white);
     }//GEN-LAST:event_btnDatBanActionPerformed
 
     private void btnAdminActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAdminActionPerformed
-        btnAdmin.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                quanlyadmin.setVisible(true);
 
-                panelBan.setVisible(false);
-                quanlyban.setVisible(false);
-                quanlymonan.setVisible(false);
-                quanlythongke.setVisible(false);
+//        Bắt sự kiện quản lý admin
+        quanlyadmin.setVisible(true);
 
-                btnDatBan.setBackground(Color.white);
-                btnAdmin.setBackground(new Color(176, 183, 159));
-                btnBan.setBackground(Color.white);
-                btnMonan.setBackground(Color.white);
-                btnThongke.setBackground(Color.white);
+        panelBan.setVisible(false);
+        quanlyban.setVisible(false);
+        quanlymonan.setVisible(false);
+        quanlythongke.setVisible(false);
 
-            }
-        });
+        btnDatBan.setBackground(Color.white);
+        btnAdmin.setBackground(new Color(74, 135, 178));
+        btnBan.setBackground(Color.white);
+        btnMonan.setBackground(Color.white);
+        btnThongke.setBackground(Color.white);
     }//GEN-LAST:event_btnAdminActionPerformed
 
     private void btnThongkeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnThongkeActionPerformed
-        // TODO add your handling code here:
 
-        btnThongke.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                quanlythongke.setVisible(true);
-                quanlymonan.setVisible(false);
-                quanlyadmin.setVisible(false);
-                quanlyban.setVisible(false);
+//       Bắt sự kiện quản lý thống kê
+        quanlythongke.setVisible(true);
+        quanlymonan.setVisible(false);
+        quanlyadmin.setVisible(false);
+        quanlyban.setVisible(false);
 
-                btnDatBan.setBackground(Color.white);
-                btnAdmin.setBackground(Color.white);
-                btnBan.setBackground(Color.white);
-                btnMonan.setBackground(Color.white);
-                btnThongke.setBackground(new Color(176, 183, 159));
-            }
-        });
+        btnDatBan.setBackground(Color.white);
+        btnAdmin.setBackground(Color.white);
+        btnBan.setBackground(Color.white);
+        btnMonan.setBackground(Color.white);
+        btnThongke.setBackground(new Color(74, 135, 178));
     }//GEN-LAST:event_btnThongkeActionPerformed
 
     private void btnMonanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMonanActionPerformed
+
+//        Bắt sự kiện quản lý món ăn
+        quanlymonan.setVisible(true);
+
+        quanlyadmin.setVisible(false);
+        quanlyban.setVisible(false);
+        panelBan.setVisible(false);
+        quanlythongke.setVisible(false);
+        quanlyban.setVisible(false);
+
+        btnDatBan.setBackground(Color.white);
+        btnAdmin.setBackground(Color.white);
+        btnBan.setBackground(Color.white);
+        btnMonan.setBackground(new Color(74, 135, 178));
+        btnThongke.setBackground(Color.white);
+    }//GEN-LAST:event_btnMonanActionPerformed
+
+    private void btnBanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBanActionPerformed
+
+//        Bắt sự kiện quản lý đặt bàn
+        quanlyban.setVisible(true);
+        quanlyadmin.setVisible(false);
+        quanlythongke.setVisible(false);
+        panelBan.setVisible(false);
+        quanlymonan.setVisible(false);
+
+        btnDatBan.setBackground(Color.white);
+        btnAdmin.setBackground(Color.white);
+        btnBan.setBackground(new Color(74, 135, 178));
+        btnMonan.setBackground(Color.white);
+        btnThongke.setBackground(Color.white);
+
+    }//GEN-LAST:event_btnBanActionPerformed
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+
+//          Bắt sự kiện đặt bàn
+
+    }//GEN-LAST:event_jButton2ActionPerformed
+
+    private void menuDatBanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuDatBanActionPerformed
         // TODO add your handling code here:
-        btnMonan.addActionListener(new ActionListener() {
+
+//        Menu Down quản lý Đặt bàn
+        panelBan.setVisible(true);
+//                monan.setVisible(false);
+        quanlyadmin.setVisible(false);
+        quanlyban.setVisible(false);
+        quanlymonan.setVisible(false);
+        quanlythongke.setVisible(false);
+
+        btnDatBan.setBackground(new Color(74, 135, 178));
+        btnAdmin.setBackground(Color.white);
+        btnBan.setBackground(Color.white);
+        btnMonan.setBackground(Color.white);
+        btnThongke.setBackground(Color.white);
+    }//GEN-LAST:event_menuDatBanActionPerformed
+
+    private void menuAdminActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuAdminActionPerformed
+        // TODO add your handling code here:
+       
+//       Menu down quản lý admin 
+        quanlyadmin.setVisible(true);
+
+        panelBan.setVisible(false);
+        quanlyban.setVisible(false);
+        quanlymonan.setVisible(false);
+        quanlythongke.setVisible(false);
+
+        btnDatBan.setBackground(Color.white);
+        btnAdmin.setBackground(new Color(74, 135, 178));
+        btnBan.setBackground(Color.white);
+        btnMonan.setBackground(Color.white);
+        btnThongke.setBackground(Color.white);
+
+    }//GEN-LAST:event_menuAdminActionPerformed
+
+    private void btnLogOutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLogOutActionPerformed
+
+//        Bắt sự kiện đăng xuất
+        this.setVisible(false);
+        Login login = new Login();
+        login.setVisible(true);
+    }//GEN-LAST:event_btnLogOutActionPerformed
+
+    private void menuBanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuBanActionPerformed
+        
+//        Menu down quản lý bàn
+        menuBan.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                quanlyban.setVisible(true);
+                quanlyadmin.setVisible(false);
+                quanlythongke.setVisible(false);
+                panelBan.setVisible(false);
+                quanlymonan.setVisible(false);
+
+                btnDatBan.setBackground(Color.white);
+                btnAdmin.setBackground(Color.white);
+                btnBan.setBackground(new Color(74, 135, 178));
+                btnMonan.setBackground(Color.white);
+                btnThongke.setBackground(Color.white);
+            }
+        });
+    }//GEN-LAST:event_menuBanActionPerformed
+
+    private void menuMonAnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuMonAnActionPerformed
+        
+//        Menu down quản lý món ăn
+        menuMonAn.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 quanlymonan.setVisible(true);
@@ -462,63 +574,38 @@ public class PanelQuanLy extends JFrame {
                 btnDatBan.setBackground(Color.white);
                 btnAdmin.setBackground(Color.white);
                 btnBan.setBackground(Color.white);
-                btnMonan.setBackground(new Color(176, 183, 159));
+                btnMonan.setBackground(new Color(74, 135, 178));
                 btnThongke.setBackground(Color.white);
 
             }
         });
-    }//GEN-LAST:event_btnMonanActionPerformed
+    }//GEN-LAST:event_menuMonAnActionPerformed
 
-    private void btnBanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBanActionPerformed
-        // TODO add your handling code here:
-        btnBan.addActionListener(new ActionListener() {
+    private void menuThongKeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuThongKeActionPerformed
+
+//        Menu down quản lý thống kê
+        menuThongKe.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                quanlyban.setVisible(true);
-                quanlyadmin.setVisible(false);
-                quanlythongke.setVisible(false);
-                panelBan.setVisible(false);
+                quanlythongke.setVisible(true);
                 quanlymonan.setVisible(false);
+                quanlyadmin.setVisible(false);
+                quanlyban.setVisible(false);
 
                 btnDatBan.setBackground(Color.white);
                 btnAdmin.setBackground(Color.white);
-                btnBan.setBackground(new Color(176, 183, 159));
+                btnBan.setBackground(Color.white);
                 btnMonan.setBackground(Color.white);
-                btnThongke.setBackground(Color.white);
+                btnThongke.setBackground(new Color(74, 135, 178));
             }
         });
+    }//GEN-LAST:event_menuThongKeActionPerformed
 
-    }//GEN-LAST:event_btnBanActionPerformed
+    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
 
-    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        // TODO add your handling code here:
-//        System.exit(0);
-
-
-    }//GEN-LAST:event_jButton2ActionPerformed
-
-    private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jMenuItem1ActionPerformed
-
-    private void jMenuItem2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem2ActionPerformed
-        // TODO add your handling code here:
-        jMenuItem2.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                ManagerAdmin quanlyadmin = new ManagerAdmin();
-                quanlyadmin.setVisible(true);
-            }
-        });
-
-    }//GEN-LAST:event_jMenuItem2ActionPerformed
-
-    private void btnLogOutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLogOutActionPerformed
-        // TODO add your handling code here:
+//        Bắt sự kiện thoát
         this.setVisible(false);
-        Login login = new Login();
-        login.setVisible(true);
-    }//GEN-LAST:event_btnLogOutActionPerformed
+    }//GEN-LAST:event_jButton3ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -583,15 +670,14 @@ public class PanelQuanLy extends JFrame {
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JMenu jMenu1;
-    private javax.swing.JMenu jMenu2;
     private javax.swing.JMenuBar jMenuBar1;
-    private javax.swing.JMenuItem jMenuItem1;
-    private javax.swing.JMenuItem jMenuItem2;
-    private javax.swing.JMenuItem jMenuItem3;
-    private javax.swing.JMenuItem jMenuItem4;
-    private javax.swing.JMenuItem jMenuItem5;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JTextField jTextField1;
+    private javax.swing.JMenuItem menuAdmin;
+    private javax.swing.JMenuItem menuBan;
+    private javax.swing.JMenuItem menuDatBan;
+    private javax.swing.JMenuItem menuMonAn;
+    private javax.swing.JMenuItem menuThongKe;
     private javax.swing.JPanel panel;
     private javax.swing.JLabel time;
     // End of variables declaration//GEN-END:variables

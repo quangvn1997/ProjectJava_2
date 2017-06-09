@@ -33,8 +33,8 @@ import java.awt.event.MouseEvent;
  *
  * @author Anh Tiến ơi.Có Trộm!
  */
-public class QuanLyBan extends JPanel {
-    
+public class ManagerTable extends JPanel {
+
     private JLabel title;
     private JButton btnnewTb;
     private JButton btnupdateTb;
@@ -48,17 +48,17 @@ public class QuanLyBan extends JPanel {
     private JTable table;
     private DefaultTableModel model1aTable;
     private JScrollPane scrollPane;
-    
+
     ;
 
-    public QuanLyBan() {
-        
+    public ManagerTable() {
+
         this.setBackground(new Color(250, 250, 250));
         this.setBounds(300, 90, 1000, 520);
         this.setBorder(BorderFactory.createLineBorder(Color.BLACK));
-        
+
         this.title = new JLabel();
-        this.title.setText("QUẢN LÝ Bàn");
+        this.title.setText("QUẢN LÝ BÀN");
         this.title.setBounds(360, 0, 280, 70);
         this.title.setFont(new Font("Serif", Font.PLAIN, 30));
         // button tìm kiếm
@@ -70,13 +70,13 @@ public class QuanLyBan extends JPanel {
         this.txtSearch.setFont(new Font("Serif", Font.PLAIN, 18));
         //Bàn và trạng thái
         this.lblAddTable = new JLabel("Số bàn thêm mới");
-        this.lblAddTable.setBounds(50, 400, 100, 34);
+        this.lblAddTable.setBounds(50, 400, 200, 34);
         this.lblStatus = new JLabel("Trạng thái");
         this.lblStatus.setBounds(50, 450, 100, 34);
         this.txtAddTable = new JTextField();
-        this.txtAddTable.setBounds(160, 400, 200, 34);
+        this.txtAddTable.setBounds(190, 400, 200, 34);
         this.txtStatus = new JTextField();
-        this.txtStatus.setBounds(160, 450, 200, 34);
+        this.txtStatus.setBounds(190, 450, 200, 34);
         this.lblAddTable.setFont(new Font("Serif", Font.PLAIN, 18));
         this.lblStatus.setFont(new Font("Serif", Font.PLAIN, 18));
         this.txtAddTable.setFont(new Font("Serif", Font.PLAIN, 18));
@@ -85,45 +85,45 @@ public class QuanLyBan extends JPanel {
         // Button tạo mới bàn
         this.btnnewTb = new JButton();
         this.btnnewTb.setText("Thêm");
-        this.btnnewTb.setBounds(380, 400, 120, 34);
+        this.btnnewTb.setBounds(410, 400, 120, 34);
         this.btnnewTb.setFont(new Font("Serif", Font.PLAIN, 18));
 
-        //delete action
+//       Bắt sự kiện tạo mới bàn
         this.btnnewTb.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 int a = Integer.parseInt(txtAddTable.getText());
-                
+
                 TableModel tablemodel = new TableModel();
-                
+
                 int id_max = tablemodel.getTableMax();
-                                
+
                 Table[] tables = new Table[a];
-                
+
                 for (int i = 0; i < a; i++) {
                     tables[i] = new Table();
-                    tables[i].setName("Bàn "+(i+1+id_max));
-                    tables[i].setId(i+1+id_max);
+                    tables[i].setName("Bàn " + (i + 1 + id_max));
+                    tables[i].setId(i + 1 + id_max);
                 }
-                
+
                 tablemodel.insertTable(tables);
-                
+
             }
         });
 
         // Button sửa bàn
-        this.btnupdateTb= new JButton();
+        this.btnupdateTb = new JButton();
         this.btnupdateTb.setText("Cập nhật");
-        this.btnupdateTb.setBounds(380, 450, 120, 34);
+        this.btnupdateTb.setBounds(410, 450, 120, 34);
         this.btnupdateTb.setFont(new Font("Serif", Font.PLAIN, 18));
         // Button xóa bàn
         this.btndeleteTb = new JButton();
         this.btndeleteTb.setText("Xóa");
-        this.btndeleteTb.setBounds(700, 60, 120, 34);
+        this.btndeleteTb.setBounds(680, 60, 120, 34);
         this.btndeleteTb.setFont(new Font("Serif", Font.PLAIN, 18));
         // Table        
         String[] columnNames = {"ID", "tên bàn", "trạng thái"};
-        Object[][] data = {{"1", "bàn 1", "1"}, {"2", "bàn số 2", "0"}, {"3", "bàn 3", "2"}};
+        Object[][] data = {{"1", "b1", "1"}, {"2", "b2", "0"}, {"3", "b3", "2"}};
         this.model1aTable = new DefaultTableModel(data, columnNames);
         this.table = new JTable(model1aTable);
         this.table.setFont(new Font("Serif", Font.PLAIN, 20));
@@ -171,7 +171,7 @@ public class QuanLyBan extends JPanel {
         this.add(scrollPane);
         this.setLayout(null);
         this.setVisible(false);
-        
+
     }
-    
+
 }

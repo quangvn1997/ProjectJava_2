@@ -26,15 +26,8 @@ public class DanhMucBan extends javax.swing.JPanel {
     int sotrang = 1;
     JButton[] listBan = new JButton[tongSoBan];
     JButton[] listtrang = new JButton[sotrang];
-    private int kk;
-
-    public int getKk() {
-        return kk;
-    }
-
-    public void setKk(int kk) {
-        this.kk = kk;
-    }
+    private ManagerPay quanlythanhtoan = new ManagerPay();
+    private CreateHoaDon createhoadon = new CreateHoaDon();
 
     public DanhMucBan() {
         initComponents();
@@ -44,11 +37,8 @@ public class DanhMucBan extends javax.swing.JPanel {
             @Override
             public void actionPerformed(ActionEvent e) {
                 if (e.getSource() instanceof JButton) {
-                    QuanLyThanhToan quanlythanhtoan = new QuanLyThanhToan();
-                    quanlythanhtoan.setVisible(true);
-                    PanelQuanLy aa = new PanelQuanLy();
-                    setKk(1);
-                    
+                    createhoadon.setVisible(true);
+//                    quanlythanhtoan.setVisible(true);
                 }
             }
         };
@@ -83,7 +73,7 @@ public class DanhMucBan extends javax.swing.JPanel {
             @Override
             public void actionPerformed(ActionEvent e) {
                 if (e.getSource() instanceof JButton) {
-                    QuanLyThanhToan quanlythanhtoan = new QuanLyThanhToan();
+                    ManagerPay quanlythanhtoan = new ManagerPay();
                     quanlythanhtoan.setVisible(true);
                         
                 }

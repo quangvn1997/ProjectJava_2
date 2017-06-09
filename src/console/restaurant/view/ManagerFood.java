@@ -58,7 +58,7 @@ public class ManagerFood extends JPanel {
         this.setBorder(BorderFactory.createLineBorder(Color.BLACK));
 
         this.lbltitle = new JLabel();
-        this.lbltitle.setText("QUẢN LÝ Món Ăn");
+        this.lbltitle.setText("QUẢN LÝ MÓN ĂN");
         this.lbltitle.setBounds(360, 0, 280, 70);
         this.lbltitle.setFont(new Font("Serif", Font.PLAIN, 30));
         // button Search

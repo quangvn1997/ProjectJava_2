@@ -73,9 +73,9 @@ public class ManagerAdmin extends JPanel {
         this.txtSearch.setBounds(50, 60, 500, 34);
         this.txtSearch.setFont(new Font("Serif", Font.PLAIN, 18));
         //acount and password
-        this.lblAcount = new JLabel("Name");
+        this.lblAcount = new JLabel("Tài khoản");
         this.lblAcount.setBounds(50, 400, 100, 34);
-        this.lblPassword = new JLabel("password");
+        this.lblPassword = new JLabel("Mật khẩu");
         this.lblPassword.setBounds(50, 450, 100, 34);
         this.txtAcount = new JTextField();
         this.txtAcount.setBounds(160, 400, 200, 34);
