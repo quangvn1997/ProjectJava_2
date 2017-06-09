@@ -5,6 +5,7 @@
  */
 package console.restaurant.view;
 
+import console.restaurant.controller.AdminsController;
 import console.restaurant.entities.Admin;
 import console.restaurant.entities.SessionAdmin;
 import console.restaurant.models.AdminsModel;
@@ -150,7 +151,7 @@ public class ManagerAdmin extends JPanel {
                         JOptionPane.showMessageDialog(null, "Xin chia buồn.");
                         txtAcount.setText("");
                         txtPassword.setText("");
-                        AdminsModel.loadAdmins(table);
+                        AdminsController.loadAdmins(table);
                     }
                 }
             }
@@ -175,7 +176,7 @@ public class ManagerAdmin extends JPanel {
                 admin.setUsername(txtAcount.getText());
                 admin.setPassword(new String(txtPassword.getPassword()));
                 AdminsModel.insertAdmin(admin);
-                AdminsModel.loadAdmins(table);
+                AdminsController.loadAdmins(table);
             }
         });
         this.suaAdmin.addActionListener(new ActionListener() {
@@ -204,7 +205,7 @@ public class ManagerAdmin extends JPanel {
                 AdminsModel.update(admin);
                 txtAcount.setText("");
                 txtPassword.setText("");
-                AdminsModel.loadAdmins(table);
+                AdminsController.loadAdmins(table);
 
             }
         });
@@ -212,11 +213,11 @@ public class ManagerAdmin extends JPanel {
             @Override
             public void actionPerformed(ActionEvent e) {
                 if (txtSearch.getText().trim().matches("^(?=.*[a-zA-Z])(?=.*[0-9])[a-zA-Z0-9]+$") || txtSearch.getText().trim().matches("[a-zA-Z]+")) {
-                    AdminsModel.loadAdminsSearch(table, AdminsModel.searchAdmin(txtSearch.getText(), 2));
+                    AdminsModel.loadAdminsSearch(table, AdminsController.searchAdmin(txtSearch.getText(), 2));
                 } else if (txtSearch.getText().matches("^-?\\d+$")) {
-                    AdminsModel.loadAdminsSearch(table, AdminsModel.searchAdmin(txtSearch.getText(), 1));
+                    AdminsModel.loadAdminsSearch(table, AdminsController.searchAdmin(txtSearch.getText(), 1));
                 } else if (txtSearch.getText().isEmpty()) {
-                    AdminsModel.loadAdmins(table);
+                    AdminsController.loadAdmins(table);
                     JOptionPane.showMessageDialog(null, " vui lòng điền id hoac name");
                 } else {
                     JOptionPane.showMessageDialog(null, "không tồn tại");
@@ -225,7 +226,7 @@ public class ManagerAdmin extends JPanel {
 
             }
         });
-        AdminsModel.loadAdmins(table);
+        AdminsController.loadAdmins(table);
         //add element
         this.add(this.xoaAdmin);
         this.add(this.suaAdmin);
