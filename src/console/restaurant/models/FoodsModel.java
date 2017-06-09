@@ -14,7 +14,7 @@ import javax.swing.table.DefaultTableModel;
 public class FoodsModel {
     public static void update(Food food) {
         try {
-            PreparedStatement pstmt = DAO.getConnection().prepareStatement("UPDATE foods SET name=?,unitPrice=?,updatedAt=NOW() WHERE id = ?");
+            PreparedStatement pstmt = DAO.getConnection().prepareStatement("UPDATE foods SET name=?,unit_price=?,updated_at=NOW() WHERE id = ?");
             pstmt.setString(1, food.getName());
             pstmt.setFloat(2, food.getUnitPrice());
             pstmt.setString(3, String.valueOf(food.getId()));
@@ -30,7 +30,7 @@ public class FoodsModel {
     public static void insertFood(Food food) {
         try {
             PreparedStatement pstmt = DAO.getConnection().prepareStatement(""
-                    + "Insert into foods(name,unitPrice"
+                    + "Insert into foods(name,unit_price"
                     + ") values(?,?)");
             pstmt.setString(1, food.getName());
             pstmt.setFloat(2, food.getUnitPrice());
@@ -54,8 +54,8 @@ public class FoodsModel {
                 Food food = new Food();
                 food.setId(Integer.valueOf(rs.getString("id")));
                 food.setName(rs.getString("name"));
-                food.setUnitPrice(rs.getFloat("UnitPrice"));
-                food.setCreatedAt(rs.getString("createdAt"));
+                food.setUnitPrice(rs.getFloat("unit_price"));
+                food.setCreatedAt(rs.getString("created_at"));
                 foodList.add(food);
             }
         } catch (SQLException ex) {
