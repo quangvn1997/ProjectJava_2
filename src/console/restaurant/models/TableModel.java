@@ -7,9 +7,11 @@ package console.restaurant.models;
 
 import console.restaurant.entities.Admin;
 import console.restaurant.entities.Table;
+import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 import javax.swing.JTable;
@@ -21,7 +23,53 @@ import javax.swing.table.DefaultTableModel;
  */
 public class TableModel {
 
-    public static void insertTable(Table[] tables) {
+    public ArrayList<Table> getAvailableTable(int page, int limit) {
+        ArrayList<Table> listAvailable = new ArrayList<>();
+        try {
+            Connection cnn = DAO
+                    .getConnection();
+            Statement stt = cnn.createStatement();
+            String sqlQuery = "select * from tables where status = 1 limit " + limit + " offset " + (page - 1) * limit;
+            System.out.println(sqlQuery);
+            ResultSet rs = stt.executeQuery(sqlQuery);
+            while (rs.next()) {
+                //Assuming you have a user object
+                Table table = new Table();
+                table.setId(rs.getInt("id"));
+                table.setName(rs.getString("name"));
+                table.setStatus(rs.getInt("status"));
+                listAvailable.add(table);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return listAvailable;
+    }
+    public int getCountTable(){
+        try {
+            Connection cnn = DAO
+                    .getConnection();
+            Statement stt = cnn.createStatement();
+            String sqlQuery = "select count from tables";
+            System.out.println(sqlQuery);
+            ResultSet rs = stt.executeQuery(sqlQuery);
+            
+        } catch (Exception e) {
+        }
+        return 0;
+        
+    }
+
+    public static void main(String[] args) {
+        TableModel model = new TableModel();
+        ArrayList<Table> list = model.getAvailableTable(0, 0);
+        for (Table tbl : list) {
+            System.out.println(tbl.getId());
+            System.out.println(tbl.getName());
+        }
+    }
+
+    public void insertTable(Table[] tables) {
         int a = 0;
         for (int i = 0; i < tables.length; i++) {
             try {
@@ -44,7 +92,7 @@ public class TableModel {
 
     }
 
-    public static int getTableMax() {
+    public int getTableMax() {
 
         int id_max = 0;
         ResultSet rs;
@@ -54,14 +102,14 @@ public class TableModel {
             rs = DAO.getConnection().createStatement().executeQuery(strQuery);
             while (rs.next()) {
                 id_max = Integer.valueOf(rs.getString("id"));
-                
+
                 break;
             }
         } catch (SQLException ex) {
             System.err.println("Có lỗi xảy ra! " + ex);
             return 0;
         }
-        
+
         System.out.println(id_max);
 
         return id_max;

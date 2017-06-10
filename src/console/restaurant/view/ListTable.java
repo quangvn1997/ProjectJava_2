@@ -5,10 +5,14 @@
  */
 package console.restaurant.view;
 
+import console.restaurant.entities.Table;
+import console.restaurant.models.TableModel;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
+import java.util.Map;
 import javax.swing.JButton;
 
 /**
@@ -16,55 +20,56 @@ import javax.swing.JButton;
  * @author Anh Tiến ơi.Có Trộm!
  */
 public class ListTable extends javax.swing.JPanel {
+    
 
-    /**
-     * Creates new form abc
-     */
     int length = 5;
-    int tongSoBan = 15;
+    final int TONG_SO_BAN = 15;
     int banHienTai = 0;
     int sotrang = 1;
-    JButton[] listBan = new JButton[tongSoBan];
+    public int page = 1;
+    public JButton[] listBan;
     JButton[] listtrang = new JButton[sotrang];
-    private int kk;
-
-    public int getKk() {
-        return kk;
-    }
-
-    public void setKk(int kk) {
-        this.kk = kk;
-    }
+    private TableModel model = new TableModel();
+    private Map<String, JButton> dynamicButtons;
 
     public ListTable() {
         initComponents();
-        int sohang = tongSoBan / length;
+        loadTable();
+    }
 
-        ActionListener listener = new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                if (e.getSource() instanceof JButton) {
-                    ManagerPayment quanlythanhtoan = new ManagerPayment();
-                    quanlythanhtoan.setVisible(true);
-                    PanelManager aa = new PanelManager();
-                    setKk(1);
-                    
-                }
+    public void loadTable() {
+        // Load danh sách bàn trong db ra, lấy theo tổng số bàn là 15.
+        ArrayList<Table> list = model.getAvailableTable(page, TONG_SO_BAN);
+
+        if (listBan != null && listBan.length > 0) {
+            for (JButton jButton : listBan) {
+                this.remove(jButton);
             }
-        };
+        }
+        listBan = new JButton[list.size()];
         // xử lí tự động chỉnh khi thêm bàn hoặc xóa bàn
         int x = 40;
         int y = 30;
         int count = 1;
-        for (int i = 0; i < tongSoBan; i++) {
+
+        // Tạo danh sách button từ số bàn lấy ra.
+        for (int i = 0; i < list.size(); i++) {
             // chỉnh vị trí bàn
-            listBan[i] = new JButton("Bàn " + (i + 1));
+            listBan[i] = new JButton(list.get(i).getName());
             listBan[i].setBounds(x, y, 150, 100);
             listBan[i].setBackground(new Color(142, 242, 144));
             listBan[i].setForeground(Color.black);
             listBan[i].setFont(new Font("Serif", Font.PLAIN, 24));
             banHienTai = i;
-            listBan[i].addActionListener(listener);
+
+            listBan[i].addActionListener(new ActionListener() {
+                public void actionPerformed(ActionEvent e) {
+                    if (e.getSource() instanceof JButton) {
+                        ManagerPayment quanlythanhtoan = new ManagerPayment();
+                        quanlythanhtoan.setVisible(true);
+                    }
+                }
+            });
 
             // xử lí khi thêm 1 bàn mới và add bàn vào danh sách list bàn
             x += 190;
@@ -74,32 +79,11 @@ public class ListTable extends javax.swing.JPanel {
                 y += 130;
                 x = 40;
             }
-
             this.add(listBan[i]);
-
         }
-
-        ActionListener listener1 = new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                if (e.getSource() instanceof JButton) {
-                    ManagerPayment quanlythanhtoan = new ManagerPayment();
-                    quanlythanhtoan.setVisible(true);
-                        
-                }
-            }
-        };
-
-        int sotrang = tongSoBan / 15;
-        x = 590;
-        y = 490;
-        for (int i = 0; i < sotrang; i++) {
-            listtrang[i] = new JButton("" + (sotrang + 1));
-            listtrang[i].setBounds(x, y, 50, 40);
-            listtrang[i].addActionListener(listener);
-        }
-
+        
     }
+    
 
     /**
      * This method is called from within the constructor to initialize the form.

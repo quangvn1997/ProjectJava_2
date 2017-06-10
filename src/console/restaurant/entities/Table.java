@@ -10,6 +10,7 @@ package console.restaurant.entities;
  * @author Anh Tiến ơi.Có Trộm!
  */
 public class Table {
+
     private int id;
     private String name;
     private int status;
@@ -38,5 +39,4 @@ public class Table {
         this.status = status;
     }
 
-    
 }
