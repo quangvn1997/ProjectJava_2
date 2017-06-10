@@ -6,6 +6,7 @@
 package console.restaurant.view;
 
 import console.restaurant.controller.PaymentController;
+import console.restaurant.entities.SessionAdmin;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -517,6 +518,7 @@ public class ManagerPayment extends javax.swing.JFrame {
     private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
         //Load dữ liệu khi form mở lên.
         PaymentController.loadFood(jTable1);
+        jTextField2.setText(SessionAdmin.getUsername());
     }//GEN-LAST:event_formWindowOpened
 
     /**
