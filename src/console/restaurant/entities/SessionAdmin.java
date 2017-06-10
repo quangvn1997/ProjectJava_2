@@ -14,6 +14,16 @@ public class SessionAdmin {
      private static int idToAction;
      private static String StrToAction;
      private static String username;
+     private static String name;
+
+    public static String getName() {
+        return name;
+    }
+
+    public static void setName(String name) {
+        SessionAdmin.name = name;
+    }
+     
 
     public static int getId() {
         return id;

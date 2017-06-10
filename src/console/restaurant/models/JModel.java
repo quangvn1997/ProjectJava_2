@@ -33,6 +33,7 @@ public class JModel {
 		    ++count;
 		    SessionAdmin.setId(rs.getInt("id"));
 		    SessionAdmin.setUsername(rs.getString("username"));
+                    SessionAdmin.setName(rs.getString("name"));
 	       }
 	       if (count > 0) {
 		    System.out.println("");

@@ -518,7 +518,7 @@ public class ManagerPayment extends javax.swing.JFrame {
     private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
         //Load dữ liệu khi form mở lên.
         PaymentController.loadFood(jTable1);
-        jTextField2.setText(SessionAdmin.getUsername());
+        jTextField2.setText(SessionAdmin.getName());
     }//GEN-LAST:event_formWindowOpened
 
     /**
