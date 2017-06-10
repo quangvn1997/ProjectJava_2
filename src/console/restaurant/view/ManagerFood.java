@@ -5,6 +5,7 @@
  */
 package console.restaurant.view;
 
+import console.restaurant.controller.FoodsController;
 import console.restaurant.entities.Admin;
 import console.restaurant.entities.Food;
 import console.restaurant.entities.SessionAdmin;
@@ -166,7 +167,7 @@ public class ManagerFood extends JPanel {
                     if (n == JOptionPane.YES_OPTION) {
                         FoodsModel.deleteFood(tblModel.getValueAt(row, 0).toString());
                         JOptionPane.showMessageDialog(null, "The record has been deleted successfully.");
-                        FoodsModel.loadFood(table);
+                        FoodsController.loadFood(table);
                     }
                 }
             }
@@ -203,7 +204,7 @@ public class ManagerFood extends JPanel {
                 food.setName(txtName.getText());
                 food.setUnitPrice(Float.valueOf(txtValue.getText()));
                 FoodsModel.insertFood(food);
-                FoodsModel.loadFood(table);
+                FoodsController.loadFood(table);
             }
         });
         this.btnfixFood.addActionListener(new ActionListener() {
@@ -230,7 +231,7 @@ public class ManagerFood extends JPanel {
                 food.setName(txtName.getText());
                 food.setUnitPrice(Float.valueOf(txtValue.getText()));
                 FoodsModel.update(food);
-                FoodsModel.loadFood(table);
+                FoodsController.loadFood(table);
 
             }
         });
@@ -238,11 +239,11 @@ public class ManagerFood extends JPanel {
             @Override
             public void actionPerformed(ActionEvent e) {
                 if (txtSearch.getText().trim().matches("^(?=.*[a-zA-Z])(?=.*[0-9])[a-zA-Z0-9]+$") || txtSearch.getText().trim().matches("[a-zA-Z]+")) {
-                    FoodsModel.loadFoodsSearch(table, FoodsModel.searchFood(txtSearch.getText(), 2));
+                    FoodsModel.loadFoodsSearch(table, FoodsController.searchFood(txtSearch.getText(), 2));
                 } else if (txtSearch.getText().matches("^-?\\d+$")) {
-                    FoodsModel.loadFoodsSearch(table, FoodsModel.searchFood(txtSearch.getText(), 1));
+                    FoodsModel.loadFoodsSearch(table, FoodsController.searchFood(txtSearch.getText(), 1));
                 } else if (txtSearch.getText().isEmpty()) {
-                    FoodsModel.loadFood(table);
+                    FoodsController.loadFood(table);
                     JOptionPane.showMessageDialog(null, " vui lòng điền id hoac name");
                 } else {
                     JOptionPane.showMessageDialog(null, "không tồn tại");

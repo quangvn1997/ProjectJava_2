@@ -15,7 +15,7 @@ public class AdminSeed {
 	  // Database: online_shop
 	  Statement stt = DAO.getConnection().createStatement();
 	  // Thêm dữ liệu mẫu
-	  stt.execute("INSERT INTO admins (username,password) VALUES ('admin','admin');");
+	  stt.execute("INSERT INTO admins (name,username,password,created_at) VALUES ('admin','admin','admin',NOW());");
 	  System.out.println("------ Chèn dữ liệu mẫu thành công! ------");
 	  // Đăng nhập với tài khoản: admin/admin hoặc guest/guest
      }
