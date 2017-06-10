@@ -25,7 +25,7 @@ public class AdminsController {
         model.setRowCount(0);
         List<Admin> listAdmin = AdminsModel.getAllAdmin();
         listAdmin.forEach((admin) -> {
-            model.addRow(new Object[]{String.valueOf(admin.getId()),admin.getUsername(),admin.getPassword(),admin.getCreatedAt()});
+            model.addRow(new Object[]{String.valueOf(admin.getId()),admin.getName(),admin.getUsername(),admin.getPassword(),admin.getCreatedAt()});
         });
     }
     public static List<Admin> searchAdmin(String keyword, int option) {
@@ -38,6 +38,9 @@ public class AdminsController {
                 break;
             case 2:
                 column = "username";
+                break;
+            case 3:
+                column = "name";
                 break;
             default:
                 column = "";
