@@ -5,6 +5,7 @@
  */
 package console.restaurant.view;
 
+import console.restaurant.entities.SessionAdmin;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Label;
@@ -151,6 +152,11 @@ public class PanelManager extends JFrame {
         jMenu2 = new javax.swing.JMenu();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowOpened(java.awt.event.WindowEvent evt) {
+                formWindowOpened(evt);
+            }
+        });
 
         panel.setBackground(new java.awt.Color(255, 255, 255));
 
@@ -253,7 +259,6 @@ public class PanelManager extends JFrame {
         jLabel2.setText("Thu Ngân : ");
 
         jTextField1.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
-        jTextField1.setText("  Vũ Minh Tiến");
 
         btnLogOut.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         btnLogOut.setText("Đăng Xuất");
@@ -286,7 +291,7 @@ public class PanelManager extends JFrame {
                             .addGroup(panelLayout.createSequentialGroup()
                                 .addGap(203, 203, 203)
                                 .addComponent(time, javax.swing.GroupLayout.PREFERRED_SIZE, 171, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addContainerGap(24, Short.MAX_VALUE))
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelLayout.createSequentialGroup()
                         .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 143, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -361,7 +366,7 @@ public class PanelManager extends JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addGap(0, 0, 0)
                 .addComponent(panel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
@@ -511,6 +516,10 @@ public class PanelManager extends JFrame {
         Login login = new Login();
         login.setVisible(true);
     }//GEN-LAST:event_btnLogOutActionPerformed
+
+    private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
+        jTextField1.setText(SessionAdmin.getName());
+    }//GEN-LAST:event_formWindowOpened
 
     /**
      * @param args the command line arguments
