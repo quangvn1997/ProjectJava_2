@@ -56,6 +56,7 @@ public class AdminsController {
                 admin.setId(Integer.valueOf(rs.getString("id")));
                 admin.setUsername(rs.getString("username"));
                 admin.setPassword(rs.getString("password"));
+                admin.setName(rs.getString("name"));
                 admin.setCreatedAt(rs.getString("created_at"));
                 adminList.add(admin);
             }
