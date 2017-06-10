@@ -5,7 +5,7 @@
  */
 package console.restaurant.view;
 
-import console.restaurant.controller.FoodsController;
+import console.restaurant.entities.Admin;
 import console.restaurant.entities.Food;
 import console.restaurant.entities.SessionAdmin;
 import console.restaurant.models.AdminsModel;
@@ -23,10 +23,13 @@ import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JPasswordField;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
+import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.ListSelectionModel;
+import javax.swing.border.TitledBorder;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
 
@@ -46,6 +49,10 @@ public class ManagerFood extends JPanel {
     private JLabel lblValue;
     private JTextField txtName;
     private JTextField txtValue;
+    private JLabel lblDescription;
+    private JTextArea txtDescription;
+    private JLabel lblLinkImage;
+    private JTextField txtLinkImage;
     private JTable table;
     private DefaultTableModel model1aTable;
     private JScrollPane scrollPane;
@@ -56,7 +63,7 @@ public class ManagerFood extends JPanel {
         this.setBorder(BorderFactory.createLineBorder(Color.BLACK));
 
         this.lbltitle = new JLabel();
-        this.lbltitle.setText("QUẢN LÝ Món Ăn");
+        this.lbltitle.setText("QUẢN LÝ MÓN ĂN");
         this.lbltitle.setBounds(360, 0, 280, 70);
         this.lbltitle.setFont(new Font("Serif", Font.PLAIN, 30));
         // button Search
@@ -67,14 +74,32 @@ public class ManagerFood extends JPanel {
         this.txtSearch.setBounds(50, 60, 500, 34);
         this.txtSearch.setFont(new Font("Serif", Font.PLAIN, 18));
         //acount and password
-        this.lblName = new JLabel("Name");
-        this.lblName.setBounds(50, 400, 100, 34);
-        this.lblValue = new JLabel("Giá");
-        this.lblValue.setBounds(50, 450, 100, 34);
+        this.lblName = new JLabel("Tên dịch vụ :");
+        this.lblName.setBounds(50, 380, 150, 34);
+        this.lblValue = new JLabel("Giá dịch vụ : ");
+        this.lblValue.setBounds(50, 430, 150, 34);
         this.txtName = new JTextField();
-        this.txtName.setBounds(160, 400, 200, 34);
+        this.txtName.setBounds(160, 380, 200, 34);
         this.txtValue = new JTextField();
-        this.txtValue.setBounds(160, 450, 200, 34);
+        this.txtValue.setBounds(160, 430, 200, 34);
+
+        this.lblLinkImage = new JLabel();
+        this.lblLinkImage.setText("Link ảnh : ");
+        this.lblLinkImage.setBounds(50, 480, 100, 34);
+        this.lblLinkImage.setFont(new Font("Serif", Font.PLAIN, 18));
+        this.txtLinkImage = new JTextField();
+        this.txtLinkImage.setBounds(160, 480, 200, 34);
+        this.txtLinkImage.setFont(new Font("Serif", Font.PLAIN, 18));
+
+        this.lblDescription = new JLabel();
+        this.lblDescription.setText("Miêu tả :");
+        this.lblDescription.setBounds(400, 380, 100, 35);
+        this.lblDescription.setFont(new Font("Serif", Font.PLAIN, 18));
+
+        this.txtDescription = new JTextArea();
+        this.txtDescription.setBounds(500, 380, 200, 70);
+        this.txtDescription.setFont(new Font("Serif", Font.PLAIN, 18));
+
         this.lblName.setFont(new Font("Serif", Font.PLAIN, 18));
         this.lblValue.setFont(new Font("Serif", Font.PLAIN, 18));
         this.txtName.setFont(new Font("Serif", Font.PLAIN, 18));
@@ -83,21 +108,21 @@ public class ManagerFood extends JPanel {
         // Button tạo mới admin
         this.btncreateFood = new JButton();
         this.btncreateFood.setText("Tạo mới");
-        this.btncreateFood.setBounds(380, 400, 120, 34);
+        this.btncreateFood.setBounds(410, 470, 120, 34);
         this.btncreateFood.setFont(new Font("Serif", Font.PLAIN, 18));
         // Button sửa admin
         this.btnfixFood = new JButton();
         this.btnfixFood.setText("Cập nhật");
-        this.btnfixFood.setBounds(380, 450, 120, 34);
+        this.btnfixFood.setBounds(560, 470, 120, 34);
         this.btnfixFood.setFont(new Font("Serif", Font.PLAIN, 18));
         // Button xóa admin
         this.btndeleteFood = new JButton();
         this.btndeleteFood.setText("Xóa");
-        this.btndeleteFood.setBounds(700, 60, 120, 34);
+        this.btndeleteFood.setBounds(700, 470, 120, 34);
         this.btndeleteFood.setFont(new Font("Serif", Font.PLAIN, 18));
         // Table        
-        String[] columnNames = {"ID", "tên món", "giá","miêu tả", "Ngày tạo"};
-        Object[][] data = {};
+        String[] columnNames = {"ID", "tên món", "giá", "Link ảnh", "miêu tả", "Ngày tạo"};
+        Object[][] data = {{"1", "ga", "100", "123.jpg", "gà đông tảo", "22-10-2012"}};
         this.model1aTable = new DefaultTableModel(data, columnNames);
         this.table = new JTable(model1aTable);
         this.table.setFont(new Font("Serif", Font.PLAIN, 20));
@@ -107,10 +132,9 @@ public class ManagerFood extends JPanel {
         this.table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         //Hiển thị kích thước bảng
         this.scrollPane = new JScrollPane(table);
-        this.scrollPane.setBounds(50, 100, 900, 280);
+        this.scrollPane.setBounds(50, 100, 900, 260);
         //them su kien
         //table action
-        
         TableModel tblModel = table.getModel();
         this.table.addMouseListener(new MouseAdapter() {
             public void mouseClicked(MouseEvent e) {
@@ -142,7 +166,7 @@ public class ManagerFood extends JPanel {
                     if (n == JOptionPane.YES_OPTION) {
                         FoodsModel.deleteFood(tblModel.getValueAt(row, 0).toString());
                         JOptionPane.showMessageDialog(null, "The record has been deleted successfully.");
-                        FoodsController.loadFood(table);
+                        FoodsModel.loadFood(table);
                     }
                 }
             }
@@ -152,22 +176,34 @@ public class ManagerFood extends JPanel {
             @Override
             public void actionPerformed(ActionEvent e) {
                 if (txtName.getText().isEmpty()) {
-                    JOptionPane.showMessageDialog(null, "vui lòng điền.");
+                    JOptionPane.showMessageDialog(null, "Vui lòng điền tên dịch vụ !", "Báo lỗi", JOptionPane.INFORMATION_MESSAGE);
                     return;
                 }
                 if (new String(txtValue.getText()).isEmpty()) {
-                    JOptionPane.showMessageDialog(null, "vui lòng điền.");
+                    JOptionPane.showMessageDialog(null, "Vui lòng điền giá dịch vụ !", "Báo lỗi", JOptionPane.INFORMATION_MESSAGE);
+                    return;
+                }
+                if (txtLinkImage.getText().isEmpty()) {
+                    JOptionPane.showMessageDialog(null, "Vui lòng điền link ảnh dịch vụ !", "Báo lỗi", JOptionPane.INFORMATION_MESSAGE);
+                    return;
+                }
+                if (txtDescription.getText().isEmpty()) {
+                    JOptionPane.showMessageDialog(null, "Vui lòng điền miêu tả dịch vụ !", "Báo lỗi", JOptionPane.INFORMATION_MESSAGE);
                     return;
                 }
                 if (ValidateUtilities.checkExistanceAdmin(txtName.getText())) {
-                    JOptionPane.showMessageDialog(null, "tên đã tồn tại, vui lòng điền tên khác");
+                    JOptionPane.showMessageDialog(null, "Tên dịch vụ đã tồn tại !, Vui lòng chọn tên khác.", "Báo lỗi", JOptionPane.INFORMATION_MESSAGE);
+                    return;
+                }
+                if (ValidateUtilities.checkExistanceAdmin(txtLinkImage.getText())) {
+                    JOptionPane.showMessageDialog(null, "Link ảnh đã được sử dụng !, Vui lòng chọn ảnh khác.", "Báo lỗi", JOptionPane.INFORMATION_MESSAGE);
                     return;
                 }
                 Food food = new Food();
                 food.setName(txtName.getText());
                 food.setUnitPrice(Float.valueOf(txtValue.getText()));
                 FoodsModel.insertFood(food);
-                FoodsController.loadFood(table);
+                FoodsModel.loadFood(table);
             }
         });
         this.btnfixFood.addActionListener(new ActionListener() {
@@ -194,7 +230,7 @@ public class ManagerFood extends JPanel {
                 food.setName(txtName.getText());
                 food.setUnitPrice(Float.valueOf(txtValue.getText()));
                 FoodsModel.update(food);
-                FoodsController.loadFood(table);
+                FoodsModel.loadFood(table);
 
             }
         });
@@ -202,11 +238,11 @@ public class ManagerFood extends JPanel {
             @Override
             public void actionPerformed(ActionEvent e) {
                 if (txtSearch.getText().trim().matches("^(?=.*[a-zA-Z])(?=.*[0-9])[a-zA-Z0-9]+$") || txtSearch.getText().trim().matches("[a-zA-Z]+")) {
-                    FoodsModel.loadFoodsSearch(table, FoodsController.searchFood(txtSearch.getText(), 2));
+                    FoodsModel.loadFoodsSearch(table, FoodsModel.searchFood(txtSearch.getText(), 2));
                 } else if (txtSearch.getText().matches("^-?\\d+$")) {
-                    FoodsModel.loadFoodsSearch(table, FoodsController.searchFood(txtSearch.getText(), 1));
+                    FoodsModel.loadFoodsSearch(table, FoodsModel.searchFood(txtSearch.getText(), 1));
                 } else if (txtSearch.getText().isEmpty()) {
-                    FoodsController.loadFood(table);
+                    FoodsModel.loadFood(table);
                     JOptionPane.showMessageDialog(null, " vui lòng điền id hoac name");
                 } else {
                     JOptionPane.showMessageDialog(null, "không tồn tại");
@@ -214,8 +250,6 @@ public class ManagerFood extends JPanel {
 
             }
         });
-        
-        FoodsController.loadFood(table);
         //add element
         this.add(this.btnfixFood);
         this.add(this.btndeleteFood);
@@ -225,6 +259,10 @@ public class ManagerFood extends JPanel {
         this.add(this.txtName);
         this.add(this.txtValue);
         this.add(this.lbltitle);
+        this.add(this.lblDescription);
+        this.add(this.txtDescription);
+        this.add(this.lblLinkImage);
+        this.add(this.txtLinkImage);
         this.add(this.btnSearch);
         this.add(this.txtSearch);
         this.add(scrollPane);
