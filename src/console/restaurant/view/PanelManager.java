@@ -38,7 +38,7 @@ public class PanelManager extends JFrame {
     public ManagerFood quanlymonan = new ManagerFood();
     public ManagerStatistic quanlythongke = new ManagerStatistic();
 
-    public  PanelManager() {
+    public PanelManager() {
         initComponents();
 
 //        danh mục bàn
@@ -60,14 +60,47 @@ public class PanelManager extends JFrame {
         bookList.setBounds(150, 440, 150, 40);
         panelBan.add(bookList);
         // Phân trang
+        
         JButton number = new JButton();
         number.setText("1");
         number.setBounds(450, 430, 50, 40);
+
         JButton next = new JButton();
         next.setText(">>");
         next.setBounds(515, 430, 50, 40);
+
+        JButton previous = new JButton();
+        previous.setText("<<");
+        previous.setBounds(385, 430, 50, 40);
+
+        next.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                System.out.println("called");
+                panelBan.page += 1;
+                panelBan.setVisible(false);
+                panelBan.setVisible(true);
+                number.setText(Integer.toString(panelBan.page));
+                panelBan.loadTable();
+                previous.setVisible(true);
+            }
+        });
+
+        previous.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                panelBan.page -= 1;
+                if(panelBan.page == 1){
+                    previous.setVisible(false);
+                }
+                panelBan.setVisible(false);
+                panelBan.setVisible(true);
+                number.setText(Integer.toString(panelBan.page));
+                panelBan.loadTable();
+            }
+        });
+
         panelBan.add(number);
         panelBan.add(next);
+        panelBan.add(previous);
 
 //      Thêm giao diện quản lý admin
         panel.add(this.quanlyadmin);
@@ -91,7 +124,7 @@ public class PanelManager extends JFrame {
         setLocationRelativeTo(null);
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-                
+
     }
 
     public void clockBan() {
@@ -144,11 +177,11 @@ public class PanelManager extends JFrame {
         btnLogOut = new javax.swing.JButton();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
-        jMenuItem1 = new javax.swing.JMenuItem();
-        jMenuItem2 = new javax.swing.JMenuItem();
-        jMenuItem3 = new javax.swing.JMenuItem();
-        jMenuItem4 = new javax.swing.JMenuItem();
-        jMenuItem5 = new javax.swing.JMenuItem();
+        menuDatBan = new javax.swing.JMenuItem();
+        menuAdmin = new javax.swing.JMenuItem();
+        menuBan = new javax.swing.JMenuItem();
+        menuMonAn = new javax.swing.JMenuItem();
+        menuThongKe = new javax.swing.JMenuItem();
         jMenu2 = new javax.swing.JMenu();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -335,30 +368,45 @@ public class PanelManager extends JFrame {
 
         jMenu1.setText("Quản Lý");
 
-        jMenuItem1.setText("Quản Lý Đặt Bàn");
-        jMenuItem1.addActionListener(new java.awt.event.ActionListener() {
+        menuDatBan.setText("Quản Lý Đặt Bàn");
+        menuDatBan.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuItem1ActionPerformed(evt);
+                menuDatBanActionPerformed(evt);
             }
         });
-        jMenu1.add(jMenuItem1);
+        jMenu1.add(menuDatBan);
 
-        jMenuItem2.setText("Quản Lý Admin");
-        jMenuItem2.addActionListener(new java.awt.event.ActionListener() {
+        menuAdmin.setText("Quản Lý Admin");
+        menuAdmin.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuItem2ActionPerformed(evt);
+                menuAdminActionPerformed(evt);
             }
         });
-        jMenu1.add(jMenuItem2);
+        jMenu1.add(menuAdmin);
 
-        jMenuItem3.setText("Quản Lý Bàn");
-        jMenu1.add(jMenuItem3);
+        menuBan.setText("Quản Lý Bàn");
+        menuBan.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                menuBanActionPerformed(evt);
+            }
+        });
+        jMenu1.add(menuBan);
 
-        jMenuItem4.setText("Quản Lý Món Ăn");
-        jMenu1.add(jMenuItem4);
+        menuMonAn.setText("Quản Lý Món Ăn");
+        menuMonAn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                menuMonAnActionPerformed(evt);
+            }
+        });
+        jMenu1.add(menuMonAn);
 
-        jMenuItem5.setText("Quản Lý Thông Kê");
-        jMenu1.add(jMenuItem5);
+        menuThongKe.setText("Quản Lý Thông Kê");
+        menuThongKe.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                menuThongKeActionPerformed(evt);
+            }
+        });
+        jMenu1.add(menuThongKe);
 
         jMenuBar1.add(jMenu1);
 
@@ -384,111 +432,85 @@ public class PanelManager extends JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnDatBanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDatBanActionPerformed
-        btnDatBan.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                panelBan.setVisible(true);
+//        Bắt sự kiện button đặt bàn        
+        panelBan.setVisible(true);
 //                monan.setVisible(false);
-                quanlyadmin.setVisible(false);
-                quanlyban.setVisible(false);
-                quanlymonan.setVisible(false);
-                quanlythongke.setVisible(false);
+        quanlyadmin.setVisible(false);
+        quanlyban.setVisible(false);
+        quanlymonan.setVisible(false);
+        quanlythongke.setVisible(false);
 
-                btnDatBan.setBackground(new Color(176, 183, 159));
-                btnAdmin.setBackground(Color.white);
-                btnBan.setBackground(Color.white);
-                btnMonan.setBackground(Color.white);
-                btnThongke.setBackground(Color.white);
-                if(panelBan.getKk()==1){
-                    setVisible(false);
-                }
-                        
-            }
-        });
+        btnDatBan.setBackground(new Color(74, 135, 178));
+        btnAdmin.setBackground(Color.white);
+        btnBan.setBackground(Color.white);
+        btnMonan.setBackground(Color.white);
+        btnThongke.setBackground(Color.white);
     }//GEN-LAST:event_btnDatBanActionPerformed
 
     private void btnAdminActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAdminActionPerformed
-        btnAdmin.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                quanlyadmin.setVisible(true);
+        //        Bắt sự kiện quản lý admin
+        quanlyadmin.setVisible(true);
 
-                panelBan.setVisible(false);
-                quanlyban.setVisible(false);
-                quanlymonan.setVisible(false);
-                quanlythongke.setVisible(false);
+        panelBan.setVisible(false);
+        quanlyban.setVisible(false);
+        quanlymonan.setVisible(false);
+        quanlythongke.setVisible(false);
 
-                btnDatBan.setBackground(Color.white);
-                btnAdmin.setBackground(new Color(176, 183, 159));
-                btnBan.setBackground(Color.white);
-                btnMonan.setBackground(Color.white);
-                btnThongke.setBackground(Color.white);
-
-            }
-        });
+        btnDatBan.setBackground(Color.white);
+        btnAdmin.setBackground(new Color(74, 135, 178));
+        btnBan.setBackground(Color.white);
+        btnMonan.setBackground(Color.white);
+        btnThongke.setBackground(Color.white);
     }//GEN-LAST:event_btnAdminActionPerformed
 
     private void btnThongkeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnThongkeActionPerformed
         // TODO add your handling code here:
+        //       Bắt sự kiện quản lý thống kê
+        quanlythongke.setVisible(true);
+        quanlymonan.setVisible(false);
+        quanlyadmin.setVisible(false);
+        quanlyban.setVisible(false);
 
-        btnThongke.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                quanlythongke.setVisible(true);
-                quanlymonan.setVisible(false);
-                quanlyadmin.setVisible(false);
-                quanlyban.setVisible(false);
+        btnDatBan.setBackground(Color.white);
+        btnAdmin.setBackground(Color.white);
+        btnBan.setBackground(Color.white);
+        btnMonan.setBackground(Color.white);
+        btnThongke.setBackground(new Color(74, 135, 178));
 
-                btnDatBan.setBackground(Color.white);
-                btnAdmin.setBackground(Color.white);
-                btnBan.setBackground(Color.white);
-                btnMonan.setBackground(Color.white);
-                btnThongke.setBackground(new Color(176, 183, 159));
-            }
-        });
     }//GEN-LAST:event_btnThongkeActionPerformed
 
     private void btnMonanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMonanActionPerformed
         // TODO add your handling code here:
-        btnMonan.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                quanlymonan.setVisible(true);
+        //        Bắt sự kiện quản lý món ăn
+        quanlymonan.setVisible(true);
 
-                quanlyadmin.setVisible(false);
-                quanlyban.setVisible(false);
-                panelBan.setVisible(false);
-                quanlythongke.setVisible(false);
-                quanlyban.setVisible(false);
+        quanlyadmin.setVisible(false);
+        quanlyban.setVisible(false);
+        panelBan.setVisible(false);
+        quanlythongke.setVisible(false);
+        quanlyban.setVisible(false);
 
-                btnDatBan.setBackground(Color.white);
-                btnAdmin.setBackground(Color.white);
-                btnBan.setBackground(Color.white);
-                btnMonan.setBackground(new Color(176, 183, 159));
-                btnThongke.setBackground(Color.white);
-
-            }
-        });
+        btnDatBan.setBackground(Color.white);
+        btnAdmin.setBackground(Color.white);
+        btnBan.setBackground(Color.white);
+        btnMonan.setBackground(new Color(74, 135, 178));
+        btnThongke.setBackground(Color.white);
     }//GEN-LAST:event_btnMonanActionPerformed
 
     private void btnBanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBanActionPerformed
         // TODO add your handling code here:
-        btnBan.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                quanlyban.setVisible(true);
-                quanlyadmin.setVisible(false);
-                quanlythongke.setVisible(false);
-                panelBan.setVisible(false);
-                quanlymonan.setVisible(false);
+        //        Bắt sự kiện quản lý đặt bàn
+        quanlyban.setVisible(true);
+        quanlyadmin.setVisible(false);
+        quanlythongke.setVisible(false);
+        panelBan.setVisible(false);
+        quanlymonan.setVisible(false);
 
-                btnDatBan.setBackground(Color.white);
-                btnAdmin.setBackground(Color.white);
-                btnBan.setBackground(new Color(176, 183, 159));
-                btnMonan.setBackground(Color.white);
-                btnThongke.setBackground(Color.white);
-            }
-        });
+        btnDatBan.setBackground(Color.white);
+        btnAdmin.setBackground(Color.white);
+        btnBan.setBackground(new Color(74, 135, 178));
+        btnMonan.setBackground(Color.white);
+        btnThongke.setBackground(Color.white);
 
     }//GEN-LAST:event_btnBanActionPerformed
 
@@ -499,21 +521,38 @@ public class PanelManager extends JFrame {
 
     }//GEN-LAST:event_jButton2ActionPerformed
 
-    private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
+    private void menuDatBanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuDatBanActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jMenuItem1ActionPerformed
+        panelBan.setVisible(true);
+//                monan.setVisible(false);
+        quanlyadmin.setVisible(false);
+        quanlyban.setVisible(false);
+        quanlymonan.setVisible(false);
+        quanlythongke.setVisible(false);
 
-    private void jMenuItem2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem2ActionPerformed
+        btnDatBan.setBackground(new Color(74, 135, 178));
+        btnAdmin.setBackground(Color.white);
+        btnBan.setBackground(Color.white);
+        btnMonan.setBackground(Color.white);
+        btnThongke.setBackground(Color.white);
+    }//GEN-LAST:event_menuDatBanActionPerformed
+
+    private void menuAdminActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuAdminActionPerformed
         // TODO add your handling code here:
-        jMenuItem2.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                ManagerAdmin quanlyadmin = new ManagerAdmin();
-                quanlyadmin.setVisible(true);
-            }
-        });
+        quanlyadmin.setVisible(true);
 
-    }//GEN-LAST:event_jMenuItem2ActionPerformed
+        panelBan.setVisible(false);
+        quanlyban.setVisible(false);
+        quanlymonan.setVisible(false);
+        quanlythongke.setVisible(false);
+
+        btnDatBan.setBackground(Color.white);
+        btnAdmin.setBackground(new Color(74, 135, 178));
+        btnBan.setBackground(Color.white);
+        btnMonan.setBackground(Color.white);
+        btnThongke.setBackground(Color.white);
+
+    }//GEN-LAST:event_menuAdminActionPerformed
 
     private void btnLogOutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLogOutActionPerformed
         // TODO add your handling code here:
@@ -529,6 +568,68 @@ public class PanelManager extends JFrame {
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
         System.exit(0);
     }//GEN-LAST:event_jButton3ActionPerformed
+
+    private void menuMonAnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuMonAnActionPerformed
+        // TODO add your handling code here:
+        menuMonAn.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                quanlymonan.setVisible(true);
+
+                quanlyadmin.setVisible(false);
+                quanlyban.setVisible(false);
+                panelBan.setVisible(false);
+                quanlythongke.setVisible(false);
+                quanlyban.setVisible(false);
+
+                btnDatBan.setBackground(Color.white);
+                btnAdmin.setBackground(Color.white);
+                btnBan.setBackground(Color.white);
+                btnMonan.setBackground(new Color(74, 135, 178));
+                btnThongke.setBackground(Color.white);
+
+            }
+        });
+    }//GEN-LAST:event_menuMonAnActionPerformed
+
+    private void menuThongKeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuThongKeActionPerformed
+        // TODO add your handling code here:
+        menuThongKe.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                quanlythongke.setVisible(true);
+                quanlymonan.setVisible(false);
+                quanlyadmin.setVisible(false);
+                quanlyban.setVisible(false);
+
+                btnDatBan.setBackground(Color.white);
+                btnAdmin.setBackground(Color.white);
+                btnBan.setBackground(Color.white);
+                btnMonan.setBackground(Color.white);
+                btnThongke.setBackground(new Color(74, 135, 178));
+            }
+        });
+    }//GEN-LAST:event_menuThongKeActionPerformed
+
+    private void menuBanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuBanActionPerformed
+        // TODO add your handling code here:
+        menuBan.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                quanlyban.setVisible(true);
+                quanlyadmin.setVisible(false);
+                quanlythongke.setVisible(false);
+                panelBan.setVisible(false);
+                quanlymonan.setVisible(false);
+
+                btnDatBan.setBackground(Color.white);
+                btnAdmin.setBackground(Color.white);
+                btnBan.setBackground(new Color(74, 135, 178));
+                btnMonan.setBackground(Color.white);
+                btnThongke.setBackground(Color.white);
+            }
+        });
+    }//GEN-LAST:event_menuBanActionPerformed
 
     /**
      * @param args the command line arguments
@@ -611,13 +712,13 @@ public class PanelManager extends JFrame {
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenu jMenu2;
     private javax.swing.JMenuBar jMenuBar1;
-    private javax.swing.JMenuItem jMenuItem1;
-    private javax.swing.JMenuItem jMenuItem2;
-    private javax.swing.JMenuItem jMenuItem3;
-    private javax.swing.JMenuItem jMenuItem4;
-    private javax.swing.JMenuItem jMenuItem5;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JTextField jTextField1;
+    private javax.swing.JMenuItem menuAdmin;
+    private javax.swing.JMenuItem menuBan;
+    private javax.swing.JMenuItem menuDatBan;
+    private javax.swing.JMenuItem menuMonAn;
+    private javax.swing.JMenuItem menuThongKe;
     private javax.swing.JPanel panel;
     private javax.swing.JLabel time;
     // End of variables declaration//GEN-END:variables
