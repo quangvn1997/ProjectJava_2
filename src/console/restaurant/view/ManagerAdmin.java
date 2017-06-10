@@ -41,6 +41,7 @@ public class ManagerAdmin extends JPanel {
     private JButton suaAdmin;
     private JButton xoaAdmin;
     private JButton btnSearch;
+    private JButton brnReset;
     private JTextField txtSearch;
     private JLabel lblAcount;
     private JLabel lblPassword;
@@ -88,7 +89,7 @@ public class ManagerAdmin extends JPanel {
         this.lblName = new JLabel("Họ và tên :");
         this.lblName.setBounds(400, 400, 100, 34);
         this.txtName = new JTextField();
-        this.txtName.setBounds(480, 400, 200, 34);
+        this.txtName.setBounds(510, 400, 200, 34);
         this.lblName.setFont(new Font("Serif", Font.PLAIN, 18));
         this.txtName.setFont(new Font("Serif", Font.PLAIN, 18));
 
@@ -107,6 +108,10 @@ public class ManagerAdmin extends JPanel {
         this.xoaAdmin.setText("Xóa");
         this.xoaAdmin.setBounds(680, 450, 120, 34);
         this.xoaAdmin.setFont(new Font("Serif", Font.PLAIN, 18));
+        //button reset
+        this.brnReset = new JButton("Reset");
+        this.brnReset.setBounds(680, 60, 100, 34);
+        this.brnReset.setFont(new Font("Serif", Font.PLAIN, 18));
         // Table        
         String[] columnNames = {"ID", "Họ và tên", "Tài khoản", "Mật khẩu", "Ngày tạo"};
         Object[][] data = {};
@@ -174,19 +179,19 @@ public class ManagerAdmin extends JPanel {
             @Override
             public void actionPerformed(ActionEvent e) {
                 if (txtName.getText().isEmpty()) {
-                    JOptionPane.showMessageDialog(null, "Vui lòng điền họ và tên !","Báo lỗi",JOptionPane.INFORMATION_MESSAGE);
+                    JOptionPane.showMessageDialog(null, "Vui lòng điền họ và tên !", "Báo lỗi", JOptionPane.INFORMATION_MESSAGE);
                     return;
                 }
                 if (txtAcount.getText().isEmpty()) {
-                    JOptionPane.showMessageDialog(null, "Vui lòng điền tài khoản !","Báo lỗi",JOptionPane.INFORMATION_MESSAGE);
+                    JOptionPane.showMessageDialog(null, "Vui lòng điền tài khoản !", "Báo lỗi", JOptionPane.INFORMATION_MESSAGE);
                     return;
                 }
                 if (new String(txtPassword.getPassword()).isEmpty()) {
-                    JOptionPane.showMessageDialog(null, "Vui lòng điền mật khẩu !","Báo lỗi",JOptionPane.INFORMATION_MESSAGE);
+                    JOptionPane.showMessageDialog(null, "Vui lòng điền mật khẩu !", "Báo lỗi", JOptionPane.INFORMATION_MESSAGE);
                     return;
                 }
                 if (ValidateUtilities.checkExistanceAdmin(txtAcount.getText())) {
-                    JOptionPane.showMessageDialog(null, "Tên tài khoản đã tồn tại !","Báo lỗi",JOptionPane.INFORMATION_MESSAGE);
+                    JOptionPane.showMessageDialog(null, "Tên tài khoản đã tồn tại !", "Báo lỗi", JOptionPane.INFORMATION_MESSAGE);
                     return;
                 }
                 Admin admin = new Admin();
@@ -210,15 +215,15 @@ public class ManagerAdmin extends JPanel {
                     admin.setId(Integer.valueOf(checkid));
                 }
                 if (txtAcount.getText().isEmpty()) {
-                    JOptionPane.showMessageDialog(null, "Vui lòng điền tài khoản !","Báo lỗi",JOptionPane.INFORMATION_MESSAGE);
+                    JOptionPane.showMessageDialog(null, "Vui lòng điền tài khoản !", "Báo lỗi", JOptionPane.INFORMATION_MESSAGE);
                     return;
                 }
                 if (new String(txtPassword.getPassword()).isEmpty()) {
-                    JOptionPane.showMessageDialog(null, "Vui lòng điền mật khẩu !","Báo lỗi",JOptionPane.INFORMATION_MESSAGE);
+                    JOptionPane.showMessageDialog(null, "Vui lòng điền mật khẩu !", "Báo lỗi", JOptionPane.INFORMATION_MESSAGE);
                     return;
                 }
                 if (ValidateUtilities.checkExistanceAdmin(txtAcount.getText()) && !txtAcount.getText().equals(tblModel.getValueAt(row, 1).toString())) {
-                    JOptionPane.showMessageDialog(null, "Tên tài khoản đã tồn tại ! Vui lòng chọn tên khác.","Báo lỗi",JOptionPane.INFORMATION_MESSAGE);
+                    JOptionPane.showMessageDialog(null, "Tên tài khoản đã tồn tại ! Vui lòng chọn tên khác.", "Báo lỗi", JOptionPane.INFORMATION_MESSAGE);
                     return;
                 }
                 admin.setUsername(txtAcount.getText());
@@ -239,6 +244,8 @@ public class ManagerAdmin extends JPanel {
                     AdminsModel.loadAdminsSearch(table, AdminsController.searchAdmin(txtSearch.getText(), 2));
                 } else if (txtSearch.getText().matches("^-?\\d+$")) {
                     AdminsModel.loadAdminsSearch(table, AdminsController.searchAdmin(txtSearch.getText(), 1));
+                } else if (txtSearch.getText().matches("/w")) {
+                    AdminsModel.loadAdminsSearch(table, AdminsController.searchAdmin(txtSearch.getText(), 3));
                 } else if (txtSearch.getText().isEmpty()) {
                     AdminsController.loadAdmins(table);
                     JOptionPane.showMessageDialog(null, " vui lòng điền id hoac name");
@@ -249,8 +256,19 @@ public class ManagerAdmin extends JPanel {
 
             }
         });
+        this.brnReset.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                txtSearch.setText("");
+                txtAcount.setText("");
+                txtPassword.setText("");
+                txtName.setText("");
+                AdminsController.loadAdmins(table);
+            }
+        });
         AdminsController.loadAdmins(table);
         //add element
+        this.add(this.brnReset);
         this.add(this.xoaAdmin);
         this.add(this.suaAdmin);
         this.add(this.taomoiAdmin);
