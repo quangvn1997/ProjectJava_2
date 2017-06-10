@@ -13,9 +13,18 @@ public class Admin {
     private int id;
     private String username;
     private String password;
+    private String name;
     private String createdAt;
     private String updateAt;
     private int status;
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
 
     public String getCreatedAt() {
         return createdAt;

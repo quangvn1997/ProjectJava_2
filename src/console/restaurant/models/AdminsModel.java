@@ -24,10 +24,11 @@ public class AdminsModel {
 
     public static void update(Admin admin) {
         try {
-            PreparedStatement pstmt = DAO.getConnection().prepareStatement("UPDATE admins SET username=?,password=?,updated_at=NOW() WHERE id = ?");
-            pstmt.setString(1, admin.getUsername());
-            pstmt.setString(2, admin.getPassword());
-            pstmt.setString(3, String.valueOf(admin.getId()));
+            PreparedStatement pstmt = DAO.getConnection().prepareStatement("UPDATE admins SET name=?,username=?,password=?,updated_at=NOW() WHERE id = ?");
+            pstmt.setString(1, admin.getName());
+            pstmt.setString(2, admin.getUsername());
+            pstmt.setString(3, admin.getPassword());
+            pstmt.setString(4, String.valueOf(admin.getId()));
             int a = pstmt.executeUpdate();
             if (a > 0) {
                 System.out.println("sua thanh cong");
@@ -40,10 +41,12 @@ public class AdminsModel {
     public static void insertAdmin(Admin admin) {
         try {
             PreparedStatement pstmt = DAO.getConnection().prepareStatement(""
-                    + "Insert into admins(username,password"
-                    + ") values(?,?)");
-            pstmt.setString(1, admin.getUsername());
-            pstmt.setString(2, admin.getPassword());
+                    + "Insert into admins(name,username,password,created_at"
+                    + ") values(?,?,?,?)");
+            pstmt.setString(1, admin.getName());
+            pstmt.setString(2, admin.getUsername());
+            pstmt.setString(3, admin.getPassword());
+            pstmt.setDate(4, new java.sql.Date(new java.util.Date().getTime()));
             int a = pstmt.executeUpdate();
             if (a > 0) {
                 System.out.println("them thanh cong");
@@ -63,6 +66,7 @@ public class AdminsModel {
             while (rs.next()) {
                 Admin admin = new Admin();
                 admin.setId(Integer.valueOf(rs.getString("id")));
+                admin.setName(rs.getString("name"));
                 admin.setUsername(rs.getString("username"));
                 admin.setPassword(rs.getString("password"));
                 admin.setCreatedAt(rs.getString("created_at"));
@@ -90,7 +94,7 @@ public class AdminsModel {
         DefaultTableModel model = (DefaultTableModel) table.getModel();
         model.setRowCount(0);
         listAdmin.forEach((admin) -> {
-            model.addRow(new Object[]{String.valueOf(admin.getId()),admin.getUsername(),admin.getPassword(),admin.getCreatedAt()});
+            model.addRow(new Object[]{String.valueOf(admin.getId()),admin.getName(),admin.getUsername(),admin.getPassword(),admin.getCreatedAt()});
         });
     }
 }

@@ -503,8 +503,7 @@ public class ManagerPayment extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnReturnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnReturnActionPerformed
-        // TODO add your handling code here:
-//        jPanel1.setVisible(false);
+        // jPanel1.setVisible(false);
         this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
         this.setVisible(false);
         PanelManager quanly = new PanelManager();
