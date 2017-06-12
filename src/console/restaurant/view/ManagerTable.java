@@ -23,13 +23,14 @@ import console.restaurant.models.TableModel;
 import console.restaurant.entities.Table;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import javax.swing.JComboBox;
 
 /**
  *
  * @author Anh Tiến ơi.Có Trộm!
  */
 public class ManagerTable extends JPanel {
-    
+
     private JLabel title;
     private JButton btnnewTb;
     private JButton btnupdateTb;
@@ -39,19 +40,21 @@ public class ManagerTable extends JPanel {
     private JLabel lblAddTable;
     private JLabel lblStatus;
     private JTextField txtAddTable;
-    private JTextField txtStatus;
+    private JComboBox txtStatus;
     private JTable table;
     private DefaultTableModel model1aTable;
     private JScrollPane scrollPane;
-    
+    private JLabel lblNameTable;
+    private JTextField txtNameTable;
+
     ;
 
     public ManagerTable() {
-        
+
         this.setBackground(new Color(250, 250, 250));
         this.setBounds(300, 90, 1000, 520);
         this.setBorder(BorderFactory.createLineBorder(Color.BLACK));
-        
+
         this.title = new JLabel();
         this.title.setText("QUẢN LÝ Bàn");
         this.title.setBounds(360, 0, 280, 70);
@@ -64,19 +67,27 @@ public class ManagerTable extends JPanel {
         this.txtSearch.setBounds(50, 60, 500, 34);
         this.txtSearch.setFont(new Font("Serif", Font.PLAIN, 18));
         //Bàn và trạng thái
-        this.lblAddTable = new JLabel("Số bàn thêm mới");
-        this.lblAddTable.setBounds(50, 400, 100, 34);
+        this.lblAddTable = new JLabel("Số bàn");
+        this.lblAddTable.setBounds(50, 350, 100, 34);
+        this.txtAddTable = new JTextField();
+        this.txtAddTable.setBounds(160, 350, 200, 34);
+
+        this.lblNameTable = new JLabel("Tên bàn");
+        this.lblNameTable.setBounds(50, 400, 100, 34);
+        this.txtNameTable = new JTextField();
+        this.txtNameTable.setBounds(160, 400, 200, 34);
         this.lblStatus = new JLabel("Trạng thái");
         this.lblStatus.setBounds(50, 450, 100, 34);
-        this.txtAddTable = new JTextField();
-        this.txtAddTable.setBounds(160, 400, 200, 34);
-        this.txtStatus = new JTextField();
+
+        String[] languages = new String[]{"Sẵn sàng", "Đã hỏng"};
+        this.txtStatus = new JComboBox<String>(languages);
         this.txtStatus.setBounds(160, 450, 200, 34);
+        this.lblNameTable.setFont(new Font("Serif", Font.PLAIN, 18));
+        this.txtNameTable.setFont(new Font("Serif", Font.PLAIN, 18));
         this.lblAddTable.setFont(new Font("Serif", Font.PLAIN, 18));
         this.lblStatus.setFont(new Font("Serif", Font.PLAIN, 18));
         this.txtAddTable.setFont(new Font("Serif", Font.PLAIN, 18));
         this.txtStatus.setFont(new Font("Serif", Font.PLAIN, 18));
-
         // Button tạo mới bàn
         this.btnnewTb = new JButton();
         this.btnnewTb.setText("Thêm");
@@ -88,26 +99,26 @@ public class ManagerTable extends JPanel {
             @Override
             public void actionPerformed(ActionEvent e) {
                 int a = Integer.parseInt(txtAddTable.getText());
-                
+
                 TableModel tablemodel = new TableModel();
-                
+
                 int id_max = tablemodel.getTableMax();
-                                
+
                 Table[] tables = new Table[a];
-                
+
                 for (int i = 0; i < a; i++) {
                     tables[i] = new Table();
-                    tables[i].setName("Bàn "+(i+1+id_max));
-                    tables[i].setId(i+1+id_max);
+                    tables[i].setName("Bàn " + (i + 1 + id_max));
+                    tables[i].setId(i + 1 + id_max);
                 }
-                
+
                 tablemodel.insertTable(tables);
-                
+
             }
         });
 
         // Button sửa bàn
-        this.btnupdateTb= new JButton();
+        this.btnupdateTb = new JButton();
         this.btnupdateTb.setText("Cập nhật");
         this.btnupdateTb.setBounds(380, 450, 120, 34);
         this.btnupdateTb.setFont(new Font("Serif", Font.PLAIN, 18));
@@ -117,8 +128,8 @@ public class ManagerTable extends JPanel {
         this.btndeleteTb.setBounds(700, 60, 120, 34);
         this.btndeleteTb.setFont(new Font("Serif", Font.PLAIN, 18));
         // Table        
-        String[] columnNames = {"ID", "tên bàn", "trạng thái"};
-        Object[][] data = {};
+        String[] columnNames = {"ID", "Tên bàn", "Trạng thái", "Ngày tạo"};
+        Object[][] data = {{"1", "tên bàn", "2"}};
         this.model1aTable = new DefaultTableModel(data, columnNames);
         this.table = new JTable(model1aTable);
         this.table.setFont(new Font("Serif", Font.PLAIN, 20));
@@ -128,11 +139,12 @@ public class ManagerTable extends JPanel {
         this.table.getColumnModel().getColumn(0).setPreferredWidth(100);
         this.table.getColumnModel().getColumn(1).setPreferredWidth(264);
         this.table.getColumnModel().getColumn(2).setPreferredWidth(264);
+        this.table.getColumnModel().getColumn(3).setPreferredWidth(264);
         this.table.setRowHeight(24);
         this.table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         //Hiển thị kích thước bảng
         this.scrollPane = new JScrollPane(table);
-        this.scrollPane.setBounds(50, 100, 900, 280);
+        this.scrollPane.setBounds(50, 100, 900, 240);
         //them su kien
         //table action
         javax.swing.table.TableModel tblModel = table.getModel();
@@ -145,14 +157,20 @@ public class ManagerTable extends JPanel {
                         SessionAdmin.setStrToAction(txtAddTable.getText());
                         javax.swing.table.TableModel tblModel = table.getModel();
                         String checkName = tblModel.getValueAt(row, 1).toString();
-                        String pass = tblModel.getValueAt(row, 2).toString();
+                        String status = tblModel.getValueAt(row, 2).toString();
                         // thêm vào textField
-                        txtAddTable.setText(checkName);
-                        txtStatus.setText(pass);
+                        txtNameTable.setText(checkName);
+                        if (status.contains("1")) {
+                            txtStatus.setSelectedIndex(0);
+                        } else {
+                            txtStatus.setSelectedIndex(1);
+                        }
+
                     }
                 }
             }
         });
+        this.add(this.txtStatus);
         this.add(this.btndeleteTb);
         this.add(this.btnupdateTb);
         this.add(this.btnnewTb);
@@ -160,13 +178,15 @@ public class ManagerTable extends JPanel {
         this.add(this.lblStatus);
         this.add(this.txtAddTable);
         this.add(this.txtStatus);
+        this.add(this.lblNameTable);
+        this.add(this.txtNameTable);
         this.add(this.title);
         this.add(this.btnSearch);
         this.add(this.txtSearch);
         this.add(scrollPane);
         this.setLayout(null);
         this.setVisible(false);
-        
+
     }
-    
+
 }
