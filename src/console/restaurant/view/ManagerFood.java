@@ -19,6 +19,10 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import static javax.print.attribute.Size2DSyntax.MM;
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JLabel;
@@ -45,6 +49,7 @@ public class ManagerFood extends JPanel {
     private JButton btnfixFood;
     private JButton btndeleteFood;
     private JButton btnSearch;
+    private JButton btnNhaplai;
     private JTextField txtSearch;
     private JLabel lblName;
     private JLabel lblValue;
@@ -106,29 +111,42 @@ public class ManagerFood extends JPanel {
         this.txtName.setFont(new Font("Serif", Font.PLAIN, 18));
         this.txtValue.setFont(new Font("Serif", Font.PLAIN, 18));
 
-        // Button tạo mới admin
+        // Button tạo mới food
         this.btncreateFood = new JButton();
         this.btncreateFood.setText("Tạo mới");
         this.btncreateFood.setBounds(410, 470, 120, 34);
         this.btncreateFood.setFont(new Font("Serif", Font.PLAIN, 18));
-        // Button sửa admin
+        // Button sửa food
         this.btnfixFood = new JButton();
         this.btnfixFood.setText("Cập nhật");
         this.btnfixFood.setBounds(560, 470, 120, 34);
         this.btnfixFood.setFont(new Font("Serif", Font.PLAIN, 18));
-        // Button xóa admin
+        // Button nhập lại
+        this.btnNhaplai = new JButton("Nhập lại");
+        this.btnNhaplai.setBounds(680, 60, 100, 34);
+        this.btnNhaplai.setFont(new Font("Serif", Font.PLAIN, 18));
+        // Button xóa food
         this.btndeleteFood = new JButton();
         this.btndeleteFood.setText("Xóa");
         this.btndeleteFood.setBounds(700, 470, 120, 34);
         this.btndeleteFood.setFont(new Font("Serif", Font.PLAIN, 18));
         // Table        
-        String[] columnNames = {"ID", "tên món", "giá", "Link ảnh", "miêu tả", "Ngày tạo"};
-        Object[][] data = {{"1", "ga", "100", "123.jpg", "gà đông tảo", "22-10-2012"}};
+        String[] columnNames = {"ID", "tên món", "giá", "Link ảnh", "miêu tả", "Ngày tạo", "Ngày cập nhật"};
+        Object[][] data = {};
         this.model1aTable = new DefaultTableModel(data, columnNames);
         this.table = new JTable(model1aTable);
         this.table.setFont(new Font("Serif", Font.PLAIN, 20));
         //chinh mau title column
         this.table.getTableHeader().setFont(new Font("Serif", Font.BOLD, 20));
+        //chinh with column
+        this.table.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
+        this.table.getColumnModel().getColumn(0).setPreferredWidth(100);
+        this.table.getColumnModel().getColumn(1).setPreferredWidth(100);
+        this.table.getColumnModel().getColumn(2).setPreferredWidth(100);
+        this.table.getColumnModel().getColumn(3).setPreferredWidth(100);
+        this.table.getColumnModel().getColumn(4).setPreferredWidth(200);
+        this.table.getColumnModel().getColumn(5).setPreferredWidth(150);
+        this.table.getColumnModel().getColumn(6).setPreferredWidth(150);
         this.table.setRowHeight(24);
         this.table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         //Hiển thị kích thước bảng
@@ -147,9 +165,13 @@ public class ManagerFood extends JPanel {
                         TableModel tblModel = table.getModel();
                         String checkName = tblModel.getValueAt(row, 1).toString();
                         String value = tblModel.getValueAt(row, 2).toString();
+                        String img = tblModel.getValueAt(row, 3).toString();
+                        String descr = tblModel.getValueAt(row, 4).toString();
                         // thêm vào textField
                         txtName.setText(checkName);
                         txtValue.setText(value);
+                        txtLinkImage.setText(img);
+                        txtDescription.setText(descr);
                     }
                 }
             }
@@ -167,6 +189,10 @@ public class ManagerFood extends JPanel {
                     if (n == JOptionPane.YES_OPTION) {
                         FoodsModel.deleteFood(tblModel.getValueAt(row, 0).toString());
                         JOptionPane.showMessageDialog(null, "The record has been deleted successfully.");
+                        txtName.setText("");
+                        txtValue.setText("");
+                        txtLinkImage.setText("");
+                        txtDescription.setText("");
                         FoodsController.loadFood(table);
                     }
                 }
@@ -180,7 +206,7 @@ public class ManagerFood extends JPanel {
                     JOptionPane.showMessageDialog(null, "Vui lòng điền tên dịch vụ !", "Báo lỗi", JOptionPane.INFORMATION_MESSAGE);
                     return;
                 }
-                if (new String(txtValue.getText()).isEmpty()) {
+                if (new String(txtValue.getText()).isEmpty() && ValidateUtilities.validateNumberUpdate(new String(txtValue.getText()))) {
                     JOptionPane.showMessageDialog(null, "Vui lòng điền giá dịch vụ !", "Báo lỗi", JOptionPane.INFORMATION_MESSAGE);
                     return;
                 }
@@ -203,8 +229,14 @@ public class ManagerFood extends JPanel {
                 Food food = new Food();
                 food.setName(txtName.getText());
                 food.setUnitPrice(Float.valueOf(txtValue.getText()));
+                food.setImgUrl(txtLinkImage.getText());
+                food.setDescription(txtDescription.getText());
                 FoodsModel.insertFood(food);
                 FoodsController.loadFood(table);
+                txtName.setText("");
+                txtValue.setText("");
+                txtLinkImage.setText("");
+                txtDescription.setText("");
             }
         });
         this.btnfixFood.addActionListener(new ActionListener() {
@@ -221,7 +253,7 @@ public class ManagerFood extends JPanel {
                     return;
                 }
                 if (new String(txtValue.getText()).isEmpty()) {
-                    JOptionPane.showMessageDialog(null, "vui lòng điền.");
+                    JOptionPane.showMessageDialog(null, "vui lòng điền số.");
                     return;
                 }
                 if (ValidateUtilities.checkExistanceAdmin(txtName.getText()) && !txtName.getText().equals(tblModel.getValueAt(row, 1).toString())) {
@@ -230,6 +262,9 @@ public class ManagerFood extends JPanel {
                 }
                 food.setName(txtName.getText());
                 food.setUnitPrice(Float.valueOf(txtValue.getText()));
+                txtLinkImage.getText();
+                food.setImgUrl(txtLinkImage.getText());
+                food.setDescription(txtDescription.getText());
                 FoodsModel.update(food);
                 FoodsController.loadFood(table);
 
@@ -251,6 +286,18 @@ public class ManagerFood extends JPanel {
 
             }
         });
+        this.btnNhaplai.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent ae) {
+                txtSearch.setText("");
+                txtName.setText("");
+                txtValue.setText("");
+                txtLinkImage.setText("");
+                txtDescription.setText("");
+                FoodsController.loadFood(table);
+            }
+        });
+        FoodsController.loadFood(table);
         //add element
         this.add(this.btnfixFood);
         this.add(this.btndeleteFood);
@@ -266,6 +313,7 @@ public class ManagerFood extends JPanel {
         this.add(this.txtLinkImage);
         this.add(this.btnSearch);
         this.add(this.txtSearch);
+        this.add(this.btnNhaplai);
         this.add(scrollPane);
         this.setLayout(null);
         this.setVisible(false);

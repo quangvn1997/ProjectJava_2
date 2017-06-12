@@ -24,8 +24,9 @@ public class FoodsController {
         DefaultTableModel model = (DefaultTableModel) table.getModel();
         model.setRowCount(0);
         List<Food> listFood = FoodsModel.getAllFood();
+        
         listFood.forEach((food) -> {
-            model.addRow(new Object[]{String.valueOf(food.getId()),food.getName(),food.getUnitPrice(),food.getCreatedAt()});
+            model.addRow(new Object[]{String.valueOf(food.getId()), food.getName(), food.getUnitPrice(), food.getImgUrl(), food.getDescription(), food.getCreatedAt(), food.getUpdateAt()});
         });
     }
     public static List<Food> searchFood(String keyword, int option) {
@@ -52,8 +53,9 @@ public class FoodsController {
                 Food food = new Food();
                 food.setId(Integer.valueOf(rs.getString("id")));
                 food.setName(rs.getString("name"));
-                food.setUnitPrice(rs.getFloat("unitPrice"));
-                food.setCreatedAt(rs.getString("createdAt"));
+                food.setImgUrl(rs.getString("img_url"));
+                food.setUnitPrice(rs.getFloat("unit_price"));
+                food.setCreatedAt(rs.getString("created_at"));
                 foodList.add(food);
             }
         } catch (SQLException ex) {
