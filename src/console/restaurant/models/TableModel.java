@@ -102,16 +102,13 @@ public class TableModel {
             rs = DAO.getConnection().createStatement().executeQuery(strQuery);
             while (rs.next()) {
                 id_max = Integer.valueOf(rs.getString("id"));
-
                 break;
             }
         } catch (SQLException ex) {
             System.err.println("Có lỗi xảy ra! " + ex);
             return 0;
         }
-
         System.out.println(id_max);
-
         return id_max;
     }
 
