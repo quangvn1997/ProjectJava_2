@@ -31,7 +31,6 @@ public class ListTable extends javax.swing.JPanel {
     JButton[] listtrang = new JButton[sotrang];
     private TableModel model = new TableModel();
     private Map<String, JButton> dynamicButtons;
-
     public ListTable() {
         initComponents();
         loadTable();
@@ -67,6 +66,7 @@ public class ListTable extends javax.swing.JPanel {
                     if (e.getSource() instanceof JButton) {
                         ManagerPayment quanlythanhtoan = new ManagerPayment();
                         quanlythanhtoan.setVisible(true);
+                          
                     }
                 }
             });
