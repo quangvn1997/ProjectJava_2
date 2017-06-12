@@ -77,8 +77,8 @@ public class PanelManager extends JFrame {
             public void actionPerformed(ActionEvent e) {
                 System.out.println("called");
                 panelBan.page += 1;
-                panelBan.setVisible(false);
-                panelBan.setVisible(true);
+//                panelBan.setVisible(false);
+//                panelBan.setVisible(true);
                 number.setText(Integer.toString(panelBan.page));
                 panelBan.loadTable();
                 previous.setVisible(true);
@@ -91,8 +91,8 @@ public class PanelManager extends JFrame {
                 if(panelBan.page == 1){
                     previous.setVisible(false);
                 }
-                panelBan.setVisible(false);
-                panelBan.setVisible(true);
+//                panelBan.setVisible(false);
+//                panelBan.setVisible(true);
                 number.setText(Integer.toString(panelBan.page));
                 panelBan.loadTable();
             }
@@ -170,7 +170,6 @@ public class PanelManager extends JFrame {
         jLabel1 = new javax.swing.JLabel();
         date = new javax.swing.JLabel();
         time = new javax.swing.JLabel();
-        jButton2 = new javax.swing.JButton();
         jButton3 = new javax.swing.JButton();
         jLabel2 = new javax.swing.JLabel();
         jTextField1 = new javax.swing.JTextField();
@@ -198,6 +197,7 @@ public class PanelManager extends JFrame {
 
         btnDatBan.setBackground(new java.awt.Color(255, 255, 255));
         btnDatBan.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        btnDatBan.setIcon(new javax.swing.ImageIcon(getClass().getResource("/console/restaurant/Image/listban.jpg"))); // NOI18N
         btnDatBan.setText("Đặt Bàn");
         btnDatBan.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -207,6 +207,7 @@ public class PanelManager extends JFrame {
 
         btnAdmin.setBackground(new java.awt.Color(255, 255, 255));
         btnAdmin.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        btnAdmin.setIcon(new javax.swing.ImageIcon(getClass().getResource("/console/restaurant/Image/admin.jpg"))); // NOI18N
         btnAdmin.setText("Quản Lý Admin");
         btnAdmin.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -216,6 +217,7 @@ public class PanelManager extends JFrame {
 
         btnThongke.setBackground(new java.awt.Color(255, 255, 255));
         btnThongke.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        btnThongke.setIcon(new javax.swing.ImageIcon(getClass().getResource("/console/restaurant/Image/pay1.jpg"))); // NOI18N
         btnThongke.setText("Quản Lý Thống Kê");
         btnThongke.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -225,6 +227,7 @@ public class PanelManager extends JFrame {
 
         btnMonan.setBackground(new java.awt.Color(255, 255, 255));
         btnMonan.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        btnMonan.setIcon(new javax.swing.ImageIcon(getClass().getResource("/console/restaurant/Image/food.jpg"))); // NOI18N
         btnMonan.setText("Quản Lý Món Ăn");
         btnMonan.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -234,6 +237,7 @@ public class PanelManager extends JFrame {
 
         btnBan.setBackground(new java.awt.Color(255, 255, 255));
         btnBan.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        btnBan.setIcon(new javax.swing.ImageIcon(getClass().getResource("/console/restaurant/Image/table.jpg"))); // NOI18N
         btnBan.setText("Quản Lý Bàn");
         btnBan.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -247,27 +251,28 @@ public class PanelManager extends JFrame {
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(btnMonan, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(btnThongke, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(btnBan, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(btnAdmin, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(btnDatBan, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(btnDatBan, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(btnThongke, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap())
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap()
                 .addComponent(btnDatBan, javax.swing.GroupLayout.PREFERRED_SIZE, 107, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(13, 13, 13)
+                .addGap(16, 16, 16)
                 .addComponent(btnAdmin, javax.swing.GroupLayout.PREFERRED_SIZE, 105, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(btnBan, javax.swing.GroupLayout.PREFERRED_SIZE, 105, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(btnMonan, javax.swing.GroupLayout.PREFERRED_SIZE, 105, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(btnThongke, javax.swing.GroupLayout.PREFERRED_SIZE, 106, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addComponent(btnThongke, javax.swing.GroupLayout.DEFAULT_SIZE, 117, Short.MAX_VALUE)
+                .addGap(6, 6, 6))
         );
 
         jLabel1.setFont(new java.awt.Font("Cambria Math", 2, 48)); // NOI18N
@@ -277,15 +282,8 @@ public class PanelManager extends JFrame {
 
         time.setFont(new java.awt.Font("Tahoma", 0, 28)); // NOI18N
 
-        jButton2.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
-        jButton2.setText("Đặt Bàn");
-        jButton2.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton2ActionPerformed(evt);
-            }
-        });
-
         jButton3.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        jButton3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/console/restaurant/Image/exit.jpg"))); // NOI18N
         jButton3.setText("Thoát");
         jButton3.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -299,6 +297,7 @@ public class PanelManager extends JFrame {
         jTextField1.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
 
         btnLogOut.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        btnLogOut.setIcon(new javax.swing.ImageIcon(getClass().getResource("/console/restaurant/Image/login.jpg"))); // NOI18N
         btnLogOut.setText("Đăng Xuất");
         btnLogOut.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -311,13 +310,10 @@ public class PanelManager extends JFrame {
         panelLayout.setHorizontalGroup(
             panelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(panelLayout.createSequentialGroup()
-                .addGroup(panelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(panelLayout.createSequentialGroup()
-                        .addGap(352, 352, 352)
-                        .addComponent(jLabel2))
-                    .addGroup(panelLayout.createSequentialGroup()
-                        .addGap(31, 31, 31)
-                        .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGap(31, 31, 31)
+                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(105, 105, 105)
+                .addComponent(jLabel2)
                 .addGap(18, 18, 18)
                 .addGroup(panelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(panelLayout.createSequentialGroup()
@@ -329,16 +325,14 @@ public class PanelManager extends JFrame {
                             .addGroup(panelLayout.createSequentialGroup()
                                 .addGap(203, 203, 203)
                                 .addComponent(time, javax.swing.GroupLayout.PREFERRED_SIZE, 171, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addContainerGap(65, Short.MAX_VALUE))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelLayout.createSequentialGroup()
                         .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 143, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jButton2)
-                        .addGap(18, 18, 18)
                         .addComponent(btnLogOut)
                         .addGap(18, 18, 18)
-                        .addComponent(jButton3)
-                        .addGap(61, 61, 61))))
+                        .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 123, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(32, 32, 32))))
         );
         panelLayout.setVerticalGroup(
             panelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -349,21 +343,19 @@ public class PanelManager extends JFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(time, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(panelLayout.createSequentialGroup()
-                        .addGroup(panelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(panelLayout.createSequentialGroup()
-                                .addContainerGap()
-                                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 62, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(panelLayout.createSequentialGroup()
-                                .addGap(26, 26, 26)
-                                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addContainerGap()
+                        .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 62, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(549, 549, 549)
                         .addGroup(panelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(btnLogOut, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE))))
                 .addContainerGap(26, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelLayout.createSequentialGroup()
+                .addGap(0, 0, Short.MAX_VALUE)
+                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(62, 62, 62))
         );
 
         jMenu1.setText("Quản Lý");
@@ -513,13 +505,6 @@ public class PanelManager extends JFrame {
         btnThongke.setBackground(Color.white);
 
     }//GEN-LAST:event_btnBanActionPerformed
-
-    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        // TODO add your handling code here:
-//        System.exit(0);
-
-
-    }//GEN-LAST:event_jButton2ActionPerformed
 
     private void menuDatBanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuDatBanActionPerformed
         // TODO add your handling code here:
@@ -705,7 +690,6 @@ public class PanelManager extends JFrame {
     private javax.swing.JButton btnMonan;
     private javax.swing.JButton btnThongke;
     private javax.swing.JLabel date;
-    private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;

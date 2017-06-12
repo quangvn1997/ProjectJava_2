@@ -129,6 +129,7 @@ public class ManagerPayment extends javax.swing.JFrame {
         jLabel4.setText("Furious Food & Drink");
 
         btnReturn.setFont(new java.awt.Font("Arial", 1, 18)); // NOI18N
+        btnReturn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/console/restaurant/Image/return.jpg.png"))); // NOI18N
         btnReturn.setText("QUAY LẠI");
         btnReturn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -255,9 +256,11 @@ public class ManagerPayment extends javax.swing.JFrame {
         jLabel2.setText("Tìm Kiếm");
 
         jButton3.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        jButton3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/console/restaurant/Image/exit.jpg"))); // NOI18N
         jButton3.setText("THOÁT");
 
         jButton4.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        jButton4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/console/restaurant/Image/table.jpg"))); // NOI18N
         jButton4.setText("CHUYỂN BÀN");
 
         time.setFont(new java.awt.Font("Arial", 1, 36)); // NOI18N
@@ -269,9 +272,11 @@ public class ManagerPayment extends javax.swing.JFrame {
         jLabel6.setText(" VNĐ");
 
         jButton11.setFont(new java.awt.Font("Arial", 1, 18)); // NOI18N
+        jButton11.setIcon(new javax.swing.ImageIcon(getClass().getResource("/console/restaurant/Image/pay.jpg"))); // NOI18N
         jButton11.setText("THANH TOÁN");
 
         jButton6.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        jButton6.setIcon(new javax.swing.ImageIcon(getClass().getResource("/console/restaurant/Image/add.jpg"))); // NOI18N
         jButton6.setText("ĐẶT HÀNG");
 
         jLabel1.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
