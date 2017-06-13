@@ -20,16 +20,18 @@ import javax.swing.table.DefaultTableModel;
  * @author Truong
  */
 public class FoodsController {
-    public static void loadFood(JTable table) {
+
+    public void loadFood(JTable table) {
         DefaultTableModel model = (DefaultTableModel) table.getModel();
         model.setRowCount(0);
         List<Food> listFood = FoodsModel.getAllFood();
-        
+
         listFood.forEach((food) -> {
             model.addRow(new Object[]{String.valueOf(food.getId()), food.getName(), food.getUnitPrice(), food.getImgUrl(), food.getDescription(), food.getCreatedAt(), food.getUpdateAt()});
         });
     }
-    public static List<Food> searchFood(String keyword, int option) {
+
+    public List<Food> searchFood(String keyword, int option) {
         List<Food> foodList = new ArrayList<>();
         ResultSet rs;
         String column;
@@ -44,7 +46,7 @@ public class FoodsController {
                 column = "";
                 break;
         }
-        
+
         String strQuery = "SELECT * FROM foods WHERE " + column + " LIKE '%"
                 + keyword + "%';";
         try {
