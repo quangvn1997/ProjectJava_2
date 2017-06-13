@@ -77,10 +77,13 @@ public class PanelManager extends JFrame {
             public void actionPerformed(ActionEvent e) {
                 System.out.println("called");
                 panelBan.page += 1;
-//                panelBan.setVisible(false);
-//                panelBan.setVisible(true);
+                panelBan.setVisible(false);
+                panelBan.setVisible(true);
                 number.setText(Integer.toString(panelBan.page));
                 panelBan.loadTable();
+//                if(){
+//                next.setVisible(false);
+//                }
                 previous.setVisible(true);
             }
         });
@@ -90,9 +93,10 @@ public class PanelManager extends JFrame {
                 panelBan.page -= 1;
                 if(panelBan.page == 1){
                     previous.setVisible(false);
+                    next.setVisible(true);
                 }
-//                panelBan.setVisible(false);
-//                panelBan.setVisible(true);
+                panelBan.setVisible(false);
+                panelBan.setVisible(true);
                 number.setText(Integer.toString(panelBan.page));
                 panelBan.loadTable();
             }
