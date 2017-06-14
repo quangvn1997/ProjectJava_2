@@ -25,9 +25,10 @@ public class TableForm extends JFrame {
     private JLabel titleHeader;
     private JLabel lblNumber;
     private JLabel lblStatus;
-    private JTextField txtNumber;
+    public JTextField txtNumber;
     private JComboBox cmbStatus;
-
+    private JLabel lblName;
+    public JTextField txtName;
     private JButton btnSubmit;
     private JButton btnReset;
 
@@ -45,6 +46,9 @@ public class TableForm extends JFrame {
 
         this.lblNumber = new JLabel("Số bàn");
         this.txtNumber = new JTextField();
+        this.lblName = new JLabel("Tên bàn");
+        this.txtName = new JTextField();
+        
         this.lblStatus = new JLabel("Trạng thái");
         String[] status = new String[]{"Sẵn sàng", "Đã hỏng"};
         this.cmbStatus = new JComboBox<String>(status);
@@ -53,15 +57,20 @@ public class TableForm extends JFrame {
 
         this.lblNumber.setBounds(60, 135, 100, 50);
         this.txtNumber.setBounds(160, 135, 200, 34);
-        this.lblStatus.setBounds(60, 195, 100, 50);
-        this.cmbStatus.setBounds(160, 200, 150, 34);
-        this.btnSubmit.setBounds(150, 275, 80, 34);
-        this.btnReset.setBounds(260, 275, 80, 34);
+        this.lblStatus.setBounds(60, 255, 100, 50);
+        this.cmbStatus.setBounds(160, 260, 150, 34);
+        this.btnSubmit.setBounds(150, 335, 80, 34);
+        this.btnReset.setBounds(260, 335, 80, 34);
+        this.lblName.setBounds(60, 195, 100, 50);
+        this.txtName.setBounds(160, 195, 200, 34);
+        
 
         this.add(this.titleHeader);
         this.add(this.lblNumber);
         this.add(this.lblStatus);
         this.add(this.txtNumber);
+        this.add(this.lblName);
+        this.add(this.txtName);
         this.add(this.cmbStatus);
         this.add(this.btnSubmit);
         this.add(this.btnReset);

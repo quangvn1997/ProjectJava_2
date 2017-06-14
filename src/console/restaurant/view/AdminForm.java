@@ -14,6 +14,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
+import javax.swing.table.TableModel;
 
 /**
  *
@@ -29,9 +30,9 @@ public class AdminForm extends JFrame {
     private JLabel lblUsername;
     private JLabel lblPassword;
 
-    private JTextField txtName;
-    private JTextField txtUsername;
-    private JTextField txtPassword;
+    public JTextField txtName;
+    public JTextField txtAcount;
+    public JTextField txtPassword;
 
     private JButton btnSubmit;
     private JButton btnReset;
@@ -52,15 +53,15 @@ public class AdminForm extends JFrame {
         this.btnSubmit = new JButton("Lưu");
         this.btnReset = new JButton("Nhập lại");
         this.txtName = new JTextField();
-        this.txtUsername = new JTextField();
+        this.txtAcount = new JTextField();
         this.txtPassword = new JPasswordField();
 
         this.titleHeader.setBounds(150, 70, 200, 50);
-        this.lblName.setBounds(50, 130, 100, 50);
-        this.lblUsername.setBounds(50, 190, 100, 50);
-        this.lblPassword.setBounds(50, 250, 100, 50);
+        this.lblName.setBounds(50, 125, 100, 50);
+        this.lblUsername.setBounds(50, 185, 100, 50);
+        this.lblPassword.setBounds(50, 245, 100, 50);
         this.txtName.setBounds(170, 130, 150, 34);
-        this.txtUsername.setBounds(170, 190, 150, 34);
+        this.txtAcount.setBounds(170, 190, 150, 34);
         this.txtPassword.setBounds(170, 250, 150, 34);
         this.btnSubmit.setBounds(150, 320, 80, 34);
         this.btnReset.setBounds(250, 320, 80, 34);
@@ -72,18 +73,18 @@ public class AdminForm extends JFrame {
         this.add(this.btnSubmit);
         this.add(this.btnReset);
         this.add(this.txtName);
-        this.add(this.txtUsername);
+        this.add(this.txtAcount);
         this.add(this.txtPassword);
 
         this.add(this.adminPanel);
         this.setLayout(null);
         this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
         this.setLocationRelativeTo(null);
+
     }
 
-//    public static void main(String[] args) {
-//        AdminForm admin = new AdminForm();
-//        admin.setVisible(true);
-//    }
-
+    public static void main(String[] args) {
+        AdminForm admin = new AdminForm();
+        admin.setVisible(true);
+    }
 }

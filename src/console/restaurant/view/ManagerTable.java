@@ -5,6 +5,8 @@
  */
 package console.restaurant.view;
 
+import console.restaurant.controller.FoodsController;
+import console.restaurant.controller.TablesController;
 import console.restaurant.entities.SessionAdmin;
 import java.awt.Color;
 import java.awt.Font;
@@ -55,7 +57,7 @@ public class ManagerTable extends JPanel {
     private JButton btnLast;
     private int page = 1;
     private JTable table;
-    private DefaultTableModel model1aTable;
+    private DefaultTableModel modelTable;
     private JScrollPane scrollPane;
 
     ;
@@ -179,9 +181,9 @@ public class ManagerTable extends JPanel {
 //        this.btndeleteTb.setFont(new Font("Serif", Font.PLAIN, 18));
         // Table        
         String[] columnNames = {"ID", "Tên bàn", "Trạng thái", "Ngày tạo", "Ngày cập nhật"};
-        Object[][] data = {{"1", "tên bàn", "2"}};
-        this.model1aTable = new DefaultTableModel(data, columnNames);
-        this.table = new JTable(model1aTable);
+        Object[][] data = {};
+        this.modelTable = new DefaultTableModel(data, columnNames);
+        this.table = new JTable(modelTable);
 //        this.table.setFont(new Font("Serif", Font.PLAIN, 20));
         //chinh mau title column
 //        this.table.getTableHeader().setFont(new Font("Serif", Font.BOLD, 20));
@@ -193,34 +195,35 @@ public class ManagerTable extends JPanel {
         this.table.getColumnModel().getColumn(4).setPreferredWidth(200);
         this.table.setRowHeight(24);
         this.table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+        TablesController.loadTables(table);
         //Hiển thị kích thước bảng
         this.scrollPane = new JScrollPane(table);
         this.scrollPane.setBounds(0, 70, 1000, 380);
         //them su kien
         //table action
         javax.swing.table.TableModel tblModel = table.getModel();
-//        this.table.addMouseListener(new MouseAdapter() {
-//            public void mouseClicked(MouseEvent e) {
-//                if (e.getClickCount() == 1) {
-//                    JTable target = (JTable) e.getSource();
-//                    int row = target.getSelectedRow();
-//                    if (row != -1) {
-//                        SessionAdmin.setStrToAction(txtAddTable.getText());
-//                        javax.swing.table.TableModel tblModel = table.getModel();
-//                        String checkName = tblModel.getValueAt(row, 1).toString();
-//                        String status = tblModel.getValueAt(row, 2).toString();
-//                        // thêm vào textField
-//                        txtNameTable.setText(checkName);
-//                        if (status.contains("1")) {
-//                            txtStatus.setSelectedIndex(0);
-//                        } else {
-//                            txtStatus.setSelectedIndex(1);
-//                        }
-//
-//                    }
-//                }
-//            }
-//        });
+
+        this.table.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                if (e.getClickCount() == 1) {
+
+                    JTable target = (JTable) e.getSource();
+                    int row = target.getSelectedRow();
+                    if (row != -1) {
+                        TableForm tableForm = new TableForm();
+                        tableForm.setVisible(true);
+
+                        javax.swing.table.TableModel tblModel = table.getModel();
+                        String name = tblModel.getValueAt(row, 1).toString();
+//                     thêm vào textField
+                        tableForm.txtName.setText(name);
+
+                    }
+                }
+            }
+        });
+
 //        this.add(this.txtStatus);
 //        this.add(this.btndeleteTb);
 //        this.add(this.btnupdateTb);

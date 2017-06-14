@@ -6,6 +6,7 @@
 package console.restaurant.models;
 
 import console.restaurant.entities.Admin;
+import console.restaurant.entities.Food;
 import console.restaurant.entities.Table;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -45,7 +46,8 @@ public class TableModel {
         }
         return listAvailable;
     }
-    public int getCountTable(){
+
+    public int getCountTable() {
         try {
             Connection cnn = DAO
                     .getConnection();
@@ -53,11 +55,11 @@ public class TableModel {
             String sqlQuery = "select count from tables";
             System.out.println(sqlQuery);
             ResultSet rs = stt.executeQuery(sqlQuery);
-            
+
         } catch (Exception e) {
         }
         return 0;
-        
+
     }
 
     public static void main(String[] args) {
@@ -90,6 +92,26 @@ public class TableModel {
             System.out.println("them thanh cong");
         }
 
+    }
+
+    public static List<Table> getAllTable() {
+        List<Table> tableList = new ArrayList<>();
+        ResultSet rs;
+        int total;
+        try {
+            rs = DAO.getConnection().createStatement().executeQuery("select * from tables ");
+            while (rs.next()) {
+                Table table = new Table();
+                table.setId(Integer.valueOf(rs.getString("id")));
+                table.setName(rs.getString("name"));
+                table.setStatus(rs.getInt("status"));
+                tableList.add(table);
+            }
+        } catch (SQLException ex) {
+            System.err.println("Có lỗi! " + ex);
+            return tableList;
+        }
+        return tableList;
     }
 
     public int getTableMax() {

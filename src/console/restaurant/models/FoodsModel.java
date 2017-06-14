@@ -13,7 +13,7 @@ import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 
 public class FoodsModel {
-    
+
     public static void update(Food food) {
         try {
             PreparedStatement pstmt = DAO.getConnection().prepareStatement("UPDATE foods SET name=?,unit_price=?,img_url=?,description=?,updated_at=NOW() WHERE id = ?");
@@ -25,13 +25,13 @@ public class FoodsModel {
             int a = pstmt.executeUpdate();
             if (a > 0) {
 //                System.out.println("sua thanh cong");
-                JOptionPane.showMessageDialog(null, "sửa thành công");
+                JOptionPane.showMessageDialog(null, "Sửa dịch vụ thành công.", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
             }
         } catch (Exception e) {
-            System.err.println("Da xay ra loi !!!" + e);
+            JOptionPane.showMessageDialog(null, "Lỗi sửa dịch vụ !!!", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
         }
     }
-    
+
     public static void insertFood(Food food) {
         try {
             PreparedStatement pstmt = DAO.getConnection().prepareStatement(""
@@ -45,14 +45,14 @@ public class FoodsModel {
             int a = pstmt.executeUpdate();
             if (a > 0) {
                 //System.out.println("them thanh cong");
-                JOptionPane.showMessageDialog(null, "Thêm mới thành công");
+                JOptionPane.showMessageDialog(null, "Thêm mới dịch vụ thành công", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
             }
         } catch (Exception e) {
             e.printStackTrace();
-            System.err.println("Loi them san pham.");
+            JOptionPane.showMessageDialog(null, "Lỗi thêm dịch vụ", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
         }
     }
-    
+
     public static List<Food> getAllFood() {
         List<Food> foodList = new ArrayList<>();
         ResultSet rs;
@@ -71,12 +71,12 @@ public class FoodsModel {
                 foodList.add(food);
             }
         } catch (SQLException ex) {
-            System.err.println("Có lỗi! " + ex);
+            JOptionPane.showMessageDialog(null, "Lỗi lấy dịch vụ", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
             return foodList;
         }
         return foodList;
     }
-    
+
     public static void deleteFood(String id) {
         try {
             String sql = "DELETE FROM foods WHERE id =?";
@@ -84,10 +84,10 @@ public class FoodsModel {
             prest.setString(1, id);
             int val = prest.executeUpdate();
         } catch (Exception e) {
-            System.out.println("Error!");
+            JOptionPane.showMessageDialog(null, "Lỗi xóa dịch vụ", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
         }
     }
-    
+
     public static void loadFoodsSearch(JTable table, List<Food> listFood) {
         DefaultTableModel model = (DefaultTableModel) table.getModel();
         model.setRowCount(0);

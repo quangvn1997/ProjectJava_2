@@ -33,11 +33,11 @@ public class FoodForm extends JFrame {
     private JLabel lblImage;
     private JLabel lblPrice;
 
-    private JTextField txtName;
-    private JComboBox cmbCategories;
-    private JTextArea txtAreaDescription;
-    private JTextField txtImage;
-    private JTextField txtPrice;
+    public JTextField txtName;
+    public JComboBox cmbCategories;
+    public JTextArea txtAreaDescription;
+    public JTextField txtImage;
+    public JTextField txtPrice;
     
     private JButton btnSubmit;
     private JButton btnReset;

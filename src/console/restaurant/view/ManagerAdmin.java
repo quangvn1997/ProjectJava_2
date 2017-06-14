@@ -13,11 +13,14 @@ import console.restaurant.utilities.ValidateUtilities;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Font;
+import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import javax.imageio.ImageIO;
 import javax.swing.BorderFactory;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -44,10 +47,9 @@ public class ManagerAdmin extends JPanel {
 //    private JLabel lblAcount;
 //    private JLabel lblPassword;
 //    private JLabel lblName;
-    private JTextField txtAcount;
-    private JPasswordField txtPassword;
-    private JTextField txtName;
-
+//    private JTextField txtAcount;
+//    private JPasswordField txtPassword;
+//    private JTextField txtName;
     private JLabel lblSearch;
     private JButton btnSearch;
     private JTextField txtSearch;
@@ -60,10 +62,9 @@ public class ManagerAdmin extends JPanel {
     private JButton btnPage;
     private JButton btnNext;
     private JButton btnLast;
-
     private int page = 1;
 
-    private DefaultTableModel model1aTable;
+    private DefaultTableModel modelAdmin;
     private JScrollPane scrollPane;
 
     private AdminForm adminForm;
@@ -102,6 +103,9 @@ public class ManagerAdmin extends JPanel {
         this.btnPage.setBounds(460, 470, 50, 34);
         this.btnNext.setBounds(520, 470, 50, 34);
         this.btnLast.setBounds(580, 470, 50, 34);
+//
+//        ImageIcon img = new ImageIcon("....\\src\\console\\restaurant\\Image\\add.jpg");
+//        btnCreate.setIcon(img);
 
         this.add(this.btnFirst);
         this.add(this.btnPrevious);
@@ -167,8 +171,8 @@ public class ManagerAdmin extends JPanel {
         // Table        
         String[] columnNames = {"ID", "Họ và tên", "Tài khoản", "Mật khẩu", "Ngày tạo", "Ngày cập nhật"};
         Object[][] data = {};
-        this.model1aTable = new DefaultTableModel(data, columnNames);
-        this.table = new JTable(model1aTable);
+        this.modelAdmin = new DefaultTableModel(data, columnNames);
+        this.table = new JTable(modelAdmin);
 //        this.table.setFont(new Font("Serif", Font.PLAIN, 20));
         //chinh mau title column
 //        this.table.getTableHeader().setFont(new Font("Serif", Font.BOLD, 20));
@@ -185,27 +189,39 @@ public class ManagerAdmin extends JPanel {
         this.scrollPane = new JScrollPane(table);
         this.scrollPane.setBounds(0, 70, 1000, 380);
         //them su kien
+
         //table action
-        TableModel tblModel = table.getModel();
-//        this.table.addMouseListener(new MouseAdapter() {
-//            public void mouseClicked(MouseEvent e) {
-//                if (e.getClickCount() == 1) {
-//                    JTable target = (JTable) e.getSource();
-//                    int row = target.getSelectedRow();
-//                    if (row != -1) {
-//                        SessionAdmin.setStrToAction(txtAcount.getText());
-//                        TableModel tblModel = table.getModel();
-//                        String name = tblModel.getValueAt(row, 1).toString();
-//                        String checkName = tblModel.getValueAt(row, 2).toString();
-//                        String pass = tblModel.getValueAt(row, 3).toString();
-//                        // thêm vào textField
-//                        txtAcount.setText(checkName);
-//                        txtPassword.setText(pass);
-//                        txtName.setText(name);
-//                    }
-//                }
-//            }
-//        });
+//        TableModel tblModel = table.getModel();
+//        AdminForm admin = new AdminForm();
+        this.table.addMouseListener(new MouseAdapter() {
+            public void mouseClicked(MouseEvent e) {
+                if (e.getClickCount() == 1) {
+
+                    JTable target = (JTable) e.getSource();
+                    int row = target.getSelectedRow();
+                    if (row != -1) {
+                        AdminForm admin = new AdminForm();
+                        admin.setVisible(true);
+
+                        TableModel tblModel = table.getModel();
+                        String name = tblModel.getValueAt(row, 1).toString();
+                        String username = tblModel.getValueAt(row, 2).toString();
+                        String pass = tblModel.getValueAt(row, 3).toString();
+
+//                     thêm vào textField
+                        admin.txtName.setText(name);
+                        admin.txtAcount.setText(username);
+                        admin.txtPassword.setText(pass);
+                    }
+//                    int index = table.getSelectedRow();
+//                    TableModel model = table.getModel();
+//                    String name = model.getValueAt(index, 0).toString();
+////                    String name = model.getValueAt(index, 0).toString();
+////                    String name = model.getValueAt(index, 0).toString();
+//                    admin.txtName.setText(name);
+                }
+            }
+        });
         //delete action
 //        this.xoaAdmin.addActionListener(new ActionListener() {
 //            @Override
