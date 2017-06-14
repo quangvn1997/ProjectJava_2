@@ -86,7 +86,7 @@ public class Login extends javax.swing.JFrame {
 
         jPanel1.setBackground(new java.awt.Color(255, 255, 255));
 
-        jButton3.setBackground(new java.awt.Color(204, 204, 255));
+        jButton3.setBackground(new java.awt.Color(255, 255, 255));
         jButton3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/console/restaurant/Image/login1.jpg"))); // NOI18N
         jButton3.setText("ĐĂNG NHẬP");
         jButton3.addActionListener(new java.awt.event.ActionListener() {
@@ -103,7 +103,7 @@ public class Login extends javax.swing.JFrame {
             }
         });
 
-        jLabel1.setFont(new java.awt.Font("Brush Script MT", 2, 36)); // NOI18N
+        jLabel1.setFont(new java.awt.Font("Brush Script MT", 2, 48)); // NOI18N
         jLabel1.setText("Furious Food & Drinks");
 
         jLabel2.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
@@ -120,7 +120,7 @@ public class Login extends javax.swing.JFrame {
             }
         });
 
-        jButton1.setBackground(new java.awt.Color(204, 204, 255));
+        jButton1.setBackground(new java.awt.Color(255, 255, 255));
         jButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/console/restaurant/Image/exit.jpg"))); // NOI18N
         jButton1.setText("THOÁT");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
@@ -129,7 +129,7 @@ public class Login extends javax.swing.JFrame {
             }
         });
 
-        jButton2.setBackground(new java.awt.Color(204, 204, 255));
+        jButton2.setBackground(new java.awt.Color(255, 255, 255));
         jButton2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/console/restaurant/Image/reset.jpg"))); // NOI18N
         jButton2.setText("LÀM LẠI");
         jButton2.addActionListener(new java.awt.event.ActionListener() {

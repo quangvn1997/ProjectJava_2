@@ -27,7 +27,7 @@ public class ManagerPayment extends javax.swing.JFrame {
         clockThanhToan();
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
     }
-
+    
     public void clockThanhToan() {
         Thread clock = new Thread() {
             public void run() {
@@ -258,6 +258,11 @@ public class ManagerPayment extends javax.swing.JFrame {
         jButton3.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         jButton3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/console/restaurant/Image/exit.jpg"))); // NOI18N
         jButton3.setText("THOÁT");
+        jButton3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton3ActionPerformed(evt);
+            }
+        });
 
         jButton4.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         jButton4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/console/restaurant/Image/table.jpg"))); // NOI18N
@@ -511,8 +516,8 @@ public class ManagerPayment extends javax.swing.JFrame {
         // jPanel1.setVisible(false);
         this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
         this.setVisible(false);
-        PanelManager quanly = new PanelManager();
-        quanly.setVisible(true);
+//        PanelManager quanly = new PanelManager();
+//        quanly.setVisible(true);
     }//GEN-LAST:event_btnReturnActionPerformed
 
     private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
@@ -524,6 +529,13 @@ public class ManagerPayment extends javax.swing.JFrame {
         PaymentController.loadFood(jTable1);
         jTextField2.setText(SessionAdmin.getName());
     }//GEN-LAST:event_formWindowOpened
+
+    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+        // TODO add your handling code here:
+        setVisible(false);
+//        PanelManager panelManager = new PanelManager();
+//        panelManager.setVisible(false);
+    }//GEN-LAST:event_jButton3ActionPerformed
 
     /**
      * @param args the command line arguments

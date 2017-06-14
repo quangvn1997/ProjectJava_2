@@ -12,15 +12,16 @@ import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
+import java.util.Locale;
 import java.util.Map;
 import javax.swing.JButton;
+import static javax.swing.WindowConstants.DISPOSE_ON_CLOSE;
 
 /**
  *
  * @author Anh Tiến ơi.Có Trộm!
  */
 public class ListTable extends javax.swing.JPanel {
-    
 
     int length = 5;
     final int TONG_SO_BAN = 15;
@@ -31,6 +32,7 @@ public class ListTable extends javax.swing.JPanel {
     JButton[] listtrang = new JButton[sotrang];
     private TableModel model = new TableModel();
     private Map<String, JButton> dynamicButtons;
+
     public ListTable() {
         initComponents();
         loadTable();
@@ -64,9 +66,8 @@ public class ListTable extends javax.swing.JPanel {
             listBan[i].addActionListener(new ActionListener() {
                 public void actionPerformed(ActionEvent e) {
                     if (e.getSource() instanceof JButton) {
-                        ManagerPayment quanlythanhtoan = new ManagerPayment();
-                        quanlythanhtoan.setVisible(true);
-                          
+                        CreateOrder createOrder = new CreateOrder();
+                        createOrder.setVisible(true);
                     }
                 }
             });
@@ -81,9 +82,8 @@ public class ListTable extends javax.swing.JPanel {
             }
             this.add(listBan[i]);
         }
-        
+
     }
-    
 
     /**
      * This method is called from within the constructor to initialize the form.

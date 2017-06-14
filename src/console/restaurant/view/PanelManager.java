@@ -42,7 +42,7 @@ public class PanelManager extends JFrame {
         initComponents();
 
 //        danh mục bàn
-        panelBan.setBounds(300, 110, 1000, 500);
+        panelBan.setBounds(350, 110, 1000, 500);
         panelBan.setBackground(Color.white);
         panel.add(panelBan);
         panelBan.setVisible(true);
@@ -60,7 +60,7 @@ public class PanelManager extends JFrame {
         bookList.setBounds(150, 440, 150, 40);
         panelBan.add(bookList);
         // Phân trang
-        
+
         JButton number = new JButton();
         number.setText("1");
         number.setBounds(450, 430, 50, 40);
@@ -91,7 +91,7 @@ public class PanelManager extends JFrame {
         previous.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 panelBan.page -= 1;
-                if(panelBan.page == 1){
+                if (panelBan.page == 1) {
                     previous.setVisible(false);
                     next.setVisible(true);
                 }
@@ -314,9 +314,9 @@ public class PanelManager extends JFrame {
         panelLayout.setHorizontalGroup(
             panelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(panelLayout.createSequentialGroup()
-                .addGap(31, 31, 31)
+                .addGap(49, 49, 49)
                 .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(105, 105, 105)
+                .addGap(87, 87, 87)
                 .addComponent(jLabel2)
                 .addGap(18, 18, 18)
                 .addGroup(panelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -354,12 +354,11 @@ public class PanelManager extends JFrame {
                             .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(btnLogOut, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                            .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addGroup(panelLayout.createSequentialGroup()
+                        .addGap(28, 28, 28)
+                        .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap(26, Short.MAX_VALUE))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelLayout.createSequentialGroup()
-                .addGap(0, 0, Short.MAX_VALUE)
-                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(62, 62, 62))
         );
 
         jMenu1.setText("Quản Lý");

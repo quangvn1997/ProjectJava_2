@@ -49,7 +49,7 @@ public class ManagerFood extends JPanel {
     private JButton btnCreate;
 
     private int page = 1;
-    
+
     private FoodForm foodForm;
 
 //    private JLabel lbltitle;
@@ -68,13 +68,13 @@ public class ManagerFood extends JPanel {
 //    private JLabel lblLinkImage;
 //    private JTextField txtLinkImage;
     private JTable table;
-    private DefaultTableModel model1aTable;
+    private DefaultTableModel modelFood;
     private JScrollPane scrollPane;
     private FoodsController foodController = new FoodsController();
 
     public ManagerFood() {
         this.setBackground(new Color(250, 250, 250));
-        this.setBounds(300, 90, 1000, 520);
+        this.setBounds(350, 90, 1000, 520);
         this.setBorder(BorderFactory.createLineBorder(Color.BLACK));
 
         this.lblSearch = new JLabel("Nhập tên");
@@ -181,29 +181,56 @@ public class ManagerFood extends JPanel {
 //        this.btndeleteFood.setBounds(700, 470, 120, 34);
 //        this.btndeleteFood.setFont(new Font("Serif", Font.PLAIN, 18));
 //        //them su kien
-//        //table action
-//        TableModel tblModel = table.getModel();
-//        this.table.addMouseListener(new MouseAdapter() {
-//            public void mouseClicked(MouseEvent e) {
-//                if (e.getClickCount() == 1) {
-//                    JTable target = (JTable) e.getSource();
-//                    int row = target.getSelectedRow();
-//                    if (row != -1) {
-//                        SessionAdmin.setStrToAction(txtName.getText());
-//                        TableModel tblModel = table.getModel();
-//                        String checkName = tblModel.getValueAt(row, 1).toString();
-//                        String value = tblModel.getValueAt(row, 2).toString();
-//                        String img = tblModel.getValueAt(row, 3).toString();
-//                        String descr = tblModel.getValueAt(row, 4).toString();
-//                        // thêm vào textField
-//                        txtName.setText(checkName);
-//                        txtValue.setText(value);
-//                        txtLinkImage.setText(img);
-//                        txtDescription.setText(descr);
-//                    }
-//                }
-//            }
-//        });
+        String[] columnNames = {"ID", "Tên", "category_id", "Giá", "Ảnh", "Miêu tả", "Ngày tạo", "Ngày cập nhật"};
+        Object[][] data = {};
+        this.modelFood = new DefaultTableModel(data, columnNames);
+        this.table = new JTable(modelFood);
+        // this.table.setFont(new Font("Serif", Font.PLAIN, 20));      
+        // this.table.getTableHeader().setFont(new Font("Serif", Font.BOLD, 20));
+        //chinh with column
+        this.table.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
+        this.table.getColumnModel().getColumn(0).setPreferredWidth(42);
+        this.table.getColumnModel().getColumn(1).setPreferredWidth(200);
+        this.table.getColumnModel().getColumn(2).setPreferredWidth(100);
+        this.table.getColumnModel().getColumn(3).setPreferredWidth(100);
+        this.table.getColumnModel().getColumn(4).setPreferredWidth(100);
+        this.table.getColumnModel().getColumn(5).setPreferredWidth(150);
+        this.table.getColumnModel().getColumn(6).setPreferredWidth(150);
+        this.table.getColumnModel().getColumn(7).setPreferredWidth(150);
+        this.table.setRowHeight(24);
+        this.table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+        foodController.loadFood(table);
+        //Hiển thị kích thước bảng
+        this.scrollPane = new JScrollPane(table);
+        this.scrollPane.setBounds(0, 70, 1000, 380);
+
+        // Click bảng hiển thị FoodForm
+        this.table.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                if (e.getClickCount() == 1) {
+
+                    JTable target = (JTable) e.getSource();
+                    int row = target.getSelectedRow();
+                    if (row != -1) {
+                        FoodForm foodForm = new FoodForm();
+                        foodForm.setVisible(true);
+
+                        TableModel tblModel = table.getModel();
+                        String name = tblModel.getValueAt(row, 1).toString();
+                        String price = tblModel.getValueAt(row, 3).toString();
+                        String urlImage = tblModel.getValueAt(row, 4).toString();
+                        String description = tblModel.getValueAt(row, 5).toString();
+//                     thêm vào textField
+                        foodForm.txtName.setText(name);
+                        foodForm.txtPrice.setText(price);
+                        foodForm.txtAreaDescription.setText(description);
+                        foodForm.txtImage.setText(urlImage);
+                    }
+                }
+            }
+        });
+
 //        //delete action
 //        this.btndeleteFood.addActionListener(new ActionListener() {
 //            @Override
@@ -343,27 +370,6 @@ public class ManagerFood extends JPanel {
 //        this.add(this.txtSearch);
 //        this.add(this.btnNhaplai);
         // Table        
-        String[] columnNames = {"ID", "Tên", "Giá", "Ảnh", "Miêu tả", "Ngày tạo", "Ngày cập nhật"};
-        Object[][] data = {};
-        this.model1aTable = new DefaultTableModel(data, columnNames);
-        this.table = new JTable(model1aTable);
-        // this.table.setFont(new Font("Serif", Font.PLAIN, 20));      
-        // this.table.getTableHeader().setFont(new Font("Serif", Font.BOLD, 20));
-        //chinh with column
-        this.table.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
-        this.table.getColumnModel().getColumn(0).setPreferredWidth(42);
-        this.table.getColumnModel().getColumn(1).setPreferredWidth(200);
-        this.table.getColumnModel().getColumn(2).setPreferredWidth(100);
-        this.table.getColumnModel().getColumn(3).setPreferredWidth(150);
-        this.table.getColumnModel().getColumn(4).setPreferredWidth(200);
-        this.table.getColumnModel().getColumn(5).setPreferredWidth(150);
-        this.table.getColumnModel().getColumn(6).setPreferredWidth(150);
-        this.table.setRowHeight(24);
-        this.table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-        foodController.loadFood(table);
-        //Hiển thị kích thước bảng
-        this.scrollPane = new JScrollPane(table);
-        this.scrollPane.setBounds(0, 70, 1000, 380);
         this.add(scrollPane);
         this.setLayout(null);
         this.setVisible(false);

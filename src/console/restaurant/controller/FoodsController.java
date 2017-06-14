@@ -12,6 +12,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import javax.swing.JOptionPane;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 
@@ -27,7 +28,7 @@ public class FoodsController {
         List<Food> listFood = FoodsModel.getAllFood();
 
         listFood.forEach((food) -> {
-            model.addRow(new Object[]{String.valueOf(food.getId()), food.getName(), food.getUnitPrice(), food.getImgUrl(), food.getDescription(), food.getCreatedAt(), food.getUpdateAt()});
+            model.addRow(new Object[]{String.valueOf(food.getId()), food.getName(), food.getType(), food.getUnitPrice(), food.getImgUrl(), food.getDescription(), food.getCreatedAt(), food.getUpdateAt()});
         });
     }
 
@@ -55,13 +56,14 @@ public class FoodsController {
                 Food food = new Food();
                 food.setId(Integer.valueOf(rs.getString("id")));
                 food.setName(rs.getString("name"));
+                food.setType(rs.getInt("category_id"));
                 food.setImgUrl(rs.getString("img_url"));
                 food.setUnitPrice(rs.getFloat("unit_price"));
                 food.setCreatedAt(rs.getString("created_at"));
                 foodList.add(food);
             }
         } catch (SQLException ex) {
-            System.err.println("Có lỗi xảy ra! " + ex);
+            JOptionPane.showMessageDialog(null, "Lỗi tìm dịch vụ", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
             return foodList;
         }
         return foodList;
