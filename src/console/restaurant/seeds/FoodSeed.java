@@ -10,14 +10,13 @@ import java.sql.SQLException;
 import java.sql.Statement;
 
 public class FoodSeed {
-    public static void main(String[] args) throws SQLException {
-	  // Database: online_shop
-	  Statement stt = DAO.getConnection().createStatement();
-	  // Thêm dữ liệu mẫu
-          stt.execute("INSERT INTO categories (name) VALUES ('Meat');");
 
-          stt.execute("INSERT INTO foods (name, category_id, description,img_url,unit_price, status) VALUES ('Cow Attack', '1','Cow Spicy','cow.jpg',100.000', '1');");
-	  System.out.println("------ Chèn dữ liệu mẫu thành công! ------");
-	  // Đăng nhập với tài khoản: admin/admin hoặc guest/guest
-     }
+    public static void main(String[] args) throws SQLException {
+        // Database: online_shop
+        Statement stt = DAO.getConnection().createStatement();
+        // Thêm dữ liệu mẫu
+        stt.execute("INSERT INTO foods (name, category_id, description,img_url, unit_price, status) VALUES ('Cow Attack', '1','Cow Spicy','lol','100.000','1');");
+        System.out.println("------ Chèn dữ liệu mẫu thành công! ------");
+        // Đăng nhập với tài khoản: admin/admin hoặc guest/guest
+    }
 }
