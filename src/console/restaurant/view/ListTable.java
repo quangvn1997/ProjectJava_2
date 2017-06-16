@@ -67,17 +67,7 @@ public class ListTable extends javax.swing.JPanel {
                 public void actionPerformed(ActionEvent e) {
                     if (e.getSource() instanceof JButton) {
                         CreateOrder createOrder = new CreateOrder();
-                        JButton B1 = (JButton) e.getSource();
-                        createOrder.getLblHeader().setText("Thao tác với bàn số : " + B1.getText());
                         createOrder.setVisible(true);
-                        createOrder.getBtnCreateOrder().addActionListener(new ActionListener() {
-                            @Override
-                            public void actionPerformed(ActionEvent e) {
-                                createOrder.getJframePaymen().setVisible(true);
-                                B1.setBackground(new Color(255, 0, 0));
-                                createOrder.setVisible(false);
-                            }
-                        });
                     }
                 }
             });

@@ -46,14 +46,14 @@ public class ManagerFood extends JPanel {
     private JTextField txtSearch;
     private JButton btnSearch;
 
-    private JButton btnDelete;
-    private JButton btnUpdate;
+//    private JButton btnDelete;
+//    private JButton btnUpdate;
     private JButton btnCreate;
 
     private int page = 1;
 
     private FoodForm foodForm;
-    private JTable table;
+    public static JTable table;
     private DefaultTableModel modelFood;
     private JScrollPane scrollPane;
     private FoodsController foodController = new FoodsController();
@@ -66,22 +66,22 @@ public class ManagerFood extends JPanel {
         this.lblSearch = new JLabel("Nhập tên");
         this.txtSearch = new JTextField();
         this.btnSearch = new JButton("Tìm");
-        this.btnUpdate = new JButton("Sửa");
-        this.btnDelete = new JButton("Xóa");
+//        this.btnUpdate = new JButton("Sửa");
+//        this.btnDelete = new JButton("Xóa");
         this.btnCreate = new JButton("Tạo mới");
 
         this.lblSearch.setBounds(20, 20, 70, 34);
         this.txtSearch.setBounds(100, 20, 200, 34);
         this.btnSearch.setBounds(310, 20, 100, 34);
-        this.btnUpdate.setBounds(640, 20, 100, 34);
-        this.btnDelete.setBounds(760, 20, 100, 34);
+//        this.btnUpdate.setBounds(640, 20, 100, 34);
+//        this.btnDelete.setBounds(760, 20, 100, 34);
         this.btnCreate.setBounds(880, 20, 100, 34);
 
         this.add(this.lblSearch);
         this.add(this.txtSearch);
         this.add(this.btnSearch);
-        this.add(this.btnUpdate);
-        this.add(this.btnDelete);
+//        this.add(this.btnUpdate);
+//        this.add(this.btnDelete);
         this.add(this.btnCreate);
 
         this.btnFirst = new JButton("<<");
@@ -132,51 +132,30 @@ public class ManagerFood extends JPanel {
             public void actionPerformed(ActionEvent e) {
                 foodForm = new FoodForm();
                 foodForm.setVisible(true);
-                foodForm.Create();
-                foodController.loadFood(table);
+//                foodForm.Create();
+//                foodController.loadFood(table);
 //                foodForm
             }
         });
-        this.btnUpdate.addActionListener(new ActionListener() {
+        
+        this.table.addMouseListener(new MouseAdapter() {
             @Override
-            public void actionPerformed(ActionEvent e) {
-                int row = table.getSelectedRow();
-                if (row != -1) {
-                    FoodUpdate foodUpdate = new FoodUpdate();
-//                    Admin admin = new Admin();
-                    foodUpdate.setVisible(true);
-                    TableModel tblModel = table.getModel();
-                    String name = tblModel.getValueAt(row, 1).toString();
-                    String description = tblModel.getValueAt(row, 3).toString();
-                    String urlImage = tblModel.getValueAt(row, 4).toString();
-                    String price = tblModel.getValueAt(row, 5).toString();
+            public void mouseClicked(MouseEvent e) {
+                if (e.getClickCount() == 1) {
 
-//                     thêm vào textField
-                    foodUpdate.txtName.setText(name);
-                    foodUpdate.txtAreaDescription.setText(description);
-                    foodUpdate.txtImage.setText(urlImage);
-                    foodUpdate.txtPrice.setText(price);
-
-                }
-            }
-        });
-        this.btnDelete.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                int row = table.getSelectedRow();
-                if (row != -1) {
-                    TableModel tblModel = table.getModel();
-                    Object[] options = {"Có", "Không"};
-                    Component form = null;
-                    int n = JOptionPane.showOptionDialog(form, "Bạn có muốn xóa món " + "' " + tblModel.getValueAt(row, 1).toString() + " '" + " không?  ", "Xác nhận", JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE, null, options, options);
-                    if (n == JOptionPane.YES_OPTION) {
-                        FoodsModel.deleteFood(tblModel.getValueAt(row, 0).toString());
-                        JOptionPane.showMessageDialog(null, "Xóa món ăn " + "' " + tblModel.getValueAt(row, 1).toString() + " '" + " thành công.");
-                        foodController.loadFood(table);
+                    JTable target = (JTable) e.getSource();
+                    int row = target.getSelectedRow();
+                    if (row != -1) {
+                        TableModel tblModel = table.getModel();
+                        int id = Integer.parseInt(tblModel.getValueAt(row, 0).toString());
+                        FoodForm foodForm = new FoodForm(2, id);
+                        foodForm.setVisible(true);
                     }
                 }
             }
-        });   
+        });
+//      
+//        
         // Table        
         this.add(scrollPane);
         this.setLayout(null);
