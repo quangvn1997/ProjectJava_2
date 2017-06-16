@@ -46,27 +46,13 @@ public class ManagerFood extends JPanel {
     private JTextField txtSearch;
     private JButton btnSearch;
 
+    private JButton btnDelete;
+    private JButton btnUpdate;
     private JButton btnCreate;
 
     private int page = 1;
 
     private FoodForm foodForm;
-
-//    private JLabel lbltitle;
-//    private JButton btncreateFood;
-//    private JButton btnfixFood;
-//    private JButton btndeleteFood;
-//    private JButton btnSearch;
-//    private JButton btnNhaplai;
-//    private JTextField txtSearch;
-//    private JLabel lblName;
-//    private JLabel lblValue;
-//    private JTextField txtName;
-//    private JTextField txtValue;
-//    private JLabel lblDescription;
-//    private JTextArea txtDescription;
-//    private JLabel lblLinkImage;
-//    private JTextField txtLinkImage;
     private JTable table;
     private DefaultTableModel modelFood;
     private JScrollPane scrollPane;
@@ -80,16 +66,22 @@ public class ManagerFood extends JPanel {
         this.lblSearch = new JLabel("Nhập tên");
         this.txtSearch = new JTextField();
         this.btnSearch = new JButton("Tìm");
+        this.btnUpdate = new JButton("Sửa");
+        this.btnDelete = new JButton("Xóa");
         this.btnCreate = new JButton("Tạo mới");
 
         this.lblSearch.setBounds(20, 20, 70, 34);
         this.txtSearch.setBounds(100, 20, 200, 34);
         this.btnSearch.setBounds(310, 20, 100, 34);
+        this.btnUpdate.setBounds(640, 20, 100, 34);
+        this.btnDelete.setBounds(760, 20, 100, 34);
         this.btnCreate.setBounds(880, 20, 100, 34);
 
         this.add(this.lblSearch);
         this.add(this.txtSearch);
         this.add(this.btnSearch);
+        this.add(this.btnUpdate);
+        this.add(this.btnDelete);
         this.add(this.btnCreate);
 
         this.btnFirst = new JButton("<<");
@@ -110,78 +102,8 @@ public class ManagerFood extends JPanel {
         this.add(this.btnNext);
         this.add(this.btnLast);
 
-        this.btnCreate.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                foodForm = new FoodForm();
-                foodForm.setVisible(true);
-            }
-        });
-
-//        this.lbltitle = new JLabel();
-//        this.lbltitle.setText("QUẢN LÝ MÓN ĂN");
-//        this.lbltitle.setBounds(360, 0, 280, 70);
-//        this.lbltitle.setFont(new Font("Serif", Font.PLAIN, 30));
-//        // button Search
-//        this.btnSearch = new JButton("Search");
-//        this.btnSearch.setBounds(560, 60, 100, 34);
-//        this.btnSearch.setFont(new Font("Serif", Font.PLAIN, 18));
-//        this.txtSearch = new JTextField();
-//        this.txtSearch.setBounds(50, 60, 500, 34);
-//        this.txtSearch.setFont(new Font("Serif", Font.PLAIN, 18));
-//        //acount and password
-//        this.lblName = new JLabel("Tên dịch vụ :");
-//        this.lblName.setBounds(50, 380, 150, 34);
-//        this.lblValue = new JLabel("Giá dịch vụ : ");
-//        this.lblValue.setBounds(50, 430, 150, 34);
-//        this.txtName = new JTextField();
-//        this.txtName.setBounds(160, 380, 200, 34);
-//        this.txtValue = new JTextField();
-//        this.txtValue.setBounds(160, 430, 200, 34);
-//
-//        this.lblLinkImage = new JLabel();
-//        this.lblLinkImage.setText("Link ảnh : ");
-//        this.lblLinkImage.setBounds(50, 480, 100, 34);
-//        this.lblLinkImage.setFont(new Font("Serif", Font.PLAIN, 18));
-//        this.txtLinkImage = new JTextField();
-//        this.txtLinkImage.setBounds(160, 480, 200, 34);
-//        this.txtLinkImage.setFont(new Font("Serif", Font.PLAIN, 18));
-//
-//        this.lblDescription = new JLabel();
-//        this.lblDescription.setText("Miêu tả :");
-//        this.lblDescription.setBounds(400, 380, 100, 35);
-//        this.lblDescription.setFont(new Font("Serif", Font.PLAIN, 18));
-//
-//        this.txtDescription = new JTextArea();
-//        this.txtDescription.setBounds(500, 380, 200, 70);
-//        this.txtDescription.setFont(new Font("Serif", Font.PLAIN, 18));
-//
-//        this.lblName.setFont(new Font("Serif", Font.PLAIN, 18));
-//        this.lblValue.setFont(new Font("Serif", Font.PLAIN, 18));
-//        this.txtName.setFont(new Font("Serif", Font.PLAIN, 18));
-//        this.txtValue.setFont(new Font("Serif", Font.PLAIN, 18));
-//
-//        // Button tạo mới food
-//        this.btncreateFood = new JButton();
-//        this.btncreateFood.setText("Tạo mới");
-//        this.btncreateFood.setBounds(410, 470, 120, 34);
-//        this.btncreateFood.setFont(new Font("Serif", Font.PLAIN, 18));
-//        // Button sửa food
-//        this.btnfixFood = new JButton();
-//        this.btnfixFood.setText("Cập nhật");
-//        this.btnfixFood.setBounds(560, 470, 120, 34);
-//        this.btnfixFood.setFont(new Font("Serif", Font.PLAIN, 18));
-//        // Button nhập lại
-//        this.btnNhaplai = new JButton("Nhập lại");
-//        this.btnNhaplai.setBounds(680, 60, 100, 34);
-//        this.btnNhaplai.setFont(new Font("Serif", Font.PLAIN, 18));
-//        // Button xóa food
-//        this.btndeleteFood = new JButton();
-//        this.btndeleteFood.setText("Xóa");
-//        this.btndeleteFood.setBounds(700, 470, 120, 34);
-//        this.btndeleteFood.setFont(new Font("Serif", Font.PLAIN, 18));
 //        //them su kien
-        String[] columnNames = {"ID", "Tên", "category_id", "Giá", "Ảnh", "Miêu tả", "Ngày tạo", "Ngày cập nhật"};
+        String[] columnNames = {"ID", "Tên", "category_id", "Miêu tả", "Ảnh", "Giá", "Ngày tạo", "Ngày cập nhật"};
         Object[][] data = {};
         this.modelFood = new DefaultTableModel(data, columnNames);
         this.table = new JTable(modelFood);
@@ -205,32 +127,81 @@ public class ManagerFood extends JPanel {
         this.scrollPane.setBounds(0, 70, 1000, 380);
 
         // Click bảng hiển thị FoodForm
-        this.table.addMouseListener(new MouseAdapter() {
+        this.btnCreate.addActionListener(new ActionListener() {
             @Override
-            public void mouseClicked(MouseEvent e) {
-                if (e.getClickCount() == 1) {
+            public void actionPerformed(ActionEvent e) {
+                foodForm = new FoodForm();
+                foodForm.setVisible(true);
+                foodForm.Create();
+                foodController.loadFood(table);
+//                foodForm
+            }
+        });
+        this.btnUpdate.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                int row = table.getSelectedRow();
+                if (row != -1) {
+                    FoodUpdate foodUpdate = new FoodUpdate();
+//                    Admin admin = new Admin();
+                    foodUpdate.setVisible(true);
+                    TableModel tblModel = table.getModel();
+                    String name = tblModel.getValueAt(row, 1).toString();
+                    String description = tblModel.getValueAt(row, 3).toString();
+                    String urlImage = tblModel.getValueAt(row, 4).toString();
+                    String price = tblModel.getValueAt(row, 5).toString();
 
-                    JTable target = (JTable) e.getSource();
-                    int row = target.getSelectedRow();
-                    if (row != -1) {
-                        FoodForm foodForm = new FoodForm();
-                        foodForm.setVisible(true);
-
-                        TableModel tblModel = table.getModel();
-                        String name = tblModel.getValueAt(row, 1).toString();
-                        String price = tblModel.getValueAt(row, 3).toString();
-                        String urlImage = tblModel.getValueAt(row, 4).toString();
-                        String description = tblModel.getValueAt(row, 5).toString();
 //                     thêm vào textField
-                        foodForm.txtName.setText(name);
-                        foodForm.txtPrice.setText(price);
-                        foodForm.txtAreaDescription.setText(description);
-                        foodForm.txtImage.setText(urlImage);
+                    foodUpdate.txtName.setText(name);
+                    foodUpdate.txtAreaDescription.setText(description);
+                    foodUpdate.txtImage.setText(urlImage);
+                    foodUpdate.txtPrice.setText(price);
+
+                }
+            }
+        });
+        this.btnDelete.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                int row = table.getSelectedRow();
+                if (row != -1) {
+                    TableModel tblModel = table.getModel();
+                    Object[] options = {"Có", "Không"};
+                    Component form = null;
+                    int n = JOptionPane.showOptionDialog(form, "Bạn có muốn xóa món " + "' " + tblModel.getValueAt(row, 1).toString() + " '" + " không?  ", "Xác nhận", JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE, null, options, options);
+                    if (n == JOptionPane.YES_OPTION) {
+                        FoodsModel.deleteFood(tblModel.getValueAt(row, 0).toString());
+                        JOptionPane.showMessageDialog(null, "Xóa món ăn " + "' " + tblModel.getValueAt(row, 1).toString() + " '" + " thành công.");
+                        foodController.loadFood(table);
                     }
                 }
             }
         });
-
+//        this.table.addMouseListener(new MouseAdapter() {
+//            @Override
+//            public void mouseClicked(MouseEvent e) {
+//                if (e.getClickCount() == 1) {
+//
+//                    JTable target = (JTable) e.getSource();
+//                    int row = target.getSelectedRow();
+//                    if (row != -1) {
+//                        FoodForm foodForm = new FoodForm();
+//                        foodForm.setVisible(true);
+//
+//                        TableModel tblModel = table.getModel();
+//                        String name = tblModel.getValueAt(row, 1).toString();
+//                        String price = tblModel.getValueAt(row, 3).toString();
+//                        String urlImage = tblModel.getValueAt(row, 4).toString();
+//                        String description = tblModel.getValueAt(row, 5).toString();
+////                     thêm vào textField
+//                        foodForm.txtName.setText(name);
+//                        foodForm.txtPrice.setText(price);
+//                        foodForm.txtAreaDescription.setText(description);
+//                        foodForm.txtImage.setText(urlImage);
+//                    }
+//                }
+//            }
+//        });
 //        //delete action
 //        this.btndeleteFood.addActionListener(new ActionListener() {
 //            @Override
@@ -294,35 +265,29 @@ public class ManagerFood extends JPanel {
 //                txtDescription.setText("");
 //            }
 //        });
-//        this.btnfixFood.addActionListener(new ActionListener() {
+//       this.btnUpdate.addActionListener(new ActionListener() {
 //            @Override
 //            public void actionPerformed(ActionEvent e) {
-//                Food food = new Food();
 //                int row = table.getSelectedRow();
 //                if (row != -1) {
-//                    String checkid = tblModel.getValueAt(row, 0).toString();
-//                    food.setId(Integer.valueOf(checkid));
-//                }
-//                if (txtName.getText().isEmpty()) {
-//                    JOptionPane.showMessageDialog(null, "vui lòng điền.");
-//                    return;
-//                }
-//                if (new String(txtValue.getText()).isEmpty()) {
-//                    JOptionPane.showMessageDialog(null, "vui lòng điền số.");
-//                    return;
-//                }
-//                if (ValidateUtilities.checkExistanceAdmin(txtName.getText()) && !txtName.getText().equals(tblModel.getValueAt(row, 1).toString())) {
-//                    JOptionPane.showMessageDialog(null, "tên đã tồn tại, vui lòng điền tên khác");
-//                    return;
-//                }
-//                food.setName(txtName.getText());
-//                food.setUnitPrice(Float.valueOf(txtValue.getText()));
-//                txtLinkImage.getText();
-//                food.setImgUrl(txtLinkImage.getText());
-//                food.setDescription(txtDescription.getText());
-//                FoodsModel.update(food);
-//                FoodsController.loadFood(table);
+//                    AdminUpdate adminUpdate = new AdminUpdate();
+////                    Admin admin = new Admin();
+//                    adminUpdate.setVisible(true);
+//                    TableModel tblModel = table.getModel();
+//                    String name = tblModel.getValueAt(row, 1).toString();
+//                    String username = tblModel.getValueAt(row, 2).toString();
+//                    String pass = tblModel.getValueAt(row, 3).toString();
 //
+////                     thêm vào textField
+//                    adminUpdate.txtName.setText(name);
+//                    adminUpdate.txtAcount.setText(username);
+//                    adminUpdate.txtPassword.setText(pass);
+//
+////                    admin.setUsername(adminUpdate.txtAcount.getText());
+////                    admin.setName(adminUpdate.txtName.getText());
+////                    admin.setPassword(new String(adminUpdate.txtPassword.getText()));
+////                    AdminsModel.update(admin);
+//                }
 //            }
 //        });
 //        this.btnSearch.addActionListener(new ActionListener() {
@@ -353,22 +318,6 @@ public class ManagerFood extends JPanel {
 //            }
 //        });
 //        
-//        //add element
-//        this.add(this.btnfixFood);
-//        this.add(this.btndeleteFood);
-//        this.add(this.btncreateFood);
-//        this.add(this.lblName);
-//        this.add(this.lblValue);
-//        this.add(this.txtName);
-//        this.add(this.txtValue);
-//        this.add(this.lbltitle);
-//        this.add(this.lblDescription);
-//        this.add(this.txtDescription);
-//        this.add(this.lblLinkImage);
-//        this.add(this.txtLinkImage);
-//        this.add(this.btnSearch);
-//        this.add(this.txtSearch);
-//        this.add(this.btnNhaplai);
         // Table        
         this.add(scrollPane);
         this.setLayout(null);

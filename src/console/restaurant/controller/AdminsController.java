@@ -22,12 +22,12 @@ import javax.swing.table.DefaultTableModel;
  */
 public class AdminsController {
 
-    public static void loadAdmins(JTable table) {
+    public void loadAdmins(JTable table) {
         DefaultTableModel model = (DefaultTableModel) table.getModel();
         model.setRowCount(0);
         List<Admin> listAdmin = AdminsModel.getAllAdmin();
         listAdmin.forEach((admin) -> {
-            model.addRow(new Object[]{String.valueOf(admin.getId()), admin.getName(), admin.getUsername(), admin.getPassword(), admin.getCreatedAt()});
+            model.addRow(new Object[]{String.valueOf(admin.getId()), admin.getName(), admin.getUsername(), admin.getPassword(), admin.getCreatedAt(), admin.getUpdateAt()});
         });
     }
 
@@ -61,6 +61,7 @@ public class AdminsController {
                 admin.setPassword(rs.getString("password"));
                 admin.setName(rs.getString("name"));
                 admin.setCreatedAt(rs.getString("created_at"));
+                admin.setUpdateAt(rs.getString("updated_at"));
                 adminList.add(admin);
             }
         } catch (SQLException ex) {

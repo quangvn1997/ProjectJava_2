@@ -5,6 +5,7 @@
  */
 package console.restaurant.models;
 
+import console.restaurant.controller.AdminsController;
 import console.restaurant.entities.Admin;
 import console.restaurant.utilities.ScannerUtilities;
 import java.sql.PreparedStatement;
@@ -35,6 +36,7 @@ public class AdminsModel {
                 JOptionPane.showMessageDialog(null, "Sửa tài khoản thành công !", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
             }
         } catch (Exception e) {
+            e.printStackTrace();
             JOptionPane.showMessageDialog(null, "Lỗi sửa tài khoản", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
         }
     }
@@ -42,12 +44,13 @@ public class AdminsModel {
     public static void insertAdmin(Admin admin) {
         try {
             PreparedStatement pstmt = DAO.getConnection().prepareStatement(""
-                    + "Insert into admins(name,username,password,created_at"
-                    + ") values(?,?,?,?)");
+                    + "Insert into admins(name,username,password,created_at,updated_at"
+                    + ") values(?,?,?,?,?)");
             pstmt.setString(1, admin.getName());
             pstmt.setString(2, admin.getUsername());
             pstmt.setString(3, admin.getPassword());
             pstmt.setDate(4, new java.sql.Date(new java.util.Date().getTime()));
+            pstmt.setDate(5, new java.sql.Date(new java.util.Date().getTime()));
             int a = pstmt.executeUpdate();
             if (a > 0) {
                 JOptionPane.showMessageDialog(null, "Thêm mới tài khoản thành công !", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
@@ -71,6 +74,7 @@ public class AdminsModel {
                 admin.setUsername(rs.getString("username"));
                 admin.setPassword(rs.getString("password"));
                 admin.setCreatedAt(rs.getString("created_at"));
+                admin.setUpdateAt(rs.getString("updated_at"));
                 adminList.add(admin);
             }
         } catch (SQLException ex) {

@@ -5,13 +5,12 @@
  */
 package console.restaurant.view;
 
-import console.restaurant.controller.AdminsController;
 import console.restaurant.entities.Admin;
 import console.restaurant.models.AdminsModel;
 import console.restaurant.utilities.ValidateUtilities;
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.Font;
-import java.awt.HeadlessException;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.JButton;
@@ -21,13 +20,14 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
+import static javax.swing.WindowConstants.DISPOSE_ON_CLOSE;
 import javax.swing.table.TableModel;
 
 /**
  *
  * @author Anh Tiến ơi.Có Trộm!
  */
-public class AdminForm extends JFrame {
+public class AdminUpdate extends JFrame {
 
     private JPanel adminPanel;
 
@@ -43,11 +43,7 @@ public class AdminForm extends JFrame {
     private JButton btnSubmit;
     private JButton btnReset;
 
-    public JLabel getTitleHeader() {
-        return titleHeader;
-    }
-
-    public AdminForm() {
+    public AdminUpdate() {
         this.setTitle("Quản lý tài khoản");
         this.setSize(450, 500);
 
@@ -55,7 +51,7 @@ public class AdminForm extends JFrame {
         this.adminPanel.setBounds(0, 0, 450, 550);
         this.adminPanel.setBackground(Color.WHITE);
 
-        this.titleHeader = new JLabel("Tạo mới tài khoản");
+        this.titleHeader = new JLabel("Sửa thông tin tài khoản");
         this.titleHeader.setFont(new Font("Serif", Font.BOLD, 18));
         this.lblName = new JLabel("Họ và tên");
         this.lblUsername = new JLabel("Tài khoản");
@@ -75,8 +71,8 @@ public class AdminForm extends JFrame {
         this.txtAcount.setBounds(170, 190, 150, 34);
         this.txtPassword.setBounds(170, 250, 150, 34);
 
-        this.btnSubmit.setBounds(165, 320, 80, 34);
-        this.btnReset.setBounds(265, 320, 80, 34);
+        this.btnSubmit.setBounds(140, 320, 80, 34);
+        this.btnReset.setBounds(240, 320, 80, 34);
 
         this.add(this.titleHeader);
         this.add(this.lblName);
@@ -93,41 +89,6 @@ public class AdminForm extends JFrame {
         this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
         this.setLocationRelativeTo(null);
 
-    }
-
-    public void Create() {
-
-        this.btnSubmit.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                if (txtName.getText().isEmpty()) {
-                    JOptionPane.showMessageDialog(null, "Vui lòng điền họ và tên !", "Báo lỗi", JOptionPane.INFORMATION_MESSAGE);
-                    return;
-                }
-                if (txtAcount.getText().isEmpty()) {
-                    JOptionPane.showMessageDialog(null, "Vui lòng điền tài khoản !", "Báo lỗi", JOptionPane.INFORMATION_MESSAGE);
-                    return;
-                }
-                if (new String(txtPassword.getText()).isEmpty()) {
-                    JOptionPane.showMessageDialog(null, "Vui lòng điền mật khẩu !", "Báo lỗi", JOptionPane.INFORMATION_MESSAGE);
-                    return;
-                }
-                if (ValidateUtilities.checkExistanceAdmin(txtAcount.getText())) {
-                    JOptionPane.showMessageDialog(null, "Tên tài khoản đã tồn tại !", "Báo lỗi", JOptionPane.INFORMATION_MESSAGE);
-                    return;
-                }
-                Admin admin = new Admin();
-                admin.setUsername(txtAcount.getText());
-                admin.setName(txtName.getText());
-                admin.setPassword(new String(txtPassword.getText()));
-                AdminsModel.insertAdmin(admin);
-
-                txtAcount.setText("");
-                txtName.setText("");
-                txtPassword.setText("");
-            }
-        });
-
         this.btnReset.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -136,10 +97,48 @@ public class AdminForm extends JFrame {
                 txtPassword.setText("");
             }
         });
+
+        ManagerAdmin manager = new ManagerAdmin();
+        this.btnSubmit.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                Admin admin = new Admin();
+//                ManagerAdmin manager = new ManagerAdmin();
+//                int row = manager.table.getSelectedRow();
+//                TableModel tblModel = manager.table.getModel();
+//                if (row != -1) {
+//                    String checkid = tblModel.getValueAt(row, 0).toString();
+//                    admin.setId(Integer.valueOf(checkid));
+//                }
+                if (txtAcount.getText().isEmpty()) {
+                    JOptionPane.showMessageDialog(null, "Vui lòng điền tài khoản !", "Báo lỗi", JOptionPane.INFORMATION_MESSAGE);
+                    return;
+                }
+                if (new String(txtPassword.getText()).isEmpty()) {
+                    JOptionPane.showMessageDialog(null, "Vui lòng điền mật khẩu !", "Báo lỗi", JOptionPane.INFORMATION_MESSAGE);
+                    return;
+                }
+//                if (ValidateUtilities.checkExistanceAdmin(txtAcount.getText()) && !txtAcount.getText().equals(tblModel.getValueAt(row, 1).toString())) {
+//                    JOptionPane.showMessageDialog(null, "Tên tài khoản đã tồn tại ! Vui lòng chọn tên khác.", "Báo lỗi", JOptionPane.INFORMATION_MESSAGE);
+//                    return;
+//                }
+
+                admin.setUsername(txtAcount.getText());
+                admin.setName(txtName.getText());
+                admin.setPassword(new String(txtPassword.getText()));
+
+                AdminsModel.update(admin);
+                txtAcount.setText("");
+                txtName.setText("");
+                txtPassword.setText("");
+
+            }
+        });
+
     }
 
-//    public static void main(String[] args) {
-//        AdminForm admin = new AdminForm();
-//        admin.setVisible(true);
-//    }
+    public static void main(String[] args) {
+        AdminUpdate admin = new AdminUpdate();
+        admin.setVisible(true);
+    }
 }
