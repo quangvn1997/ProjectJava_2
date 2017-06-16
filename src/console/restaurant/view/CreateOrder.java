@@ -69,18 +69,6 @@ public class CreateOrder extends JFrame {
         this.setLayout(null);
         this.setLocationRelativeTo(null);
     }
-    
-    public JButton getBtnCreateOrder() {
-        return btnCreateOrder;
-    }
-
-    public JLabel getLblHeader() {
-        return lblHeader;
-    }
-
-    public ManagerPayment getJframePaymen() {
-        return jframePaymen;
-    }
 
     public static void main(String[] args) {
         CreateOrder create = new CreateOrder();

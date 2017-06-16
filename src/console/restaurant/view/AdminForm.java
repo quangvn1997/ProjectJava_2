@@ -92,6 +92,7 @@ public class AdminForm extends JFrame {
         this.setLayout(null);
         this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
         this.setLocationRelativeTo(null);
+
     }
 
     public void Create() {
@@ -119,7 +120,8 @@ public class AdminForm extends JFrame {
                 admin.setUsername(txtAcount.getText());
                 admin.setName(txtName.getText());
                 admin.setPassword(new String(txtPassword.getText()));
-                AdminsModel.insertAdmin(admin);           
+                AdminsModel.insertAdmin(admin);
+
                 txtAcount.setText("");
                 txtName.setText("");
                 txtPassword.setText("");

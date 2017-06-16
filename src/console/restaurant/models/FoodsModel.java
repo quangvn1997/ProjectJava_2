@@ -14,7 +14,42 @@ import javax.swing.table.DefaultTableModel;
 
 public class FoodsModel {
 
-    public static void update(Food food) {
+    public Food getById(int id) {
+        Food food = null;
+        if (id > 0) {
+            try {
+                String sql = "select * from foods where id = " + id;
+                Statement stt = DAO.getConnection().createStatement();
+                ResultSet rs = stt.executeQuery(sql);
+                if (rs.next()) {
+                    food = new Food();
+                    food.setId(Integer.valueOf(rs.getString("id")));
+                    food.setName(rs.getString("name"));
+                    food.setUnitPrice(rs.getFloat("unit_price"));
+                    food.setImgUrl(rs.getString("img_url"));
+                    food.setDescription(rs.getString("description"));
+                    food.setCreatedAt(rs.getString("created_at"));
+                    food.setUpdateAt(rs.getString("updated_at"));
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        return food;
+    }
+
+    public static void main(String[] args) {
+        FoodsModel model = new FoodsModel();
+        Food food = model.getById(26);
+        if (food != null) {
+            System.out.println(food.getName());
+        } else {
+            System.out.println("Không tồn tại.");
+        }
+
+    }
+
+    public boolean update(Food food) {
         try {
             PreparedStatement pstmt = DAO.getConnection().prepareStatement("UPDATE foods SET name=?,unit_price=?,img_url=?,description=?,updated_at=NOW() WHERE id = ?");
             pstmt.setString(1, food.getName());
@@ -25,14 +60,15 @@ public class FoodsModel {
             int a = pstmt.executeUpdate();
             if (a > 0) {
 //                System.out.println("sua thanh cong");
-                JOptionPane.showMessageDialog(null, "Sửa dịch vụ thành công.", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
+                return true;
             }
         } catch (Exception e) {
-            JOptionPane.showMessageDialog(null, "Lỗi sửa dịch vụ !!!", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
+            e.printStackTrace();
         }
+        return false;
     }
 
-    public static void insertFood(Food food) {
+    public boolean insert(Food food) {
         try {
             PreparedStatement pstmt = DAO.getConnection().prepareStatement(""
                     + "Insert into foods(name,unit_price,img_url,description,created_at,updated_at"
@@ -46,12 +82,12 @@ public class FoodsModel {
             int a = pstmt.executeUpdate();
             if (a > 0) {
                 //System.out.println("them thanh cong");
-                JOptionPane.showMessageDialog(null, "Thêm mới dịch vụ thành công", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
+                return true;
             }
         } catch (Exception e) {
             e.printStackTrace();
-            JOptionPane.showMessageDialog(null, "Lỗi thêm dịch vụ", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
         }
+        return false;
     }
 
     public static List<Food> getAllFood() {
@@ -72,7 +108,7 @@ public class FoodsModel {
                 foodList.add(food);
             }
         } catch (SQLException ex) {
-            JOptionPane.showMessageDialog(null, "Lỗi lấy dịch vụ", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
+            JOptionPane.showMessageDialog(null, "Lỗi lấy dịch vụ", "Thông báo", JOptionPane.ERROR_MESSAGE);
             return foodList;
         }
         return foodList;
@@ -85,7 +121,7 @@ public class FoodsModel {
             prest.setString(1, id);
             int val = prest.executeUpdate();
         } catch (Exception e) {
-            JOptionPane.showMessageDialog(null, "Lỗi xóa dịch vụ", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
+            JOptionPane.showMessageDialog(null, "Lỗi xóa dịch vụ", "Thông báo", JOptionPane.ERROR_MESSAGE);
         }
     }
 

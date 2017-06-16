@@ -53,8 +53,6 @@ public class ManagerTable extends JPanel {
     private JLabel lblSearch;
     private JTextField txtSearch;
 
-    private JButton btnDelete;
-    private JButton btnUpdate;
     private JButton btnSearch;
     private JButton btnCreate;
 
@@ -78,15 +76,11 @@ public class ManagerTable extends JPanel {
         this.lblSearch = new JLabel("Nhập trạng thái");
         this.txtSearch = new JTextField();
         this.btnSearch = new JButton("Tìm");
-        this.btnDelete = new JButton("Xóa");
-        this.btnUpdate = new JButton("Sửa");
         this.btnCreate = new JButton("Tạo mới");
 
         this.lblSearch.setBounds(20, 20, 100, 34);
         this.txtSearch.setBounds(130, 20, 200, 34);
         this.btnSearch.setBounds(350, 20, 100, 34);
-        this.btnUpdate.setBounds(640, 20, 100, 34);
-        this.btnDelete.setBounds(760, 20, 100, 34);
         this.btnCreate.setBounds(880, 20, 100, 34);
 
         this.btnFirst = new JButton("<<");
@@ -105,8 +99,6 @@ public class ManagerTable extends JPanel {
         this.add(this.txtSearch);
         this.add(this.btnSearch);
         this.add(this.btnCreate);
-        this.add(this.btnDelete);
-        this.add(this.btnUpdate);
         this.add(this.btnFirst);
         this.add(this.btnPrevious);
         this.add(this.btnPage);
@@ -120,46 +112,6 @@ public class ManagerTable extends JPanel {
                 tableForm.setVisible(true);
                 tableForm.Create();
                 tableController.loadTables(table);
-            }
-        });
-        this.btnUpdate.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                int row = table.getSelectedRow();
-                if (row != -1) {
-                    TableUpdate tableUpdate = new TableUpdate();
-//                    Admin admin = new Admin();
-                    tableUpdate.setVisible(true);
-                    TableModel tblModel = table.getModel();
-                    String name = tblModel.getValueAt(row, 1).toString();
-//                     thêm vào textField
-                    tableUpdate.txtName.setText(name);
-
-//                    admin.setUsername(adminUpdate.txtAcount.getText());
-//                    admin.setName(adminUpdate.txtName.getText());
-//                    admin.setPassword(new String(adminUpdate.txtPassword.getText()));
-//                    AdminsModel.update(admin);
-                }
-            }
-        });
-        this.btnDelete.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                int row = table.getSelectedRow();
-                if (row != -1) {
-                    TableModel tblModel = table.getModel();
-                    Object[] options = {"Có", "Không"};
-                    Component form = null;
-                    int n = JOptionPane.showOptionDialog(form, "Bạn có muốn xóa bàn " + "' " + tblModel.getValueAt(row, 1).toString() + " '" + " không?  ", "Xóa xác nhận", JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE, null, options, options);
-                    if (n == JOptionPane.YES_OPTION) {
-                        TablesModel.deleteAdmin(tblModel.getValueAt(row, 0).toString());
-                        JOptionPane.showMessageDialog(null, "Xóa bàn " + "' " + tblModel.getValueAt(row, 1).toString() + " '" + " thành công.");
-//                        txtAcount.setText("");
-//                        txtPassword.setText("");
-//                        txtName.setText("");
-                        tableController.loadTables(table);
-                    }
-                }
             }
         });
 
