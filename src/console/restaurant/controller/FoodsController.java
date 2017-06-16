@@ -28,7 +28,7 @@ public class FoodsController {
         List<Food> listFood = FoodsModel.getAllFood();
 
         listFood.forEach((food) -> {
-            model.addRow(new Object[]{String.valueOf(food.getId()), food.getName(), food.getType(), food.getUnitPrice(), food.getImgUrl(), food.getDescription(), food.getCreatedAt(), food.getUpdateAt()});
+            model.addRow(new Object[]{String.valueOf(food.getId()), food.getName(), food.getType(), food.getDescription(), food.getImgUrl(), food.getUnitPrice(), food.getCreatedAt(), food.getUpdateAt()});
         });
     }
 

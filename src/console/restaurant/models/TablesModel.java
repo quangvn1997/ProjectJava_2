@@ -15,6 +15,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
+import javax.swing.JOptionPane;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 
@@ -22,7 +23,7 @@ import javax.swing.table.DefaultTableModel;
  *
  * @author Anh Tiến ơi.Có Trộm!
  */
-public class TableModel {
+public class TablesModel {
 
     public ArrayList<Table> getAvailableTable(int page, int limit) {
         ArrayList<Table> listAvailable = new ArrayList<>();
@@ -62,8 +63,19 @@ public class TableModel {
 
     }
 
+    public static void deleteAdmin(String id) {
+        try {
+            String sql = "DELETE FROM tables WHERE id =?";
+            PreparedStatement prest = DAO.getConnection().prepareStatement(sql);
+            prest.setString(1, id);
+            int val = prest.executeUpdate();
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, "Lỗi xóa bàn", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
+        }
+    }
+
     public static void main(String[] args) {
-        TableModel model = new TableModel();
+        TablesModel model = new TablesModel();
         ArrayList<Table> list = model.getAvailableTable(0, 0);
         for (Table tbl : list) {
             System.out.println(tbl.getId());
@@ -71,29 +83,46 @@ public class TableModel {
         }
     }
 
-    public void insertTable(Table[] tables) {
-        int a = 0;
-        for (int i = 0; i < tables.length; i++) {
-            try {
-                PreparedStatement pstmt = DAO.getConnection().prepareStatement(""
-                        + "Insert into table_control(id,name,status"
-                        + ") values(?,?,0)");
-                pstmt.setString(2, tables[i].getName());
-                pstmt.setInt(1, tables[i].getId());
-                a = pstmt.executeUpdate();
-
-            } catch (Exception e) {
-                e.printStackTrace();
-                System.err.println("Loi them san pham.");
+    public static void insertTable(Table table) {
+        try {
+            PreparedStatement pstmt = DAO.getConnection().prepareStatement(""
+                    + "Insert into tables(name,created_at,updated_at"
+                    + ") values(?,?,?)");
+            pstmt.setString(1, table.getName());
+            pstmt.setDate(2, new java.sql.Date(new java.util.Date().getTime()));
+            pstmt.setDate(3, new java.sql.Date(new java.util.Date().getTime()));
+            int a = pstmt.executeUpdate();
+            if (a > 0) {
+                JOptionPane.showMessageDialog(null, "Thêm mới bàn thành công !", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
             }
+        } catch (Exception e) {
+            e.printStackTrace();
+            JOptionPane.showMessageDialog(null, "Lỗi thêm bàn", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
         }
-
-        if (a > 0) {
-            System.out.println("them thanh cong");
-        }
-
     }
 
+//    public void insertTable(Table[] tables) {
+//        int a = 0;
+//        for (int i = 0; i < tables.length; i++) {
+//            try {
+//                PreparedStatement pstmt = DAO.getConnection().prepareStatement(""
+//                        + "Insert into table_control(id,name,status"
+//                        + ") values(?,?,0)");
+//                pstmt.setString(2, tables[i].getName());
+//                pstmt.setInt(1, tables[i].getId());
+//                a = pstmt.executeUpdate();
+//
+//            } catch (Exception e) {
+//                e.printStackTrace();
+//                System.err.println("Loi them san pham.");
+//            }
+//        }
+//
+//        if (a > 0) {
+//            System.out.println("them thanh cong");
+//        }
+//
+//    }
     public static List<Table> getAllTable() {
         List<Table> tableList = new ArrayList<>();
         ResultSet rs;
@@ -105,6 +134,8 @@ public class TableModel {
                 table.setId(Integer.valueOf(rs.getString("id")));
                 table.setName(rs.getString("name"));
                 table.setStatus(rs.getInt("status"));
+                table.setCreatedAt(rs.getString("created_at"));
+                table.setUpdateAt(rs.getString("updated_at"));
                 tableList.add(table);
             }
         } catch (SQLException ex) {
