@@ -35,13 +35,14 @@ public class FoodsModel {
     public static void insertFood(Food food) {
         try {
             PreparedStatement pstmt = DAO.getConnection().prepareStatement(""
-                    + "Insert into foods(name,unit_price,img_url,description,created_at"
-                    + ") values(?,?,?,?,?)");
+                    + "Insert into foods(name,unit_price,img_url,description,created_at,updated_at"
+                    + ") values(?,?,?,?,?,?)");
             pstmt.setString(1, food.getName());
             pstmt.setFloat(2, food.getUnitPrice());
             pstmt.setString(3, food.getImgUrl());
             pstmt.setString(4, food.getDescription());
             pstmt.setDate(5, new java.sql.Date(new java.util.Date().getTime()));
+            pstmt.setDate(6, new java.sql.Date(new java.util.Date().getTime()));
             int a = pstmt.executeUpdate();
             if (a > 0) {
                 //System.out.println("them thanh cong");

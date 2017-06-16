@@ -54,9 +54,10 @@ public class ManagerAdmin extends JPanel {
     private JButton btnSearch;
     private JTextField txtSearch;
 
-    private JTable table;
+    public JTable table;
+    private JButton btnUpdate;
+    private JButton btnDelete;
     private JButton btnCreate;
-
     private JButton btnFirst;
     private JButton btnPrevious;
     private JButton btnPage;
@@ -69,8 +70,7 @@ public class ManagerAdmin extends JPanel {
 
     private AdminForm adminForm;
 
-    ;
-
+    private AdminsController adminController = new AdminsController();
     public ManagerAdmin() {
 
         this.setBackground(new Color(250, 250, 250));
@@ -80,11 +80,17 @@ public class ManagerAdmin extends JPanel {
         this.lblSearch = new JLabel("Nhập tài khoản");
         this.txtSearch = new JTextField();
         this.btnSearch = new JButton("Tìm");
+        this.btnDelete = new JButton("Xóa");
+        this.btnUpdate = new JButton("Sửa");
         this.btnCreate = new JButton("Tạo mới");
 
         this.lblSearch.setBounds(20, 20, 100, 34);
         this.txtSearch.setBounds(130, 20, 200, 34);
         this.btnSearch.setBounds(350, 20, 100, 34);
+        this.btnUpdate.setBounds(640, 20, 100, 34);
+        this.add(this.btnUpdate);
+        this.btnDelete.setBounds(760, 20, 100, 34);
+        this.add(this.btnDelete);
         this.btnCreate.setBounds(880, 20, 100, 34);
 
         this.add(this.lblSearch);
@@ -113,61 +119,6 @@ public class ManagerAdmin extends JPanel {
         this.add(this.btnNext);
         this.add(this.btnLast);
 
-        this.btnCreate.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                adminForm = new AdminForm();
-                adminForm.setVisible(true);
-            }
-        });
-//        this.title = new JLabel();
-//        this.title.setText("QUẢN LÝ ADMIN");
-//        this.title.setBounds(360, 0, 280, 70);
-//        this.title.setFont(new Font("Serif", Font.PLAIN, 30));
-        // button Search
-//        this.btnSearch = new JButton("Search");
-//        this.btnSearch.setBounds(560, 60, 100, 34);
-//        this.txtSearch = new JTextField();
-//        this.txtSearch.setBounds(50, 60, 500, 34);
-        //acount and password
-//        this.lblAcount = new JLabel("Tài khoản :");
-//        this.lblAcount.setBounds(50, 400, 100, 34);
-//        this.txtAcount = new JTextField();
-//        this.txtAcount.setBounds(160, 400, 200, 34);
-//        this.lblPassword = new JLabel("Mật khảu :");
-//        this.lblPassword.setBounds(50, 450, 100, 34);
-//        this.txtPassword = new JPasswordField();
-//        this.txtPassword.setBounds(160, 450, 200, 34);
-//        this.lblAcount.setFont(new Font("Serif", Font.PLAIN, 18));
-//        this.lblPassword.setFont(new Font("Serif", Font.PLAIN, 18));
-//        this.txtAcount.setFont(new Font("Serif", Font.PLAIN, 18));
-//        this.txtPassword.setFont(new Font("Serif", Font.PLAIN, 18));
-        //add name.
-//        this.lblName = new JLabel("Họ và tên :");
-//        this.lblName.setBounds(400, 400, 100, 34);
-//        this.txtName = new JTextField();
-//        this.txtName.setBounds(510, 400, 200, 34);
-//        this.lblName.setFont(new Font("Serif", Font.PLAIN, 18));
-//        this.txtName.setFont(new Font("Serif", Font.PLAIN, 18));
-        // Button tạo mới admin
-//        this.taomoiAdmin = new JButton();
-//        this.taomoiAdmin.setText("Tạo mới");
-//        this.taomoiAdmin.setBounds(400, 450, 120, 34);
-//        this.taomoiAdmin.setFont(new Font("Serif", Font.PLAIN, 18));
-//        // Button sửa admin
-//        this.suaAdmin = new JButton();
-//        this.suaAdmin.setText("Cập nhật");
-//        this.suaAdmin.setBounds(540, 450, 120, 34);
-//        this.suaAdmin.setFont(new Font("Serif", Font.PLAIN, 18));
-//        // Button xóa admin
-//        this.xoaAdmin = new JButton();
-//        this.xoaAdmin.setText("Xóa");
-//        this.xoaAdmin.setBounds(680, 450, 120, 34);
-//        this.xoaAdmin.setFont(new Font("Serif", Font.PLAIN, 18));
-//        //button reset
-//        this.brnReset = new JButton("Reset");
-//        this.brnReset.setBounds(680, 60, 100, 34);
-//        this.brnReset.setFont(new Font("Serif", Font.PLAIN, 18));
         // Table        
         String[] columnNames = {"ID", "Họ và tên", "Tài khoản", "Mật khẩu", "Ngày tạo", "Ngày cập nhật"};
         Object[][] data = {};
@@ -193,56 +144,80 @@ public class ManagerAdmin extends JPanel {
         //table action
 //        TableModel tblModel = table.getModel();
 //        AdminForm admin = new AdminForm();
-        this.table.addMouseListener(new MouseAdapter() {
-            public void mouseClicked(MouseEvent e) {
-                if (e.getClickCount() == 1) {
-
-                    JTable target = (JTable) e.getSource();
-                    int row = target.getSelectedRow();
-                    if (row != -1) {
-                        AdminForm admin = new AdminForm();
-                        admin.setVisible(true);
-
-                        TableModel tblModel = table.getModel();
-                        String name = tblModel.getValueAt(row, 1).toString();
-                        String username = tblModel.getValueAt(row, 2).toString();
-                        String pass = tblModel.getValueAt(row, 3).toString();
-
-//                     thêm vào textField
-                        admin.txtName.setText(name);
-                        admin.txtAcount.setText(username);
-                        admin.txtPassword.setText(pass);
-                    }
-//                    int index = table.getSelectedRow();
-//                    TableModel model = table.getModel();
-//                    String name = model.getValueAt(index, 0).toString();
-////                    String name = model.getValueAt(index, 0).toString();
-////                    String name = model.getValueAt(index, 0).toString();
-//                    admin.txtName.setText(name);
-                }
-            }
-        });
-        //delete action
-//        this.xoaAdmin.addActionListener(new ActionListener() {
-//            @Override
-//            public void actionPerformed(ActionEvent e) {
-//                int row = table.getSelectedRow();
-//                if (row != -1) {
-//                    TableModel tblModel = table.getModel();
-//                    Object[] options = {"Yes", "No"};
-//                    Component form = null;
-//                    int n = JOptionPane.showOptionDialog(form, "Bạn có muốn xóa tài khoản không?  " + tblModel.getValueAt(row, 1).toString() + " ?", "Exit Confirmation", JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE, null, options, options);
-//                    if (n == JOptionPane.YES_OPTION) {
-//                        AdminsModel.deleteAdmin(tblModel.getValueAt(row, 0).toString());
-//                        JOptionPane.showMessageDialog(null, "Xin chia buồn.");
-//                        txtAcount.setText("");
-//                        txtPassword.setText("");
-//                        txtName.setText("");
-//                        AdminsController.loadAdmins(table);
+//        this.table.addMouseListener(new MouseAdapter() {
+//            public void mouseClicked(MouseEvent e) {
+//                if (e.getClickCount() == 1) {
+//
+//                    JTable target = (JTable) e.getSource();
+//                    int row = target.getSelectedRow();
+//                    if (row != -1) {
+//                        AdminUpdate admin = new AdminUpdate();
+//                        admin.setVisible(true);
+//                        TableModel tblModel = table.getModel();
+//                        String name = tblModel.getValueAt(row, 1).toString();
+//                        String username = tblModel.getValueAt(row, 2).toString();
+//                        String pass = tblModel.getValueAt(row, 3).toString();
+//
+////                     thêm vào textField
+//                        admin.txtName.setText(name);
+//                        admin.txtAcount.setText(username);
+//                        admin.txtPassword.setText(pass);
 //                    }
 //                }
 //            }
 //        });
+        this.btnCreate.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                adminForm = new AdminForm();
+                adminForm.setVisible(true);
+                adminForm.Create();
+                adminController.loadAdmins(table);
+            }
+        });
+        this.btnUpdate.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                int row = table.getSelectedRow();
+                if (row != -1) {
+                    AdminUpdate adminUpdate = new AdminUpdate();
+//                    Admin admin = new Admin();
+                    adminUpdate.setVisible(true);
+                    TableModel tblModel = table.getModel();
+                    String name = tblModel.getValueAt(row, 1).toString();
+                    String username = tblModel.getValueAt(row, 2).toString();
+                    String pass = tblModel.getValueAt(row, 3).toString();
+
+//                     thêm vào textField
+                    adminUpdate.txtName.setText(name);
+                    adminUpdate.txtAcount.setText(username);
+                    adminUpdate.txtPassword.setText(pass);
+
+//                    admin.setUsername(adminUpdate.txtAcount.getText());
+//                    admin.setName(adminUpdate.txtName.getText());
+//                    admin.setPassword(new String(adminUpdate.txtPassword.getText()));
+//                    AdminsModel.update(admin);
+                }
+            }
+        });
+        //delete action
+        this.btnDelete.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                int row = table.getSelectedRow();
+                if (row != -1) {
+                    TableModel tblModel = table.getModel();     
+                    Object[] options = {"Có", "Không"};
+                    Component form = null;
+                    int n = JOptionPane.showOptionDialog(form, "Bạn có muốn xóa tài khoản " + "' " + tblModel.getValueAt(row, 1).toString() + " '" + " không?  ", "Xác nhận", JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE, null, options, options);
+                    if (n == JOptionPane.YES_OPTION) {
+                        AdminsModel.deleteAdmin(tblModel.getValueAt(row, 0).toString());
+                        JOptionPane.showMessageDialog(null, "Xóa tài khoản " + "' " + tblModel.getValueAt(row, 1).toString() + " '" + " thành công.");
+                        adminController.loadAdmins(table);
+                    }
+                }
+            }
+        });
         //insert action
 //        this.taomoiAdmin.addActionListener(new ActionListener() {
 //            @Override
@@ -335,21 +310,7 @@ public class ManagerAdmin extends JPanel {
 //                AdminsController.loadAdmins(table);
 //            }
 //        });
-        AdminsController.loadAdmins(table);
-        //add element
-//        this.add(this.brnReset);
-//        this.add(this.xoaAdmin);
-//        this.add(this.suaAdmin);
-//        this.add(this.taomoiAdmin);
-//        this.add(this.lblAcount);
-//        this.add(this.lblPassword);
-//        this.add(this.lblName);
-//        this.add(this.txtAcount);
-//        this.add(this.txtPassword);
-//        this.add(this.txtName);
-//        this.add(this.title);
-//        this.add(this.btnSearch);
-//        this.add(this.txtSearch);
+        adminController.loadAdmins(table);
         this.add(scrollPane);
         this.setLayout(null);
         this.setVisible(false);

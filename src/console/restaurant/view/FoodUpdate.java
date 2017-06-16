@@ -21,14 +21,12 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
-import javax.swing.border.Border;
 
 /**
  *
- * @author Truong
+ * @author Anh Tiến ơi.Có Trộm!
  */
-public class FoodForm extends JFrame {
-
+public class FoodUpdate extends JFrame{
     private JPanel foodPanel;
     private JLabel lblId;
     private JLabel lblIdValue;
@@ -48,7 +46,7 @@ public class FoodForm extends JFrame {
     private JButton btnSubmit;
     private JButton btnReset;
 
-    public FoodForm() {
+    public FoodUpdate() {
         this.setTitle("Quản lý món ăn");
         this.setSize(450, 500);
 
@@ -56,7 +54,7 @@ public class FoodForm extends JFrame {
         this.foodPanel.setBackground(Color.WHITE);
         this.foodPanel.setBounds(0, 0, 450, 550);
 
-        this.lblHeader = new JLabel("Thêm món ăn");
+        this.lblHeader = new JLabel("Sửa món ăn");
         this.lblHeader.setFont(new Font("Serif", Font.BOLD, 18));
         this.lblName = new JLabel("Tên");
         this.lblCategory = new JLabel("Danh mục");
@@ -142,7 +140,7 @@ public class FoodForm extends JFrame {
                 food.setDescription(txtAreaDescription.getText());
                 food.setImgUrl(txtImage.getText());
                 food.setUnitPrice(Integer.parseInt(txtPrice.getText()));
-                FoodsModel.insertFood(food);
+                FoodsModel.update(food);
 //                AdminsController.loadAdmins(table);
 
                 txtName.setText("");
@@ -162,9 +160,4 @@ public class FoodForm extends JFrame {
             }
         });
     }
-//    public static void main(String[] args) {
-//        FoodForm f = new FoodForm();
-//        f.setVisible(true);
-//    }
-
 }

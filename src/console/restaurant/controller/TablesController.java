@@ -7,7 +7,7 @@ package console.restaurant.controller;
 
 import console.restaurant.entities.Food;
 import console.restaurant.entities.Table;
-import console.restaurant.models.TableModel;
+import console.restaurant.models.TablesModel;
 import java.util.List;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
@@ -18,12 +18,12 @@ import javax.swing.table.DefaultTableModel;
  */
 public class TablesController {
 
-    public static void loadTables(JTable table) {
+    public void loadTables(JTable table) {
         DefaultTableModel model = (DefaultTableModel) table.getModel();
         model.setRowCount(0);
-        List<Table> lisTable = TableModel.getAllTable();
+        List<Table> lisTable = TablesModel.getAllTable();
         lisTable.forEach((table1) -> {
-            model.addRow(new Object[]{String.valueOf(table1.getId()), table1.getName(), table1.getStatus()});
+            model.addRow(new Object[]{String.valueOf(table1.getId()), table1.getName(), table1.getStatus(), table1.getCreatedAt(), table1.getUpdateAt()});
         });
     }
 }
