@@ -5,6 +5,7 @@
  */
 package console.restaurant.view;
 
+import console.restaurant.controller.AdminsController;
 import console.restaurant.entities.Admin;
 import console.restaurant.models.AdminsModel;
 import console.restaurant.utilities.ValidateUtilities;
@@ -42,6 +43,15 @@ public class AdminUpdate extends JFrame {
 
     private JButton btnSubmit;
     private JButton btnReset;
+    private String idAdminUpdate;
+
+    public String getIdAdminUpdate() {
+        return idAdminUpdate;
+    }
+
+    public void setIdAdminUpdate(String idAdminUpdate) {
+        this.idAdminUpdate = idAdminUpdate;
+    }
 
     public AdminUpdate() {
         this.setTitle("Quản lý tài khoản");
@@ -89,6 +99,10 @@ public class AdminUpdate extends JFrame {
         this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
         this.setLocationRelativeTo(null);
 
+    }
+
+    public void update() {
+        
         this.btnReset.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -97,19 +111,10 @@ public class AdminUpdate extends JFrame {
                 txtPassword.setText("");
             }
         });
-
-        ManagerAdmin manager = new ManagerAdmin();
+        
         this.btnSubmit.addActionListener(new ActionListener() {
             @Override
-            public void actionPerformed(ActionEvent e) {
-                Admin admin = new Admin();
-//                ManagerAdmin manager = new ManagerAdmin();
-//                int row = manager.table.getSelectedRow();
-//                TableModel tblModel = manager.table.getModel();
-//                if (row != -1) {
-//                    String checkid = tblModel.getValueAt(row, 0).toString();
-//                    admin.setId(Integer.valueOf(checkid));
-//                }
+            public void actionPerformed(ActionEvent e) {               
                 if (txtAcount.getText().isEmpty()) {
                     JOptionPane.showMessageDialog(null, "Vui lòng điền tài khoản !", "Báo lỗi", JOptionPane.INFORMATION_MESSAGE);
                     return;
@@ -122,19 +127,14 @@ public class AdminUpdate extends JFrame {
 //                    JOptionPane.showMessageDialog(null, "Tên tài khoản đã tồn tại ! Vui lòng chọn tên khác.", "Báo lỗi", JOptionPane.INFORMATION_MESSAGE);
 //                    return;
 //                }
-
+                Admin admin = new Admin();
+                admin.setId(Integer.valueOf(idAdminUpdate));
                 admin.setUsername(txtAcount.getText());
                 admin.setName(txtName.getText());
                 admin.setPassword(new String(txtPassword.getText()));
-
                 AdminsModel.update(admin);
-                txtAcount.setText("");
-                txtName.setText("");
-                txtPassword.setText("");
-
             }
         });
-
     }
 
     public static void main(String[] args) {
