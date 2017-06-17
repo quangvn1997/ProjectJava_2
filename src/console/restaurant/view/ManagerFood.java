@@ -73,15 +73,11 @@ public class ManagerFood extends JPanel {
         this.lblSearch.setBounds(20, 20, 70, 34);
         this.txtSearch.setBounds(100, 20, 200, 34);
         this.btnSearch.setBounds(310, 20, 100, 34);
-//        this.btnUpdate.setBounds(640, 20, 100, 34);
-//        this.btnDelete.setBounds(760, 20, 100, 34);
         this.btnCreate.setBounds(880, 20, 100, 34);
 
         this.add(this.lblSearch);
         this.add(this.txtSearch);
         this.add(this.btnSearch);
-//        this.add(this.btnUpdate);
-//        this.add(this.btnDelete);
         this.add(this.btnCreate);
 
         this.btnFirst = new JButton("<<");
