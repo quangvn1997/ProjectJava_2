@@ -71,14 +71,15 @@ public class FoodsModel {
     public boolean insert(Food food) {
         try {
             PreparedStatement pstmt = DAO.getConnection().prepareStatement(""
-                    + "Insert into foods(name,unit_price,img_url,description,created_at,updated_at"
-                    + ") values(?,?,?,?,?,?)");
+                    + "Insert into foods(name,unit_price,img_url,description,created_at,updated_at,category_id"
+                    + ") values(?,?,?,?,?,?,?)");
             pstmt.setString(1, food.getName());
             pstmt.setFloat(2, food.getUnitPrice());
             pstmt.setString(3, food.getImgUrl());
             pstmt.setString(4, food.getDescription());
             pstmt.setDate(5, new java.sql.Date(new java.util.Date().getTime()));
             pstmt.setDate(6, new java.sql.Date(new java.util.Date().getTime()));
+            pstmt.setString(7, String.valueOf(food.getType()));
             int a = pstmt.executeUpdate();
             if (a > 0) {
                 //System.out.println("them thanh cong");
@@ -105,6 +106,7 @@ public class FoodsModel {
                 food.setDescription(rs.getString("description"));
                 food.setCreatedAt(rs.getString("created_at"));
                 food.setUpdateAt(rs.getString("updated_at"));
+                food.setType(Integer.parseInt( rs.getString("category_id")));
                 foodList.add(food);
             }
         } catch (SQLException ex) {
@@ -129,7 +131,7 @@ public class FoodsModel {
         DefaultTableModel model = (DefaultTableModel) table.getModel();
         model.setRowCount(0);
         listFood.forEach((food) -> {
-            model.addRow(new Object[]{String.valueOf(food.getId()), food.getName(), food.getUnitPrice(), food.getImgUrl(), food.getDescription(), food.getCreatedAt()});
+            model.addRow(new Object[]{String.valueOf(food.getId()), food.getName(),food.getType() ,food.getUnitPrice(), food.getImgUrl(), food.getDescription(), food.getCreatedAt()});
         });
     }
 }

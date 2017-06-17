@@ -58,13 +58,7 @@ public class FoodForm extends JFrame {
     private FoodsModel foodModel = new FoodsModel();
 
     private int action = 1;
-    private int id = 0;
-    private String idFoodUpdate;
-
-    public void setIdFoodUpdate(String idFoodUpdate) {
-        this.idFoodUpdate = idFoodUpdate;
-    }
-    
+    private int id = 0;   
     
     public FoodForm() {
         initComponent();
@@ -217,9 +211,10 @@ public class FoodForm extends JFrame {
                 food.setName(txtName.getText());
                 food.setDescription(txtAreaDescription.getText());
                 food.setImgUrl(txtImage.getText());
-                food.setUnitPrice(Integer.parseInt(txtPrice.getText()));
-                
-                if (action == 1) {
+                food.setUnitPrice(Float.parseFloat(txtPrice.getText()));
+                food.setType(cmbCategories.getSelectedIndex());
+                             
+                if (action == 1) {                   
                     if (foodModel.insert(food)) {
                         JOptionPane.showMessageDialog(null, "Thêm mới dịch vụ thành công", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
                     } else {
@@ -227,6 +222,7 @@ public class FoodForm extends JFrame {
                     }
                 }
                 if (action == 2) {
+                    food.setId(id);
                     if (foodModel.update(food)) {
                         JOptionPane.showMessageDialog(null, "Sửa dịch vụ thành công", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
                     } else {
@@ -263,24 +259,6 @@ public class FoodForm extends JFrame {
                 txtPrice.setText("");
             }
         });
-
-//        this.btnDelete.addActionListener(new ActionListener() {
-//            @Override
-//            public void actionPerformed(ActionEvent e) {
-//                int row = table.getSelectedRow();
-//                if (row != -1) {
-//                    TableModel tblModel = table.getModel();
-//                    Object[] options = {"Có", "Không"};
-//                    Component form = null;
-//                    int n = JOptionPane.showOptionDialog(form, "Bạn có muốn xóa món " + "' " + tblModel.getValueAt(row, 1).toString() + " '" + " không?  ", "Xác nhận", JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE, null, options, options);
-//                    if (n == JOptionPane.YES_OPTION) {
-//                        FoodsModel.deleteFood(tblModel.getValueAt(row, 0).toString());
-//                        JOptionPane.showMessageDialog(null, "Xóa món ăn " + "' " + tblModel.getValueAt(row, 1).toString() + " '" + " thành công.");
-////                        foodController.loadFood(table);
-//                    }
-//                }
-//            }
-//        });
     }
 
     public static void main(String[] args) {
