@@ -38,18 +38,6 @@ import javax.swing.table.TableModel;
  */
 public class ManagerTable extends JPanel {
 
-//    private JLabel title;
-//    private JButton btnnewTb;
-//    private JButton btnupdateTb;
-//    private JButton btndeleteTb;
-//    private JButton btnSearch;
-//    private JTextField txtSearch;
-//    private JLabel lblAddTable;
-//    private JLabel lblStatus;
-//    private JTextField txtAddTable;
-//    private JComboBox txtStatus;
-//    private JLabel lblNameTable;
-//    private JTextField txtNameTable;
     private JLabel lblSearch;
     private JTextField txtSearch;
 
