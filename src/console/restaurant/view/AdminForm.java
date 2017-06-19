@@ -52,6 +52,7 @@ public class AdminForm extends JFrame {
     public JButton btnReset;
 
     private AdminsModel adminModel = new AdminsModel();
+    private FoodsModel foodModel = new FoodsModel();
 
     private int action = 1;
     private int id = 0;
@@ -94,7 +95,7 @@ public class AdminForm extends JFrame {
                         Component form = null;
                         int n = JOptionPane.showOptionDialog(form, "Bạn có muốn xóa tài khoản " + "' " + tblModel.getValueAt(row, 1).toString() + " '" + " không?  ", "Xác nhận", JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE, null, options, options);
                         if (n == JOptionPane.YES_OPTION) {
-                            FoodsModel.deleteFood(tblModel.getValueAt(row, 0).toString());
+                            adminModel.deleteAdmin(tblModel.getValueAt(row, 0).toString());
                             JOptionPane.showMessageDialog(null, "Xóa tài khoản " + "' " + tblModel.getValueAt(row, 1).toString() + " '" + " thành công.");
 //                            foodController.loadFood(table);
 

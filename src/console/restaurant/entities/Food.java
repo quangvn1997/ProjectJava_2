@@ -14,12 +14,21 @@ public class Food {
     private int id;
     private String name;
     private int categoryId;
+    private String categoryName;
     private String description;
     private String imgUrl;
     private float unitPrice;
     private String createdAt;
     private String updateAt;
     private int status;
+
+    public String getCategoryName() {
+        return categoryName;
+    }
+
+    public void setCategoryName(String categoryName) {
+        this.categoryName = categoryName;
+    }
 
     public int getId() {
         return id;
