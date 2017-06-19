@@ -462,15 +462,17 @@ public class PanelManager extends JFrame {
         // TODO add your handling code here:
         //       Bắt sự kiện quản lý thống kê
         quanlythongke.setVisible(true);
-        quanlymonan.setVisible(false);
+        
         quanlyadmin.setVisible(false);
+        quanlyban.setVisible(false);
+        panelBan.setVisible(false);
+        quanlymonan.setVisible(false);
         quanlyban.setVisible(false);
 
         btnDatBan.setBackground(Color.white);
         btnAdmin.setBackground(Color.white);
         btnBan.setBackground(Color.white);
         btnMonan.setBackground(Color.white);
-        btnThongke.setBackground(new Color(74, 135, 178));
 
     }//GEN-LAST:event_btnThongkeActionPerformed
 
