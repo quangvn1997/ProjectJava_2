@@ -17,6 +17,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.util.ArrayList;
+import java.util.List;
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JLabel;
@@ -57,6 +59,7 @@ public class ManagerFood extends JPanel {
     private DefaultTableModel modelFood;
     private JScrollPane scrollPane;
     private FoodsController foodController = new FoodsController();
+    private FoodsModel foodModel = new FoodsModel();
 
     public ManagerFood() {
         this.setBackground(new Color(250, 250, 250));
@@ -66,8 +69,6 @@ public class ManagerFood extends JPanel {
         this.lblSearch = new JLabel("Nhập tên");
         this.txtSearch = new JTextField();
         this.btnSearch = new JButton("Tìm");
-//        this.btnUpdate = new JButton("Sửa");
-//        this.btnDelete = new JButton("Xóa");
         this.btnCreate = new JButton("Tạo mới");
 
         this.lblSearch.setBounds(20, 20, 70, 34);
@@ -98,14 +99,10 @@ public class ManagerFood extends JPanel {
         this.add(this.btnNext);
         this.add(this.btnLast);
 
-//        //them su kien
-        String[] columnNames = {"ID", "Tên", "category_id", "Miêu tả", "Ảnh", "Giá", "Ngày tạo", "Ngày cập nhật"};
+        String[] columnNames = {"ID", "Tên", "Danh mục", "Miêu tả", "Ảnh", "Giá", "Ngày tạo", "Ngày cập nhật"};
         Object[][] data = {};
         this.modelFood = new DefaultTableModel(data, columnNames);
         this.table = new JTable(modelFood);
-        // this.table.setFont(new Font("Serif", Font.PLAIN, 20));      
-        // this.table.getTableHeader().setFont(new Font("Serif", Font.BOLD, 20));
-        //chinh with column
         this.table.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
         this.table.getColumnModel().getColumn(0).setPreferredWidth(42);
         this.table.getColumnModel().getColumn(1).setPreferredWidth(200);
@@ -117,10 +114,9 @@ public class ManagerFood extends JPanel {
         this.table.getColumnModel().getColumn(7).setPreferredWidth(150);
         this.table.setRowHeight(24);
         this.table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-        foodController.loadFood(table);
-        //Hiển thị kích thước bảng
         this.scrollPane = new JScrollPane(table);
         this.scrollPane.setBounds(0, 70, 1000, 380);
+        loadFood();
 
         // Click bảng hiển thị FoodForm
         this.btnCreate.addActionListener(new ActionListener() {
@@ -128,12 +124,9 @@ public class ManagerFood extends JPanel {
             public void actionPerformed(ActionEvent e) {
                 foodForm = new FoodForm();
                 foodForm.setVisible(true);
-//                foodForm.Create();
-//                foodController.loadFood(table);
-//                foodForm
             }
         });
-        
+
         this.table.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
@@ -150,12 +143,17 @@ public class ManagerFood extends JPanel {
                 }
             }
         });
-//      
-//        
-        // Table        
         this.add(scrollPane);
         this.setLayout(null);
         this.setVisible(false);
     }
 
+    private void loadFood() {
+        DefaultTableModel model = (DefaultTableModel) table.getModel();
+        model.setRowCount(0);
+        ArrayList<Food> listFood = foodModel.getListFood();
+        listFood.forEach((food) -> {
+            model.addRow(new Object[]{String.valueOf(food.getId()), food.getName(), food.getCategoryId(), food.getDescription(), food.getImgUrl(), food.getUnitPrice(), food.getCreatedAt(), food.getUpdateAt()});
+        });
+    }
 }
