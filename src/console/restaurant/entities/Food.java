@@ -13,7 +13,7 @@ public class Food {
 
     private int id;
     private String name;
-    private int type;
+    private int categoryId;
     private String description;
     private String imgUrl;
     private float unitPrice;
@@ -37,12 +37,12 @@ public class Food {
         this.name = name;
     }
 
-    public int getType() {
-        return type;
+    public int getCategoryId() {
+        return categoryId;
     }
 
-    public void setType(int type) {
-        this.type = type;
+    public void setCategoryId(int categoryId) {
+        this.categoryId = categoryId;
     }
 
     public String getDescription() {

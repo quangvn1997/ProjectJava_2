@@ -21,17 +21,7 @@ import javax.swing.table.DefaultTableModel;
  * @author Truong
  */
 public class FoodsController {
-
-    public void loadFood(JTable table) {
-        DefaultTableModel model = (DefaultTableModel) table.getModel();
-        model.setRowCount(0);
-        List<Food> listFood = FoodsModel.getAllFood();
-
-        listFood.forEach((food) -> {
-            model.addRow(new Object[]{String.valueOf(food.getId()), food.getName(), food.getType(), food.getDescription(), food.getImgUrl(), food.getUnitPrice(), food.getCreatedAt(), food.getUpdateAt()});
-        });
-    }
-
+    
     public List<Food> searchFood(String keyword, int option) {
         List<Food> foodList = new ArrayList<>();
         ResultSet rs;
@@ -56,7 +46,7 @@ public class FoodsController {
                 Food food = new Food();
                 food.setId(Integer.valueOf(rs.getString("id")));
                 food.setName(rs.getString("name"));
-                food.setType(rs.getInt("category_id"));
+                food.setCategoryId(rs.getInt("category_id"));
                 food.setImgUrl(rs.getString("img_url"));
                 food.setUnitPrice(rs.getFloat("unit_price"));
                 food.setCreatedAt(rs.getString("created_at"));

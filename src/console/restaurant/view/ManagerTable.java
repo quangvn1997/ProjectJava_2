@@ -102,30 +102,6 @@ public class ManagerTable extends JPanel {
                 tableController.loadTables(table);
             }
         });
-
-//        
-//        //delete action
-//        this.btnnewTb.addActionListener(new ActionListener() {
-//            @Override
-//            public void actionPerformed(ActionEvent e) {
-//                int a = Integer.parseInt(txtAddTable.getText());
-//
-//                TableModel tablemodel = new TableModel();
-//
-//                int id_max = tablemodel.getTableMax();
-//
-//                Table[] tables = new Table[a];
-//
-//                for (int i = 0; i < a; i++) {
-//                    tables[i] = new Table();
-//                    tables[i].setName("Bàn " + (i + 1 + id_max));
-//                    tables[i].setId(i + 1 + id_max);
-//                }
-//
-//                tablemodel.insertTable(tables);
-//
-//            }
-//        });
         // Table        
         String[] columnNames = {"ID", "Tên bàn", "Trạng thái", "Ngày tạo", "Ngày cập nhật"};
         Object[][] data = {};
@@ -149,7 +125,7 @@ public class ManagerTable extends JPanel {
         //them su kien
         //table action
         javax.swing.table.TableModel tblModel = table.getModel();
-
+        
 //        this.table.addMouseListener(new MouseAdapter() {
 //            @Override
 //            public void mouseClicked(MouseEvent e) {
@@ -173,7 +149,5 @@ public class ManagerTable extends JPanel {
         this.add(scrollPane);
         this.setLayout(null);
         this.setVisible(false);
-
     }
-
 }

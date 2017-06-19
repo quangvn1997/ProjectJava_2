@@ -5,7 +5,9 @@
  */
 package console.restaurant.view;
 
+import console.restaurant.entities.Category;
 import console.restaurant.entities.Food;
+import console.restaurant.models.CategoryModel;
 import console.restaurant.models.FoodsModel;
 import console.restaurant.utilities.ValidateUtilities;
 import static console.restaurant.view.ManagerFood.table;
@@ -14,6 +16,7 @@ import java.awt.Component;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 import java.util.List;
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
@@ -25,7 +28,6 @@ import javax.swing.JPanel;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
-import javax.swing.border.Border;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
 
@@ -56,9 +58,10 @@ public class FoodForm extends JFrame {
     public JButton btnReset;
 
     private FoodsModel foodModel = new FoodsModel();
+    private CategoryModel categoryModel = new CategoryModel();
 
     private int action = 1;
-    private int id = 0;   
+    private int id = 0;    
     
     public FoodForm() {
         initComponent();
@@ -76,46 +79,7 @@ public class FoodForm extends JFrame {
 
     private void initComponent() {
         // Nếu là form edit.
-        Food food = new Food();
-        if (this.action == 2) {
-            // Lấy dữ liệu food từ db theo id.
-            food = foodModel.getById(this.id);
-            if (food == null) {
-                JOptionPane.showMessageDialog(null, "Food không tồn tại hoặc đã bị xóa.");
-                return;
-            }
-            this.lblHeader = new JLabel("Sửa món ăn");
-            this.btnDelete = new JButton("Xóa");
-            this.btnDelete.setBounds(100, 370, 80, 34);
-            this.add(this.btnDelete);
-
-            this.btnDelete.addActionListener(new ActionListener() {
-                @Override
-                public void actionPerformed(ActionEvent e) {
-                    int row = table.getSelectedRow();
-                    if (row != -1) {
-                        TableModel tblModel = table.getModel();
-                        Object[] options = {"Có", "Không"};
-                        Component form = null;
-                        int n = JOptionPane.showOptionDialog(form, "Bạn có muốn xóa món " + "' " + tblModel.getValueAt(row, 1).toString() + " '" + " không?  ", "Xác nhận", JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE, null, options, options);
-                        if (n == JOptionPane.YES_OPTION) {
-                            FoodsModel.deleteFood(tblModel.getValueAt(row, 0).toString());
-                            JOptionPane.showMessageDialog(null, "Xóa món ăn " + "' " + tblModel.getValueAt(row, 1).toString() + " '" + " thành công.");
-//                            foodController.loadFood(table);
-
-                            DefaultTableModel model = (DefaultTableModel) ManagerFood.table.getModel();
-                            model.setRowCount(0);
-                            List<Food> listFood = FoodsModel.getAllFood();
-
-                            listFood.forEach((f1) -> {
-                                model.addRow(new Object[]{String.valueOf(f1.getId()), f1.getName(), f1.getType(), f1.getDescription(), f1.getImgUrl(), f1.getUnitPrice(), f1.getCreatedAt(), f1.getUpdateAt()});
-                            });
-                            SwingUtilities.windowForComponent(foodPanel).dispose();
-                        }
-                    }
-                }
-            });
-        }
+        Food food = new Food();   
 
         this.setTitle("Quản lý món ăn");
         this.setSize(450, 500);
@@ -129,23 +93,39 @@ public class FoodForm extends JFrame {
         this.lblCategory = new JLabel("Danh mục");
         this.lblImage = new JLabel("Ảnh đại diện");
         this.lblDescription = new JLabel("Mô tả");
-        this.lblPrice = new JLabel("Giá");
+        this.lblPrice = new JLabel("Giá (VND)");
+        this.btnDelete = new JButton("Xóa");
+        this.btnDelete.setBounds(100, 370, 80, 34);
+        
+        if (action == 2) {
+            // Lấy dữ liệu food từ db theo id.
+            food = foodModel.getById(this.id);
+            if (food == null) {
+                JOptionPane.showMessageDialog(null, "Food không tồn tại hoặc đã bị xóa.");
+                return;
+            }
+            this.lblHeader = new JLabel("Sửa món ăn");
+            this.add(this.btnDelete);
+        }
 
         this.btnSubmit = new JButton("Lưu");
         this.btnReset = new JButton("Nhập lại");
 
-        String[] petStrings = {"Đồ ăn", "Đồ uống", "Món ăn đặc trưng"};
+        
 
         this.txtName = new JTextField();
         this.txtName.setText(food.getName());
-        this.cmbCategories = new JComboBox(petStrings);
+        this.cmbCategories = new JComboBox();
+        for (Category category : categoryModel.getListCategory()) {
+            this.cmbCategories.addItem(category);
+        }
         this.txtAreaDescription = new JTextArea();
         this.txtAreaDescription.setBorder(BorderFactory.createLineBorder(Color.GRAY, 1));
         this.txtAreaDescription.setText(food.getDescription());
         this.txtImage = new JTextField();
         this.txtImage.setText(food.getImgUrl());
         this.txtPrice = new JTextField();
-        
+
         this.txtPrice.setText(String.valueOf(food.getUnitPrice()));
 
         this.lblHeader.setBounds(180, 40, 200, 54);
@@ -207,14 +187,17 @@ public class FoodForm extends JFrame {
                     JOptionPane.showMessageDialog(null, "Tên món ăn đã tồn tại !", "Báo lỗi", JOptionPane.ERROR_MESSAGE);
                     return;
                 }
+                
                 Food food = new Food();
                 food.setName(txtName.getText());
                 food.setDescription(txtAreaDescription.getText());
                 food.setImgUrl(txtImage.getText());
                 food.setUnitPrice(Float.parseFloat(txtPrice.getText()));
-                food.setType(cmbCategories.getSelectedIndex());
-                             
-                if (action == 1) {                   
+                Category selectedCate = (Category) cmbCategories.getSelectedItem();
+                food.setCategoryId(selectedCate.getId());
+                food.setId(id);
+
+                if (action == 1) {
                     if (foodModel.insert(food)) {
                         JOptionPane.showMessageDialog(null, "Thêm mới dịch vụ thành công", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
                     } else {
@@ -222,7 +205,6 @@ public class FoodForm extends JFrame {
                     }
                 }
                 if (action == 2) {
-                    food.setId(id);
                     if (foodModel.update(food)) {
                         JOptionPane.showMessageDialog(null, "Sửa dịch vụ thành công", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
                     } else {
@@ -233,10 +215,10 @@ public class FoodForm extends JFrame {
 //                Load trong database
                 DefaultTableModel model = (DefaultTableModel) ManagerFood.table.getModel();
                 model.setRowCount(0);
-                List<Food> listFood = FoodsModel.getAllFood();
-                
+                ArrayList<Food> listFood = foodModel.getListFood();
+
                 listFood.forEach((f1) -> {
-                    model.addRow(new Object[]{String.valueOf(f1.getId()), f1.getName(), f1.getType(), f1.getDescription(), f1.getImgUrl(), f1.getUnitPrice(), f1.getCreatedAt(), f1.getUpdateAt()});
+                    model.addRow(new Object[]{String.valueOf(f1.getId()), f1.getName(), f1.getCategoryId(), f1.getDescription(), f1.getImgUrl(), f1.getUnitPrice(), f1.getCreatedAt(), f1.getUpdateAt()});
                 });
 
 //                
@@ -244,7 +226,6 @@ public class FoodForm extends JFrame {
                 txtPrice.setText("");
                 txtAreaDescription.setText("");
                 txtImage.setText("");
-                
 //                Đóng form
                 SwingUtilities.windowForComponent(foodPanel).dispose();
             }
@@ -257,6 +238,32 @@ public class FoodForm extends JFrame {
                 txtName.setText("");
                 txtImage.setText("");
                 txtPrice.setText("");
+            }
+        });
+
+        this.btnDelete.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                int row = table.getSelectedRow();
+                if (row != -1) {
+                    TableModel tblModel = table.getModel();
+                    Object[] options = {"Có", "Không"};
+                    Component form = null;
+                    int n = JOptionPane.showOptionDialog(form, "Bạn có muốn xóa món " + "' " + tblModel.getValueAt(row, 1).toString() + " '" + " không?  ", "Xác nhận", JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE, null, options, options);
+                    if (n == JOptionPane.YES_OPTION) {
+                        FoodsModel.deleteFood(tblModel.getValueAt(row, 0).toString());
+                        JOptionPane.showMessageDialog(null, "Xóa món ăn " + "' " + tblModel.getValueAt(row, 1).toString() + " '" + " thành công.");
+
+                        DefaultTableModel model = (DefaultTableModel) ManagerFood.table.getModel();
+                        model.setRowCount(0);
+                        ArrayList<Food> listFood = foodModel.getListFood();
+
+                        listFood.forEach((f1) -> {
+                            model.addRow(new Object[]{String.valueOf(f1.getId()), f1.getName(), f1.getCategoryId(), f1.getDescription(), f1.getImgUrl(), f1.getUnitPrice(), f1.getCreatedAt(), f1.getUpdateAt()});
+                        });
+                        SwingUtilities.windowForComponent(foodPanel).dispose();
+                    }
+                }
             }
         });
     }
