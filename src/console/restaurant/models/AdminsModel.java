@@ -7,6 +7,7 @@ package console.restaurant.models;
 
 import console.restaurant.controller.AdminsController;
 import console.restaurant.entities.Admin;
+import console.restaurant.entities.Food;
 import console.restaurant.utilities.ScannerUtilities;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -24,7 +25,30 @@ import javax.swing.table.DefaultTableModel;
  */
 public class AdminsModel {
 
-    public static void update(Admin admin) {
+    public Admin getById(int id) {
+        Admin admin = null;
+        if (id > 0) {
+            try {
+                String sql = "select * from admins where id = " + id;
+                Statement stt = DAO.getConnection().createStatement();
+                ResultSet rs = stt.executeQuery(sql);
+                if (rs.next()) {
+                    admin = new Admin();
+                    admin.setId(Integer.valueOf(rs.getString("id")));
+                    admin.setName(rs.getString("name"));
+                    admin.setUsername(rs.getString("username"));
+                    admin.setPassword(rs.getString("password"));
+                    admin.setCreatedAt(rs.getString("created_at"));
+                    admin.setUpdateAt(rs.getString("updated_at"));
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        return admin;
+    }
+
+    public boolean update(Admin admin) {
         try {
             PreparedStatement pstmt = DAO.getConnection().prepareStatement("UPDATE admins SET name=?,username=?,password=?,updated_at=NOW() WHERE id = ?");
             pstmt.setString(1, admin.getName());
@@ -33,15 +57,15 @@ public class AdminsModel {
             pstmt.setString(4, String.valueOf(admin.getId()));
             int a = pstmt.executeUpdate();
             if (a > 0) {
-                JOptionPane.showMessageDialog(null, "Sửa tài khoản thành công !", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
+                return true;
             }
         } catch (Exception e) {
             e.printStackTrace();
-            JOptionPane.showMessageDialog(null, "Lỗi sửa tài khoản", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
         }
+        return false;
     }
 
-    public static void insertAdmin(Admin admin) {
+    public boolean insertAdmin(Admin admin) {
         try {
             PreparedStatement pstmt = DAO.getConnection().prepareStatement(""
                     + "Insert into admins(name,username,password,created_at,updated_at"
@@ -53,12 +77,12 @@ public class AdminsModel {
             pstmt.setDate(5, new java.sql.Date(new java.util.Date().getTime()));
             int a = pstmt.executeUpdate();
             if (a > 0) {
-                JOptionPane.showMessageDialog(null, "Thêm mới tài khoản thành công !", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
+                return true;
             }
         } catch (Exception e) {
             e.printStackTrace();
-            JOptionPane.showMessageDialog(null, "Lỗi thêm tài khoản", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
         }
+        return false;
     }
 
     public static List<Admin> getAllAdmin() {

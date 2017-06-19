@@ -10,6 +10,7 @@ import console.restaurant.entities.Admin;
 import console.restaurant.entities.SessionAdmin;
 import console.restaurant.models.AdminsModel;
 import console.restaurant.utilities.ValidateUtilities;
+import static console.restaurant.view.ManagerFood.table;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Font;
@@ -54,7 +55,7 @@ public class ManagerAdmin extends JPanel {
     private JButton btnSearch;
     private JTextField txtSearch;
 
-    public JTable table;
+    public static JTable table;
     private JButton btnCreate;
     private JButton btnFirst;
     private JButton btnPrevious;
@@ -129,6 +130,7 @@ public class ManagerAdmin extends JPanel {
         this.table.getColumnModel().getColumn(5).setPreferredWidth(170);
         this.table.setRowHeight(24);
         this.table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+        adminController.loadAdmins(table);
         //Hiển thị kích thước bảng
         this.scrollPane = new JScrollPane(table);
         this.scrollPane.setBounds(0, 70, 1000, 380);
@@ -139,12 +141,28 @@ public class ManagerAdmin extends JPanel {
             public void actionPerformed(ActionEvent e) {
                 adminForm = new AdminForm();
                 adminForm.setVisible(true);
-                adminForm.Create();
-                adminController.loadAdmins(table);
+//                adminForm.Create();
+//                adminController.loadAdmins(table);
+            }
+        });
+        this.table.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                if (e.getClickCount() == 1) {
+
+                    JTable target = (JTable) e.getSource();
+                    int row = target.getSelectedRow();
+                    if (row != -1) {
+                        TableModel tblModel = table.getModel();
+                        int id = Integer.parseInt(tblModel.getValueAt(row, 0).toString());
+                        AdminForm adminForm = new AdminForm(2, id);
+                        adminForm.setVisible(true);
+                    }
+                }
             }
         });
 
-        adminController.loadAdmins(table);
+//        adminController.loadAdmins(table);
         this.add(scrollPane);
         this.setLayout(null);
         this.setVisible(false);

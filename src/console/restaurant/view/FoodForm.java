@@ -261,9 +261,9 @@ public class FoodForm extends JFrame {
         });
     }
 
-    public static void main(String[] args) {
-        FoodForm f = new FoodForm();
-        f.setVisible(true);
-    }
+//    public static void main(String[] args) {
+//        FoodForm f = new FoodForm();
+//        f.setVisible(true);
+//    }
 
 }
