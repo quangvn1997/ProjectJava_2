@@ -47,7 +47,7 @@ public class ManagerFood extends JPanel {
     private JButton btnCreate;
 
     public static int page = 1;
-    public static int limit = 2;
+    public static int limit = 14;
     public static int count = 0;
     public static int totalPage = 0;
 
@@ -192,7 +192,7 @@ public class ManagerFood extends JPanel {
                     if (row != -1) {
                         TableModel tblModel = table.getModel();
                         int id = Integer.parseInt(tblModel.getValueAt(row, 0).toString());
-                        FoodForm foodForm = new FoodForm(2, id);
+                        FoodForm foodForm = new FoodForm(2 ,id);
                         foodForm.setVisible(true);
                     }
                 }

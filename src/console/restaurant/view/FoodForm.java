@@ -195,6 +195,7 @@ public class FoodForm extends JFrame {
                 food.setUnitPrice(Float.parseFloat(txtPrice.getText()));
                 Category selectedCate = (Category) cmbCategories.getSelectedItem();
                 food.setCategoryId(selectedCate.getId());
+                
                 food.setId(id);
                 if (action == 1) {
                     if (foodModel.insert(food)) {

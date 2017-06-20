@@ -108,14 +108,42 @@ public class AdminsModel {
         return adminList;
     }
 
-    public static void deleteAdmin(String id) {
+    public ArrayList<Admin> getListAdmin(int page, int limit) {
+        // limit = 2
+        // page = 2
+        ArrayList<Admin> listAdmin = new ArrayList<>();
+        try {
+            String strQuery = "select * from admins ";
+//            strQuery += "FROM `foods` as food_table ";
+//            strQuery += "INNER join categories as category_table ";
+//            strQuery += "ON food_table.category_id = category_table.id ";
+//            strQuery += "WHERE admins.status = 1 ORDER BY admins.created_at DESC ";
+            strQuery += "LIMIT " + limit + " OFFSET " + (page - 1) * limit;
+            ResultSet rs = DAO.getConnection().createStatement().executeQuery(strQuery);
+            while (rs.next()) {
+                Admin admin = new Admin();
+                admin.setId(Integer.valueOf(rs.getString("id")));
+                admin.setName(rs.getString("name"));
+                admin.setUsername(rs.getString("username"));
+                admin.setPassword(rs.getString("password"));
+                admin.setCreatedAt(rs.getString("created_at"));
+                admin.setUpdateAt(rs.getString("updated_at"));
+                listAdmin.add(admin);
+            }
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+        return listAdmin;
+    }
+
+    public void delete(int id) {
         try {
             String sql = "DELETE FROM admins WHERE id =?";
             PreparedStatement prest = DAO.getConnection().prepareStatement(sql);
-            prest.setString(1, id);
+            prest.setInt(1, id);
             int val = prest.executeUpdate();
         } catch (Exception e) {
-            JOptionPane.showMessageDialog(null, "Lỗi xóa tài khoản", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
+            JOptionPane.showMessageDialog(null, "Lỗi xóa tài khoản", "Thông báo", JOptionPane.ERROR_MESSAGE);
         }
     }
 
@@ -125,5 +153,44 @@ public class AdminsModel {
         listAdmin.forEach((admin) -> {
             model.addRow(new Object[]{String.valueOf(admin.getId()), admin.getName(), admin.getUsername(), admin.getPassword(), admin.getCreatedAt()});
         });
+    }
+
+    public int countActive() {
+        int count = 0;
+        try {
+            String strQuery = "select count(id) from admins where status = 1";
+            ResultSet rs = DAO.getConnection().createStatement().executeQuery(strQuery);
+            if (rs.next()) {
+                count = rs.getInt("count(id)");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return count;
+    }
+
+    public ArrayList<Admin> searchAdmin(String searchObj) {
+        ArrayList<Admin> listAdmin = new ArrayList<>();
+        try {
+            String strQuery = "select * ";
+            strQuery += "FROM `admins` as food_table ";
+//            strQuery += "INNER join categories as category_table ";
+//            strQuery += "ON food_table.category_id = category_table.id ";
+            strQuery += "WHERE food_table.status = 1 AND food_table.name like '%" + searchObj + "%' " + " ORDER BY food_table.created_at DESC";
+            ResultSet rs = DAO.getConnection().createStatement().executeQuery(strQuery);
+            while (rs.next()) {
+                Admin admin = new Admin();
+                admin.setId(Integer.valueOf(rs.getString("id")));
+                admin.setName(rs.getString("name"));
+                admin.setUsername(rs.getString("username"));
+                admin.setPassword(rs.getString("password"));
+                admin.setCreatedAt(rs.getString("created_at"));
+                admin.setUpdateAt(rs.getString("updated_at"));
+                listAdmin.add(admin);
+            }
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+        return listAdmin;
     }
 }
