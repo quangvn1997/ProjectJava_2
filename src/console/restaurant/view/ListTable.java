@@ -24,7 +24,7 @@ import static javax.swing.WindowConstants.DISPOSE_ON_CLOSE;
 public class ListTable extends javax.swing.JPanel {
 
     int length = 5;
-    final int TONG_SO_BAN = 15;
+    static int TONG_SO_BAN = 15;
     int banHienTai = 0;
     int sotrang = 1;
     public int page = 1;

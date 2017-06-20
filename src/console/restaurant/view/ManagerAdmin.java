@@ -23,6 +23,9 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import javax.imageio.ImageIO;
 import javax.swing.BorderFactory;
@@ -69,7 +72,6 @@ public class ManagerAdmin extends JPanel {
 
     private AdminForm adminForm;
 
-    private AdminsController adminController = new AdminsController();
     private static AdminsModel adminModel = new AdminsModel();
 
     public ManagerAdmin() {
@@ -88,7 +90,7 @@ public class ManagerAdmin extends JPanel {
 
         this.add(this.lblSearch);
         this.add(this.txtSearch);
-            this.add(this.btnCreate);
+        this.add(this.btnCreate);
 
         this.btnFirst = new JButton("<<");
         this.btnPrevious = new JButton("<");
@@ -104,7 +106,6 @@ public class ManagerAdmin extends JPanel {
 //
 //        ImageIcon img = new ImageIcon("....\\src\\console\\restaurant\\Image\\add.jpg");
 //        btnCreate.setIcon(img);
-
         this.add(this.btnFirst);
         this.add(this.btnPrevious);
         this.add(this.btnPage);

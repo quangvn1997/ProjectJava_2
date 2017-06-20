@@ -8,6 +8,7 @@ package console.restaurant.view;
 import console.restaurant.controller.AdminsController;
 import console.restaurant.controller.FoodsController;
 import console.restaurant.controller.TablesController;
+import console.restaurant.entities.Admin;
 import console.restaurant.entities.SessionAdmin;
 import java.awt.Color;
 import java.awt.Font;
@@ -25,11 +26,21 @@ import javax.swing.table.DefaultTableModel;
 import console.restaurant.models.TablesModel;
 import console.restaurant.entities.Table;
 import console.restaurant.models.AdminsModel;
+import static console.restaurant.view.ManagerAdmin.count;
+import static console.restaurant.view.ManagerAdmin.limit;
+import static console.restaurant.view.ManagerAdmin.loadAdmin;
+import static console.restaurant.view.ManagerAdmin.page;
+import static console.restaurant.view.ManagerAdmin.table;
+import static console.restaurant.view.ManagerAdmin.totalPage;
+import static console.restaurant.view.ManagerFood.table;
 import java.awt.Component;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.util.ArrayList;
 import javax.swing.JComboBox;
 import javax.swing.JOptionPane;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
 import javax.swing.table.TableModel;
 
 /**
@@ -41,19 +52,25 @@ public class ManagerTable extends JPanel {
     private JLabel lblSearch;
     private JTextField txtSearch;
 
-    private JButton btnSearch;
     private JButton btnCreate;
 
-    private JButton btnFirst;
-    private JButton btnPrevious;
-    private JButton btnPage;
-    private JButton btnNext;
-    private JButton btnLast;
-    private int page = 1;
-    private JTable table;
+    private static JButton btnFirst;
+    private static JButton btnPrevious;
+    private static JButton btnPage;
+    private static JButton btnNext;
+    private static JButton btnLast;
+
+    public static int page = 1;
+    public static int limit = 14;
+    public static int count = 0;
+    public static int totalPage = 0;
+
+    public static JTable table;
     private DefaultTableModel modelTable;
     private JScrollPane scrollPane;
     private TablesController tableController = new TablesController();
+
+    private static TablesModel tableModel = new TablesModel();
 
     public ManagerTable() {
 
@@ -61,14 +78,12 @@ public class ManagerTable extends JPanel {
         this.setBounds(350, 90, 1000, 520);
         this.setBorder(BorderFactory.createLineBorder(Color.BLACK));
 
-        this.lblSearch = new JLabel("Nhập trạng thái");
+        this.lblSearch = new JLabel("Nhập tên bàn");
         this.txtSearch = new JTextField();
-        this.btnSearch = new JButton("Tìm");
         this.btnCreate = new JButton("Tạo mới");
 
         this.lblSearch.setBounds(20, 20, 100, 34);
         this.txtSearch.setBounds(130, 20, 200, 34);
-        this.btnSearch.setBounds(350, 20, 100, 34);
         this.btnCreate.setBounds(880, 20, 100, 34);
 
         this.btnFirst = new JButton("<<");
@@ -85,7 +100,6 @@ public class ManagerTable extends JPanel {
 
         this.add(this.lblSearch);
         this.add(this.txtSearch);
-        this.add(this.btnSearch);
         this.add(this.btnCreate);
         this.add(this.btnFirst);
         this.add(this.btnPrevious);
@@ -93,15 +107,6 @@ public class ManagerTable extends JPanel {
         this.add(this.btnNext);
         this.add(this.btnLast);
 
-        this.btnCreate.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                TableForm tableForm = new TableForm();
-                tableForm.setVisible(true);
-                tableForm.Create();
-                tableController.loadTables(table);
-            }
-        });
         // Table        
         String[] columnNames = {"ID", "Tên bàn", "Trạng thái", "Ngày tạo", "Ngày cập nhật"};
         Object[][] data = {};
@@ -118,36 +123,131 @@ public class ManagerTable extends JPanel {
         this.table.getColumnModel().getColumn(4).setPreferredWidth(200);
         this.table.setRowHeight(24);
         this.table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-        tableController.loadTables(table);
+        loadTable();
         //Hiển thị kích thước bảng
         this.scrollPane = new JScrollPane(table);
         this.scrollPane.setBounds(0, 70, 1000, 380);
-        //them su kien
-        //table action
+
         javax.swing.table.TableModel tblModel = table.getModel();
+
+        this.btnCreate.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                TableForm tableForm = new TableForm();
+                tableForm.setVisible(true);
+            }
+        });
+        this.btnNext.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                page += 1;
+                loadTable();
+            }
+        });
+
+        this.btnLast.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                page = totalPage;
+                loadTable();
+            }
+        });
+
+        this.btnPrevious.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                page -= 1;
+                loadTable();
+            }
+        });
+
+        this.btnFirst.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                page = 1;
+                loadTable();
+            }
+        });
+        this.table.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                if (e.getClickCount() == 1) {
+
+                    JTable target = (JTable) e.getSource();
+                    int row = target.getSelectedRow();
+                    if (row != -1) {
+                        TableModel tblModel = table.getModel();
+                        int id = Integer.parseInt(tblModel.getValueAt(row, 0).toString());
+                        TableForm tableForm = new TableForm(2, id);
+                        tableForm.setVisible(true);
+                        String name = tblModel.getValueAt(row, 1).toString();
+//                     thêm vào textFieldaadmin
+                        tableForm.txtName.setText(name);
+                    }
+                }
+            }
+        });
         
-//        this.table.addMouseListener(new MouseAdapter() {
-//            @Override
-//            public void mouseClicked(MouseEvent e) {
-//                if (e.getClickCount() == 1) {
-//
-//                    JTable target = (JTable) e.getSource();
-//                    int row = target.getSelectedRow();
-//                    if (row != -1) {
-//                        TableForm tableForm = new TableForm();
-//                        tableForm.setVisible(true);
-//
-//                        javax.swing.table.TableModel tblModel = table.getModel();
-//                        String name = tblModel.getValueAt(row, 1).toString();
-////                     thêm vào textField
-//                        tableForm.txtName.setText(name);
-//
-//                    }
-//                }
-//            }
-//        });
+          this.txtSearch.getDocument().addDocumentListener(new DocumentListener() {
+            public void changedUpdate(DocumentEvent e) {
+                process();
+            }
+
+            public void removeUpdate(DocumentEvent e) {
+                process();
+            }
+
+            public void insertUpdate(DocumentEvent e) {
+                process();
+            }
+
+            public void process() {
+                page = 1;
+                ArrayList<Table> listTable = new ArrayList<>();
+                DefaultTableModel model = (DefaultTableModel) table.getModel();
+                model.setRowCount(0);
+                if (txtSearch != null && txtSearch.getText().length() > 0) {
+                    listTable = tableModel.searchAdmin(txtSearch.getText());
+                } else {
+                    listTable = tableModel.getListTable(page, limit);
+                }
+                listTable.forEach((table) -> {
+                    model.addRow(new Object[]{String.valueOf(table.getId()), table.getName(),table.getStatus(), table.getCreatedAt(), table.getUpdateAt()});
+                });
+            }
+        });
         this.add(scrollPane);
         this.setLayout(null);
         this.setVisible(false);
+    }
+
+    public static void loadTable() {
+        DefaultTableModel model = (DefaultTableModel) table.getModel();
+        model.setRowCount(0);
+        ArrayList<Table> listAdmin = tableModel.getListTable(page, limit);
+        listAdmin.forEach((tableload) -> {
+            model.addRow(new Object[]{String.valueOf(tableload.getId()), tableload.getName(),tableload.getStatus(), tableload.getCreatedAt(), tableload.getUpdateAt()});
+        });
+        count = tableModel.countActive();
+        totalPage = count / limit + (count % limit > 0 ? 1 : 0);
+        btnPage.setText(String.valueOf(page));
+        handlePaginateButton();
+    }
+
+    private static void handlePaginateButton() {
+        if (page <= 1) {
+            btnFirst.setEnabled(false);
+            btnPrevious.setEnabled(false);
+        } else {
+            btnFirst.setEnabled(true);
+            btnPrevious.setEnabled(true);
+        }
+        if (page == totalPage) {
+            btnNext.setEnabled(false);
+            btnLast.setEnabled(false);
+        } else {
+            btnNext.setEnabled(true);
+            btnLast.setEnabled(true);
+        }
     }
 }

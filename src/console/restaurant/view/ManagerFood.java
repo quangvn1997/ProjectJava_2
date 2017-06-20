@@ -63,12 +63,12 @@ public class ManagerFood extends JPanel {
         this.setBounds(350, 90, 1000, 520);
         this.setBorder(BorderFactory.createLineBorder(Color.BLACK));
 
-        this.lblSearch = new JLabel("Tìm theo tên");
+        this.lblSearch = new JLabel("Nhập tên món");
         this.txtSearch = new JTextField();
         this.btnCreate = new JButton("Tạo mới");
 
-        this.lblSearch.setBounds(20, 20, 70, 34);
-        this.txtSearch.setBounds(100, 20, 200, 34);
+        this.lblSearch.setBounds(20, 20, 100, 34);
+        this.txtSearch.setBounds(130, 20, 200, 34);
         this.btnCreate.setBounds(880, 20, 100, 34);
 
         this.add(this.lblSearch);
