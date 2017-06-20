@@ -6,11 +6,19 @@
 package console.restaurant.view;
 
 import console.restaurant.controller.PaymentController;
+import console.restaurant.entities.Food;
 import console.restaurant.entities.SessionAdmin;
+import console.restaurant.models.FoodsModel;
+import static console.restaurant.view.ManagerFood.limit;
+import static console.restaurant.view.ManagerFood.page;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import javax.swing.JFrame;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
+import javax.swing.table.DefaultTableModel;
 
 /**
  *
@@ -21,13 +29,15 @@ public class ManagerPayment extends javax.swing.JFrame {
     /**
      * Creates new form QuanLyThanhToan
      */
+    private static FoodsModel foodModel = new FoodsModel();
+
     public ManagerPayment() {
         initComponents();
         setLocationRelativeTo(null);
         clockThanhToan();
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
     }
-    
+
     public void clockThanhToan() {
         Thread clock = new Thread() {
             public void run() {
@@ -63,7 +73,7 @@ public class ManagerPayment extends javax.swing.JFrame {
     private void initComponents() {
 
         jPanel1 = new javax.swing.JPanel();
-        jTextField1 = new javax.swing.JTextField();
+        txtSearchFood = new javax.swing.JTextField();
         jLabel3 = new javax.swing.JLabel();
         jComboBox1 = new javax.swing.JComboBox<>();
         jTextField6 = new javax.swing.JTextField();
@@ -86,7 +96,7 @@ public class ManagerPayment extends javax.swing.JFrame {
         jTextField3 = new javax.swing.JTextField();
         jTextField4 = new javax.swing.JTextField();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
+        table = new javax.swing.JTable();
         jLabel2 = new javax.swing.JLabel();
         jButton3 = new javax.swing.JButton();
         jButton4 = new javax.swing.JButton();
@@ -115,6 +125,12 @@ public class ManagerPayment extends javax.swing.JFrame {
         });
 
         jPanel1.setBackground(new java.awt.Color(250, 250, 250));
+
+        txtSearchFood.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtSearchFoodActionPerformed(evt);
+            }
+        });
 
         jLabel3.setFont(new java.awt.Font("Arial", 1, 18)); // NOI18N
         jLabel3.setText("Phân loại :");
@@ -212,7 +228,7 @@ public class ManagerPayment extends javax.swing.JFrame {
             .addGap(0, 199, Short.MAX_VALUE)
         );
 
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        table.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null},
                 {null, null, null},
@@ -250,7 +266,11 @@ public class ManagerPayment extends javax.swing.JFrame {
                 "Mã DV", "Tên dịch vụ", "Đơn giá"
             }
         ));
-        jScrollPane1.setViewportView(jTable1);
+        jScrollPane1.setViewportView(table);
+        if (table.getColumnModel().getColumnCount() > 0) {
+            table.getColumnModel().getColumn(0).setPreferredWidth(50);
+            table.getColumnModel().getColumn(1).setPreferredWidth(120);
+        }
 
         jLabel2.setFont(new java.awt.Font("Arial", 1, 18)); // NOI18N
         jLabel2.setText("Tìm Kiếm");
@@ -269,6 +289,8 @@ public class ManagerPayment extends javax.swing.JFrame {
         jButton4.setText("CHUYỂN BÀN");
 
         time.setFont(new java.awt.Font("Arial", 1, 36)); // NOI18N
+
+        jButton10.setIcon(new javax.swing.ImageIcon(getClass().getResource("/console/restaurant/Image/seach.jpg"))); // NOI18N
 
         jLabel7.setFont(new java.awt.Font("Arial", 0, 18)); // NOI18N
         jLabel7.setText("Mọi ý kiến thắc mắc xin liên hệ : 0987654321");
@@ -301,7 +323,7 @@ public class ManagerPayment extends javax.swing.JFrame {
                             .addGroup(jPanel1Layout.createSequentialGroup()
                                 .addComponent(jLabel2)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 115, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                .addComponent(txtSearchFood, javax.swing.GroupLayout.PREFERRED_SIZE, 115, javax.swing.GroupLayout.PREFERRED_SIZE)))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jButton10, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 253, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -410,7 +432,7 @@ public class ManagerPayment extends javax.swing.JFrame {
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jButton10, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(txtSearchFood, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)))))
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
@@ -526,7 +548,7 @@ public class ManagerPayment extends javax.swing.JFrame {
 
     private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
         //Load dữ liệu khi form mở lên.
-        PaymentController.loadFood(jTable1);
+        PaymentController.loadFood(table);
         jTextField2.setText(SessionAdmin.getName());
     }//GEN-LAST:event_formWindowOpened
 
@@ -536,6 +558,37 @@ public class ManagerPayment extends javax.swing.JFrame {
 //        PanelManager panelManager = new PanelManager();
 //        panelManager.setVisible(false);
     }//GEN-LAST:event_jButton3ActionPerformed
+
+    private void txtSearchFoodActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtSearchFoodActionPerformed
+        // TODO add your handling code here:
+        this.txtSearchFood.getDocument().addDocumentListener(new DocumentListener() {
+            public void changedUpdate(DocumentEvent e) {
+                process();
+            }
+
+            public void removeUpdate(DocumentEvent e) {
+                process();
+            }
+
+            public void insertUpdate(DocumentEvent e) {
+                process();
+            }
+
+            public void process() {
+                ArrayList<Food> listFood = new ArrayList<>();
+                DefaultTableModel model = (DefaultTableModel) table.getModel();
+                model.setRowCount(0);
+                if (txtSearchFood != null && txtSearchFood.getText().length() > 0) {
+                    listFood = foodModel.searchFood(txtSearchFood.getText());
+                } else {
+                    listFood = foodModel.getListFood(page, limit);
+                }
+                listFood.forEach((food) -> {
+                    model.addRow(new Object[]{String.valueOf(food.getId()), food.getName(), food.getUnitPrice()});
+                });
+            }
+        });
+    }//GEN-LAST:event_txtSearchFoodActionPerformed
 
     /**
      * @param args the command line arguments
@@ -571,7 +624,7 @@ public class ManagerPayment extends javax.swing.JFrame {
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
                 new ManagerPayment().setVisible(true);
-                
+
             }
         });
     }
@@ -611,14 +664,14 @@ public class ManagerPayment extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel3;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
-    private javax.swing.JTable jTable1;
     private javax.swing.JTable jTable2;
-    private javax.swing.JTextField jTextField1;
     private javax.swing.JTextField jTextField2;
     private javax.swing.JTextField jTextField3;
     private javax.swing.JTextField jTextField4;
     private javax.swing.JTextField jTextField6;
     private javax.swing.JTextField jTextField7;
+    private javax.swing.JTable table;
     private javax.swing.JLabel time;
+    private javax.swing.JTextField txtSearchFood;
     // End of variables declaration//GEN-END:variables
 }

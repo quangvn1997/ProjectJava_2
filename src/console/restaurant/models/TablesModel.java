@@ -25,6 +25,53 @@ import javax.swing.table.DefaultTableModel;
  */
 public class TablesModel {
 
+    public Table getById(int id) {
+        Table table = null;
+        if (id > 0) {
+            try {
+                String sql = "select * from tables where id = " + id;
+                Statement stt = DAO.getConnection().createStatement();
+                ResultSet rs = stt.executeQuery(sql);
+                if (rs.next()) {
+                    table = new Table();
+                    table.setId(Integer.valueOf(rs.getString("id")));
+                    table.setName(rs.getString("name"));
+                    table.setCreatedAt(rs.getString("created_at"));
+                    table.setUpdateAt(rs.getString("updated_at"));
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        return table;
+    }
+
+    public ArrayList<Table> getListTable(int page, int limit) {
+        // limit = 2
+        // page = 2
+        ArrayList<Table> listTable = new ArrayList<>();
+        try {
+            String strQuery = "select * from tables ";
+//            strQuery += "FROM `foods` as food_table ";
+//            strQuery += "INNER join categories as category_table ";
+//            strQuery += "ON food_table.category_id = category_table.id ";
+//            strQuery += "WHERE admins.status = 1 ORDER BY admins.created_at DESC ";
+            strQuery += "LIMIT " + limit + " OFFSET " + (page - 1) * limit;
+            ResultSet rs = DAO.getConnection().createStatement().executeQuery(strQuery);
+            while (rs.next()) {
+                Table table = new Table();
+                table.setId(Integer.valueOf(rs.getString("id")));
+                table.setName(rs.getString("name"));
+                table.setCreatedAt(rs.getString("created_at"));
+                table.setUpdateAt(rs.getString("updated_at"));
+                listTable.add(table);
+            } 
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+        return listTable;
+    }
+
     public ArrayList<Table> getAvailableTable(int page, int limit) {
         ArrayList<Table> listAvailable = new ArrayList<>();
         try {
@@ -48,29 +95,42 @@ public class TablesModel {
         return listAvailable;
     }
 
-    public int getCountTable() {
+//    public int getCountTable() {
+//        try {
+//            Connection cnn = DAO
+//                    .getConnection();
+//            Statement stt = cnn.createStatement();
+//            String sqlQuery = "select count from tables";
+//            System.out.println(sqlQuery);
+//            ResultSet rs = stt.executeQuery(sqlQuery);
+//
+//        } catch (Exception e) {
+//        }
+//        return 0;
+//
+//    }
+    public int countActive() {
+        int count = 0;
         try {
-            Connection cnn = DAO
-                    .getConnection();
-            Statement stt = cnn.createStatement();
-            String sqlQuery = "select count from tables";
-            System.out.println(sqlQuery);
-            ResultSet rs = stt.executeQuery(sqlQuery);
-
+            String strQuery = "select count(id) from tables where status = 1";
+            ResultSet rs = DAO.getConnection().createStatement().executeQuery(strQuery);
+            if (rs.next()) {
+                count = rs.getInt("count(id)");
+            }
         } catch (Exception e) {
+            e.printStackTrace();
         }
-        return 0;
-
+        return count;
     }
 
-    public static void deleteAdmin(String id) {
+    public void delete(int id) {
         try {
             String sql = "DELETE FROM tables WHERE id =?";
             PreparedStatement prest = DAO.getConnection().prepareStatement(sql);
-            prest.setString(1, id);
+            prest.setInt(1, id);
             int val = prest.executeUpdate();
         } catch (Exception e) {
-            JOptionPane.showMessageDialog(null, "Lỗi xóa bàn", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
+            JOptionPane.showMessageDialog(null, "Lỗi xóa bàn", "Thông báo", JOptionPane.ERROR_MESSAGE);
         }
     }
 
@@ -83,7 +143,22 @@ public class TablesModel {
         }
     }
 
-    public static void insertTable(Table table) {
+    public boolean update(Table table) {
+        try {
+            PreparedStatement pstmt = DAO.getConnection().prepareStatement("UPDATE tables SET name=?,updated_at=NOW() WHERE id = ?");
+            pstmt.setString(1, table.getName());
+            pstmt.setString(2, String.valueOf(table.getId()));
+            int a = pstmt.executeUpdate();
+            if (a > 0) {
+                return true;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    public boolean insertTable(Table table) {
         try {
             PreparedStatement pstmt = DAO.getConnection().prepareStatement(""
                     + "Insert into tables(name,created_at,updated_at"
@@ -93,36 +168,15 @@ public class TablesModel {
             pstmt.setDate(3, new java.sql.Date(new java.util.Date().getTime()));
             int a = pstmt.executeUpdate();
             if (a > 0) {
-                JOptionPane.showMessageDialog(null, "Thêm mới bàn thành công !", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
+                return true;
             }
         } catch (Exception e) {
             e.printStackTrace();
-            JOptionPane.showMessageDialog(null, "Lỗi thêm bàn", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
         }
+        return false;
     }
+//
 
-//    public void insertTable(Table[] tables) {
-//        int a = 0;
-//        for (int i = 0; i < tables.length; i++) {
-//            try {
-//                PreparedStatement pstmt = DAO.getConnection().prepareStatement(""
-//                        + "Insert into table_control(id,name,status"
-//                        + ") values(?,?,0)");
-//                pstmt.setString(2, tables[i].getName());
-//                pstmt.setInt(1, tables[i].getId());
-//                a = pstmt.executeUpdate();
-//
-//            } catch (Exception e) {
-//                e.printStackTrace();
-//                System.err.println("Loi them san pham.");
-//            }
-//        }
-//
-//        if (a > 0) {
-//            System.out.println("them thanh cong");
-//        }
-//
-//    }
     public static List<Table> getAllTable() {
         List<Table> tableList = new ArrayList<>();
         ResultSet rs;
@@ -145,24 +199,46 @@ public class TablesModel {
         return tableList;
     }
 
-    public int getTableMax() {
-
-        int id_max = 0;
-        ResultSet rs;
-        String column;
-        String strQuery = "SELECT * FROM `table_control` ORDER by id DESC";
+    public ArrayList<Table> searchAdmin(String searchObj) {
+        ArrayList<Table> listTable = new ArrayList<>();
         try {
-            rs = DAO.getConnection().createStatement().executeQuery(strQuery);
+            String strQuery = "select * ";
+            strQuery += "FROM `tables` as table_load ";
+//            strQuery += "INNER join categories as category_table ";
+//            strQuery += "ON food_table.category_id = category_table.id ";
+            strQuery += "WHERE table_load.status = 1 AND table_load.name like '%" + searchObj + "%' " + " ORDER BY table_load.created_at DESC";
+            ResultSet rs = DAO.getConnection().createStatement().executeQuery(strQuery);
             while (rs.next()) {
-                id_max = Integer.valueOf(rs.getString("id"));
-                break;
+                Table table = new Table();
+                table.setId(Integer.valueOf(rs.getString("id")));
+                table.setName(rs.getString("name"));
+                table.setStatus(rs.getInt("status"));
+                table.setCreatedAt(rs.getString("created_at"));
+                table.setUpdateAt(rs.getString("updated_at"));
+                listTable.add(table);
             }
         } catch (SQLException ex) {
-            System.err.println("Có lỗi xảy ra! " + ex);
-            return 0;
+            ex.printStackTrace();
         }
-        System.out.println(id_max);
-        return id_max;
+        return listTable;
     }
-
+//    public int getTableMax() {
+//
+//        int id_max = 0;
+//        ResultSet rs;
+//        String column;
+//        String strQuery = "SELECT * FROM `table_control` ORDER by id DESC";
+//        try {
+//            rs = DAO.getConnection().createStatement().executeQuery(strQuery);
+//            while (rs.next()) {
+//                id_max = Integer.valueOf(rs.getString("id"));
+//                break;
+//            }
+//        } catch (SQLException ex) {
+//            System.err.println("Có lỗi xảy ra! " + ex);
+//            return 0;
+//        }
+//        System.out.println(id_max);
+//        return id_max;
+//    }
 }
