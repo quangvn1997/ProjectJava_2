@@ -36,7 +36,7 @@ public class TableForm extends JFrame {
     private JPanel tablePanel;
     private JLabel lblHeader;
     private JLabel lblStatus;
-    private JComboBox cmbStatus;
+    public JComboBox cmbStatus;
     private JLabel lblName;
     public JTextField txtName;
 
@@ -81,7 +81,7 @@ public class TableForm extends JFrame {
         this.txtName = new JTextField();
 
         this.lblStatus = new JLabel("Trạng thái");
-        String[] status = new String[]{"Sẵn sàng", "Đã hỏng"};
+        String[] status = new String[]{" Đã hỏng ", " Sẵn sàng "};
         this.cmbStatus = new JComboBox<String>(status);
 
         this.btnDelete = new JButton("Xóa");
@@ -133,6 +133,7 @@ public class TableForm extends JFrame {
                 }
                 Table table = new Table();
                 table.setName(txtName.getText());
+                table.setStatus(cmbStatus.getSelectedIndex());
 
                 if (action == 1) {
                     if (tableModel.insertTable(table)) {
@@ -153,7 +154,6 @@ public class TableForm extends JFrame {
                 ManagerTable.loadTable();
 
                 txtName.setText("");
-
                 SwingUtilities.windowForComponent(tablePanel).dispose();
             }
         });
