@@ -27,6 +27,7 @@ import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
+import static javax.swing.WindowConstants.DISPOSE_ON_CLOSE;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
 
@@ -89,10 +90,9 @@ public class AdminForm extends JFrame {
         this.btnSubmit = new JButton("Lưu");
         this.btnReset = new JButton("Nhập lại");
         this.btnDelete = new JButton("Xóa");
-
+        admin1 = adminModel.getById(this.id);
         if (action == 2) {
-            // Lấy dữ liệu food từ db theo id.
-            admin1 = adminModel.getById(this.id);
+            // Lấy dữ liệu food từ db theo id.           
             if (admin1 == null) {
                 JOptionPane.showMessageDialog(null, "Tài khoản không tồn tại hoặc đã bị xóa.");
                 return;
@@ -158,7 +158,7 @@ public class AdminForm extends JFrame {
                 admin.setUsername(txtUsername.getText());
                 admin.setName(txtName.getText());
                 admin.setPassword(new String(txtPassword.getText()));
-
+                admin.setId(id);
                 if (action == 1) {
                     if (adminModel.insertAdmin(admin)) {
                         JOptionPane.showMessageDialog(null, "Thêm mới tài khoản thành công", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
@@ -167,7 +167,6 @@ public class AdminForm extends JFrame {
                     }
                 }
                 if (action == 2) {
-                    admin.setId(id);
                     if (adminModel.update(admin)) {
                         JOptionPane.showMessageDialog(null, "Sửa tài khoản thành công", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
                     } else {
@@ -188,9 +187,9 @@ public class AdminForm extends JFrame {
         this.btnReset.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                txtUsername.setText("");
-                txtName.setText("");
-                txtPassword.setText("");
+                    txtUsername.setText("");
+                    txtName.setText("");
+                    txtPassword.setText("");
             }
         });
 

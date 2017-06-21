@@ -64,6 +64,7 @@ public class TablesModel {
                 table.setName(rs.getString("name"));
                 table.setCreatedAt(rs.getString("created_at"));
                 table.setUpdateAt(rs.getString("updated_at"));
+                table.setStatus(rs.getInt("status"));
                 listTable.add(table);
             } 
         } catch (SQLException ex) {
@@ -145,9 +146,10 @@ public class TablesModel {
 
     public boolean update(Table table) {
         try {
-            PreparedStatement pstmt = DAO.getConnection().prepareStatement("UPDATE tables SET name=?,updated_at=NOW() WHERE id = ?");
+            PreparedStatement pstmt = DAO.getConnection().prepareStatement("UPDATE tables SET name=?,status=?,updated_at=NOW() WHERE id = ?");
             pstmt.setString(1, table.getName());
-            pstmt.setString(2, String.valueOf(table.getId()));
+            pstmt.setInt(2, table.getStatus());
+            pstmt.setString(3, String.valueOf(table.getId()));
             int a = pstmt.executeUpdate();
             if (a > 0) {
                 return true;
