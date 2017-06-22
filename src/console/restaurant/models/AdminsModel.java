@@ -50,11 +50,10 @@ public class AdminsModel {
 
     public boolean update(Admin admin) {
         try {
-            PreparedStatement pstmt = DAO.getConnection().prepareStatement("UPDATE admins SET name=?,username=?,password=?,updated_at=NOW() WHERE id = ?");
+            PreparedStatement pstmt = DAO.getConnection().prepareStatement("UPDATE admins SET name=?,password=?,updated_at=NOW() WHERE id = ?");
             pstmt.setString(1, admin.getName());
-            pstmt.setString(2, admin.getUsername());
-            pstmt.setString(3, admin.getPassword());
-            pstmt.setString(4, String.valueOf(admin.getId()));
+            pstmt.setString(2, admin.getPassword());
+            pstmt.setString(3, String.valueOf(admin.getId()));
             int a = pstmt.executeUpdate();
             if (a > 0) {
                 return true;

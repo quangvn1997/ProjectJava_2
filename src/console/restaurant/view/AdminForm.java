@@ -46,6 +46,7 @@ public class AdminForm extends JFrame {
 
     public JTextField txtName;
     public JTextField txtUsername;
+    public JLabel lblUsername1;
     public JTextField txtPassword;
 
     public JButton btnDelete;
@@ -55,6 +56,7 @@ public class AdminForm extends JFrame {
     private AdminsModel adminModel;
     private int action = 1;
     private int id = 0;
+    private Admin admin1 = new Admin();
 
     public AdminForm() {
         initComponent();
@@ -73,7 +75,6 @@ public class AdminForm extends JFrame {
 
     private void initComponent() {
         this.adminModel = new AdminsModel();
-        Admin admin1 = new Admin();
 
         this.setTitle("Quản lý tài khoản");
         this.setSize(450, 500);
@@ -90,8 +91,15 @@ public class AdminForm extends JFrame {
         this.btnSubmit = new JButton("Lưu");
         this.btnReset = new JButton("Nhập lại");
         this.btnDelete = new JButton("Xóa");
-        admin1 = adminModel.getById(this.id);
+        if (action == 1) {
+            this.txtUsername = new JTextField();
+            this.txtUsername.setBounds(170, 190, 150, 34);
+            this.txtUsername.setText(admin1.getUsername());
+            this.add(this.txtUsername);
+        }
         if (action == 2) {
+
+            admin1 = adminModel.getById(this.id);
             // Lấy dữ liệu food từ db theo id.           
             if (admin1 == null) {
                 JOptionPane.showMessageDialog(null, "Tài khoản không tồn tại hoặc đã bị xóa.");
@@ -99,12 +107,15 @@ public class AdminForm extends JFrame {
             }
             this.lblHeader.setText("Sửa tài khoản");
             this.add(this.btnDelete);
+            this.lblUsername1 = new JLabel();
+            this.lblUsername1.setBounds(170, 190, 150, 34);
+            this.lblUsername1.setText(admin1.getUsername());
+            this.add(this.lblUsername1);
         }
 
         this.txtName = new JTextField();
         this.txtName.setText(admin1.getName());
-        this.txtUsername = new JTextField();
-        this.txtUsername.setText(admin1.getUsername());
+
         this.txtPassword = new JPasswordField();
         this.txtPassword.setText(admin1.getPassword());
 
@@ -113,7 +124,7 @@ public class AdminForm extends JFrame {
         this.lblUsername.setBounds(50, 185, 100, 50);
         this.lblPassword.setBounds(50, 245, 100, 50);
         this.txtName.setBounds(170, 130, 150, 34);
-        this.txtUsername.setBounds(170, 190, 150, 34);
+
         this.txtPassword.setBounds(170, 250, 150, 34);
 
         this.btnDelete.setBounds(65, 320, 80, 34);
@@ -127,46 +138,61 @@ public class AdminForm extends JFrame {
         this.add(this.btnSubmit);
         this.add(this.btnReset);
         this.add(this.txtName);
-        this.add(this.txtUsername);
         this.add(this.txtPassword);
 
         this.add(this.adminPanel);
         this.setLayout(null);
         this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
         this.setLocationRelativeTo(null);
-
         this.btnSubmit.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                if (txtName.getText().isEmpty()) {
-                    JOptionPane.showMessageDialog(null, "Vui lòng điền họ và tên !", "Báo lỗi", JOptionPane.INFORMATION_MESSAGE);
-                    return;
-                }
-                if (txtUsername.getText().isEmpty()) {
-                    JOptionPane.showMessageDialog(null, "Vui lòng điền tài khoản !", "Báo lỗi", JOptionPane.INFORMATION_MESSAGE);
-                    return;
-                }
-                if (new String(txtPassword.getText()).isEmpty()) {
-                    JOptionPane.showMessageDialog(null, "Vui lòng điền mật khẩu !", "Báo lỗi", JOptionPane.INFORMATION_MESSAGE);
-                    return;
-                }
-                if (ValidateUtilities.checkExistanceAdmin(txtUsername.getText())) {
-                    JOptionPane.showMessageDialog(null, "Tên tài khoản đã tồn tại !", "Báo lỗi", JOptionPane.INFORMATION_MESSAGE);
-                    return;
-                }
+
                 Admin admin = new Admin();
-                admin.setUsername(txtUsername.getText());
+
                 admin.setName(txtName.getText());
                 admin.setPassword(new String(txtPassword.getText()));
                 admin.setId(id);
                 if (action == 1) {
+                    admin.setUsername(txtUsername.getText());
+                    // Validate.
+                    if (txtName.getText().trim().isEmpty()) {
+                        JOptionPane.showMessageDialog(null, "Vui lòng điền họ và tên !", "Báo lỗi", JOptionPane.INFORMATION_MESSAGE);
+                        return;
+                    }
+                    if (txtUsername.getText().trim().isEmpty()) {
+                        JOptionPane.showMessageDialog(null, "Vui lòng điền tài khoản !", "Báo lỗi", JOptionPane.INFORMATION_MESSAGE);
+                        return;
+                    }
+                    if (new String(txtPassword.getText()).trim().isEmpty()) {
+                        JOptionPane.showMessageDialog(null, "Vui lòng điền mật khẩu !", "Báo lỗi", JOptionPane.INFORMATION_MESSAGE);
+                        return;
+                    }
+                    if (ValidateUtilities.checkExistanceAdmin(txtUsername.getText())) {
+                        JOptionPane.showMessageDialog(null, "Tên tài khoản đã tồn tại, vui lòng nhập lại!", "Báo lỗi", JOptionPane.INFORMATION_MESSAGE);
+                        return;
+                    }
+
                     if (adminModel.insertAdmin(admin)) {
                         JOptionPane.showMessageDialog(null, "Thêm mới tài khoản thành công", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
+                        AdminForm adminForm = new AdminForm();
+                        adminForm.setVisible(false);
                     } else {
                         JOptionPane.showMessageDialog(null, "Lỗi thêm tài khoản", "Thông báo", JOptionPane.ERROR_MESSAGE);
                     }
                 }
+
                 if (action == 2) {
+                    // Validate
+                    if ((txtName.getText()).trim().isEmpty()) {
+                        JOptionPane.showMessageDialog(null, "Vui lòng điền họ và tên !", "Báo lỗi", JOptionPane.INFORMATION_MESSAGE);
+                        return;
+                    }
+                    if (new String(txtPassword.getText()).trim().isEmpty()) {
+                        JOptionPane.showMessageDialog(null, "Vui lòng điền mật khẩu !", "Báo lỗi", JOptionPane.INFORMATION_MESSAGE);
+                        return;
+                    }
+
                     if (adminModel.update(admin)) {
                         JOptionPane.showMessageDialog(null, "Sửa tài khoản thành công", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
                     } else {
@@ -176,9 +202,6 @@ public class AdminForm extends JFrame {
                 ManagerAdmin.page = 1;
                 ManagerAdmin.loadAdmin();
 
-                txtUsername.setText("");
-                txtName.setText("");
-                txtPassword.setText("");
 //                Đóng form
                 SwingUtilities.windowForComponent(adminPanel).dispose();
             }
@@ -187,9 +210,16 @@ public class AdminForm extends JFrame {
         this.btnReset.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                    txtUsername.setText("");
+                if (action == 1) {
+                    lblUsername1.setText("");
                     txtName.setText("");
                     txtPassword.setText("");
+                }
+                if (action == 2) {
+                    lblUsername1.setText(admin1.getUsername());
+                    txtName.setText(admin1.getName());
+                    txtPassword.setText(admin1.getPassword());
+                }
             }
         });
 

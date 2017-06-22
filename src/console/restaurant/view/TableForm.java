@@ -123,7 +123,7 @@ public class TableForm extends JFrame {
         this.btnSubmit.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                if (txtName.getText().isEmpty()) {
+                if (txtName.getText().trim().isEmpty()) {
                     JOptionPane.showMessageDialog(null, "Vui lòng điền tên bàn !", "Báo lỗi", JOptionPane.INFORMATION_MESSAGE);
                     return;
                 }
