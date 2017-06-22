@@ -28,6 +28,7 @@ public class ValidateUtilities {
         }
         return true;
     }
+
     //Ham kiem tra trong
     public static boolean checkBlank(String str) {
         if (str.isEmpty()) {
@@ -36,6 +37,7 @@ public class ValidateUtilities {
         }
         return true;
     }
+
     //Ham kiem tra ton tai 
     public static boolean checkExistanceAdmin(String str) {
         try {
@@ -51,6 +53,7 @@ public class ValidateUtilities {
         }
         return false;
     }
+
     public static boolean checkExistanceProductsBarcode(String str) {
         try {
             Statement statement = DAO.getConnection().createStatement();
@@ -68,7 +71,19 @@ public class ValidateUtilities {
 
     //Ham kiem tra chuoi khi update
     public static boolean validateStringUpdate(String str) {
-        Boolean b = str.matches("^[\\w\\d]+$" + ".*\\S+.*");
+        Boolean b = str.matches("^[\\w\\d]+$");
+        if (str.isEmpty()) {
+            return true;
+        }
+        if (!b) {
+            System.out.println("Sai dinh dang !!!");
+            return false;
+        }
+        return true;
+    }
+
+    public static boolean validateString(String str) {
+        Boolean b = str.matches("^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&+=])(?=\\S+$).{8,}$");
         if (str.isEmpty()) {
             return true;
         }

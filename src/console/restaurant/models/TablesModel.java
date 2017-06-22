@@ -79,7 +79,7 @@ public class TablesModel {
             Connection cnn = DAO
                     .getConnection();
             Statement stt = cnn.createStatement();
-            String sqlQuery = "select * from tables where status = 1 limit " + limit + " offset " + (page - 1) * limit;
+            String sqlQuery = "select * from tables where status = 1 OR status = 2 limit " + limit + " offset " + (page - 1) * limit;
             System.out.println(sqlQuery);
             ResultSet rs = stt.executeQuery(sqlQuery);
             while (rs.next()) {
@@ -150,6 +150,21 @@ public class TablesModel {
             pstmt.setString(1, table.getName());
             pstmt.setInt(2, table.getStatus());
             pstmt.setString(3, String.valueOf(table.getId()));
+            int a = pstmt.executeUpdate();
+            if (a > 0) {
+                return true;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+    
+    public boolean update(int status,int id) {
+        try {
+            PreparedStatement pstmt = DAO.getConnection().prepareStatement("UPDATE tables SET status=? WHERE id = ?");
+            pstmt.setInt(1, status);
+            pstmt.setInt(2,id);
             int a = pstmt.executeUpdate();
             if (a > 0) {
                 return true;

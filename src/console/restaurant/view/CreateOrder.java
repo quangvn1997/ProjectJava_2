@@ -5,6 +5,7 @@
  */
 package console.restaurant.view;
 
+import console.restaurant.models.TablesModel;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.HeadlessException;
@@ -21,6 +22,17 @@ import javax.swing.JPanel;
  */
 public class CreateOrder extends JFrame {
 
+    public JLabel getLblHeader() {
+        return lblHeader;
+    }
+
+    public JButton getBtnCreateOrder() {
+        return btnCreateOrder;
+    }
+
+    public ManagerPayment getJframePaymen() {
+        return jframePaymen;
+    }
     private JPanel orderPanel;
     private JLabel lblHeader;
     private JButton btnCreateOrder;
@@ -28,7 +40,7 @@ public class CreateOrder extends JFrame {
 
     private ManagerPayment jframePaymen = new ManagerPayment();
 
-    public CreateOrder() {
+    public CreateOrder(int id) {
         this.setSize(450, 350);
         this.setTitle("Tạo mới");
 
@@ -50,6 +62,8 @@ public class CreateOrder extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 jframePaymen.setVisible(true);
+                 TablesModel tableModel = new TablesModel();                                
+                 tableModel.update(2,id);
                 setVisible(false);
             }
         });
@@ -71,7 +85,7 @@ public class CreateOrder extends JFrame {
     }
 
     public static void main(String[] args) {
-        CreateOrder create = new CreateOrder();
+        CreateOrder create = new CreateOrder(1 );
         create.setVisible(true);
     }
 }

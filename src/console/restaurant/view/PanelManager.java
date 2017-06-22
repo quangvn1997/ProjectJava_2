@@ -33,7 +33,7 @@ public class PanelManager extends JFrame {
     public ManagerAdmin quanlyadmin = new ManagerAdmin();
 
 //  Quản lý món ăn    
-    public ListTable panelBan = new ListTable();
+    public final ListTable panelBan = new ListTable();
     public ManagerTable quanlyban = new ManagerTable();
     public ManagerFood quanlymonan = new ManagerFood();
     public ManagerStatistic quanlythongke = new ManagerStatistic();

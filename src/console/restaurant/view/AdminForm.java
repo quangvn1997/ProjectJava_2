@@ -164,7 +164,7 @@ public class AdminForm extends JFrame {
                         JOptionPane.showMessageDialog(null, "Vui lòng điền tài khoản !", "Báo lỗi", JOptionPane.INFORMATION_MESSAGE);
                         return;
                     }
-                    if (new String(txtPassword.getText()).trim().isEmpty()) {
+                    if (new String(txtPassword.getText()).trim().isEmpty() && ValidateUtilities.validateString(txtPassword.getText())) {
                         JOptionPane.showMessageDialog(null, "Vui lòng điền mật khẩu !", "Báo lỗi", JOptionPane.INFORMATION_MESSAGE);
                         return;
                     }
@@ -222,7 +222,6 @@ public class AdminForm extends JFrame {
                 }
             }
         });
-
         this.btnDelete.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
