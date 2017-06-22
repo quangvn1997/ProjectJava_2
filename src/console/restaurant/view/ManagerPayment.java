@@ -11,14 +11,18 @@ import console.restaurant.entities.SessionAdmin;
 import console.restaurant.models.FoodsModel;
 import static console.restaurant.view.ManagerFood.limit;
 import static console.restaurant.view.ManagerFood.page;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import javax.swing.JFrame;
+import javax.swing.JTable;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableModel;
 
 /**
  *
@@ -36,6 +40,24 @@ public class ManagerPayment extends javax.swing.JFrame {
         setLocationRelativeTo(null);
         clockThanhToan();
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+
+        this.tableMenu.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                if (e.getClickCount() == 1) {
+
+                    JTable target = (JTable) e.getSource();
+                    int row = target.getSelectedRow();
+                    int colum = target.getSelectedColumn();
+                    if (row != -1) {
+                        TableModel tblModel = tableMenu.getModel();
+//                        int id = Integer.parseInt(tblModel.getValueAt(row, 0).toString());
+                        QuanlityOrder quanlityForm = new QuanlityOrder();
+                        quanlityForm.setVisible(true);
+                    }
+                }
+            }
+        });
     }
 
     public void clockThanhToan() {
@@ -87,7 +109,7 @@ public class ManagerPayment extends javax.swing.JFrame {
         jLabel13 = new javax.swing.JLabel();
         date = new javax.swing.JLabel();
         jScrollPane2 = new javax.swing.JScrollPane();
-        jTable2 = new javax.swing.JTable();
+        tableOrder = new javax.swing.JTable();
         jLabel8 = new javax.swing.JLabel();
         jLabel9 = new javax.swing.JLabel();
         jLabel10 = new javax.swing.JLabel();
@@ -96,7 +118,7 @@ public class ManagerPayment extends javax.swing.JFrame {
         jTextField3 = new javax.swing.JTextField();
         jTextField4 = new javax.swing.JTextField();
         jScrollPane1 = new javax.swing.JScrollPane();
-        table = new javax.swing.JTable();
+        tableMenu = new javax.swing.JTable();
         jLabel2 = new javax.swing.JLabel();
         jButton3 = new javax.swing.JButton();
         jButton4 = new javax.swing.JButton();
@@ -171,7 +193,7 @@ public class ManagerPayment extends javax.swing.JFrame {
 
         date.setFont(new java.awt.Font("Arial", 0, 18)); // NOI18N
 
-        jTable2.setModel(new javax.swing.table.DefaultTableModel(
+        tableOrder.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null, null, null, null},
                 {"", null, null, null, null, null, null},
@@ -203,7 +225,7 @@ public class ManagerPayment extends javax.swing.JFrame {
                 "            ID", "           Tên Dịch Vụ", "         Số Lượng", "                 Đơn Giá", "          Check", "             Thành Tiền", "              Ghi Chú"
             }
         ));
-        jScrollPane2.setViewportView(jTable2);
+        jScrollPane2.setViewportView(tableOrder);
 
         jLabel8.setFont(new java.awt.Font("Arial", 1, 18)); // NOI18N
         jLabel8.setText("NGOẠI TỆ");
@@ -228,7 +250,7 @@ public class ManagerPayment extends javax.swing.JFrame {
             .addGap(0, 199, Short.MAX_VALUE)
         );
 
-        table.setModel(new javax.swing.table.DefaultTableModel(
+        tableMenu.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null},
                 {null, null, null},
@@ -266,10 +288,10 @@ public class ManagerPayment extends javax.swing.JFrame {
                 "Mã DV", "Tên dịch vụ", "Đơn giá"
             }
         ));
-        jScrollPane1.setViewportView(table);
-        if (table.getColumnModel().getColumnCount() > 0) {
-            table.getColumnModel().getColumn(0).setPreferredWidth(50);
-            table.getColumnModel().getColumn(1).setPreferredWidth(120);
+        jScrollPane1.setViewportView(tableMenu);
+        if (tableMenu.getColumnModel().getColumnCount() > 0) {
+            tableMenu.getColumnModel().getColumn(0).setPreferredWidth(50);
+            tableMenu.getColumnModel().getColumn(1).setPreferredWidth(120);
         }
 
         jLabel2.setFont(new java.awt.Font("Arial", 1, 18)); // NOI18N
@@ -287,6 +309,11 @@ public class ManagerPayment extends javax.swing.JFrame {
         jButton4.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         jButton4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/console/restaurant/Image/table.jpg"))); // NOI18N
         jButton4.setText("CHUYỂN BÀN");
+        jButton4.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton4ActionPerformed(evt);
+            }
+        });
 
         time.setFont(new java.awt.Font("Arial", 1, 36)); // NOI18N
 
@@ -301,10 +328,15 @@ public class ManagerPayment extends javax.swing.JFrame {
         jButton11.setFont(new java.awt.Font("Arial", 1, 18)); // NOI18N
         jButton11.setIcon(new javax.swing.ImageIcon(getClass().getResource("/console/restaurant/Image/pay.jpg"))); // NOI18N
         jButton11.setText("THANH TOÁN");
+        jButton11.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton11ActionPerformed(evt);
+            }
+        });
 
         jButton6.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
-        jButton6.setIcon(new javax.swing.ImageIcon(getClass().getResource("/console/restaurant/Image/add.jpg"))); // NOI18N
-        jButton6.setText("ĐẶT HÀNG");
+        jButton6.setIcon(new javax.swing.ImageIcon(getClass().getResource("/console/restaurant/Image/delete.jpg"))); // NOI18N
+        jButton6.setText("Hủy Hóa Đơn");
 
         jLabel1.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         jLabel1.setText("Danh sách thực đơn :");
@@ -548,7 +580,7 @@ public class ManagerPayment extends javax.swing.JFrame {
 
     private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
         //Load dữ liệu khi form mở lên.
-        PaymentController.loadFood(table);
+        PaymentController.loadFood(tableMenu);
         jTextField2.setText(SessionAdmin.getName());
     }//GEN-LAST:event_formWindowOpened
 
@@ -576,7 +608,7 @@ public class ManagerPayment extends javax.swing.JFrame {
 
             public void process() {
                 ArrayList<Food> listFood = new ArrayList<>();
-                DefaultTableModel model = (DefaultTableModel) table.getModel();
+                DefaultTableModel model = (DefaultTableModel) tableMenu.getModel();
                 model.setRowCount(0);
                 if (txtSearchFood != null && txtSearchFood.getText().length() > 0) {
                     listFood = foodModel.searchFood(txtSearchFood.getText());
@@ -589,6 +621,18 @@ public class ManagerPayment extends javax.swing.JFrame {
             }
         });
     }//GEN-LAST:event_txtSearchFoodActionPerformed
+
+    private void jButton11ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton11ActionPerformed
+        // TODO add your handling code here:
+        ConfirmPayment confirmPayment = new ConfirmPayment();
+        confirmPayment.setVisible(true);
+    }//GEN-LAST:event_jButton11ActionPerformed
+
+    private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
+        // TODO add your handling code here:
+        RemoveTable remoteTable = new RemoveTable();
+        remoteTable.setVisible(true);
+    }//GEN-LAST:event_jButton4ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -664,13 +708,13 @@ public class ManagerPayment extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel3;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
-    private javax.swing.JTable jTable2;
     private javax.swing.JTextField jTextField2;
     private javax.swing.JTextField jTextField3;
     private javax.swing.JTextField jTextField4;
     private javax.swing.JTextField jTextField6;
     private javax.swing.JTextField jTextField7;
-    private javax.swing.JTable table;
+    private javax.swing.JTable tableMenu;
+    private javax.swing.JTable tableOrder;
     private javax.swing.JLabel time;
     private javax.swing.JTextField txtSearchFood;
     // End of variables declaration//GEN-END:variables
