@@ -14,6 +14,7 @@ import java.awt.event.ActionListener;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
@@ -70,13 +71,20 @@ public class PaymentOrder extends JFrame {
                 setVisible(false);
             }
         });
+        this.btnPrint.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                JOptionPane.showMessageDialog(null, "In hóa đơn thành công.");
+                setVisible(false);
+            }
+        });
         String[] columnNames = {"Stt", "Tên dịch vụ", "Đơn giá", "Số lượng","Giảm giá", "Thành tiền", "Ngày tạo", "Trạng thái"};
         Object[][] data = {};
         this.modelPayment = new DefaultTableModel(data, columnNames);
         this.table = new JTable(modelPayment);
         this.table.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
         this.table.getColumnModel().getColumn(0).setPreferredWidth(50);
-        this.table.getColumnModel().getColumn(1).setPreferredWidth(150);
+        this.table.getColumnModel().getColumn(1).setPreferredWidth(147);
         this.table.getColumnModel().getColumn(2).setPreferredWidth(110);
         this.table.getColumnModel().getColumn(3).setPreferredWidth(75);
         this.table.getColumnModel().getColumn(4).setPreferredWidth(100);
