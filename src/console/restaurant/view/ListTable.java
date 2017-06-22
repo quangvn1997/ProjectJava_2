@@ -34,6 +34,7 @@ public class ListTable extends javax.swing.JPanel {
     private Map<String, JButton> dynamicButtons;
 
     public ListTable() {
+        
         initComponents();
         loadTable();
     }
@@ -58,15 +59,23 @@ public class ListTable extends javax.swing.JPanel {
             // chỉnh vị trí bàn
             listBan[i] = new JButton(list.get(i).getName());
             listBan[i].setBounds(x, y, 150, 100);
-            listBan[i].setBackground(new Color(142, 242, 144));
+            if (list.get(i).getStatus() == 1) {
+                listBan[i].setBackground(new Color(142, 242, 144));
+            } else if (list.get(i).getStatus() == 2) {
+                listBan[i].setBackground(new Color(255, 26, 26));
+            }else {
+                listBan[i].setBackground(new Color(255, 255, 255));
+            }
+            int a = list.get(i).getId();
             listBan[i].setForeground(Color.black);
             listBan[i].setFont(new Font("Serif", Font.PLAIN, 24));
             banHienTai = i;
-
             listBan[i].addActionListener(new ActionListener() {
                 public void actionPerformed(ActionEvent e) {
                     if (e.getSource() instanceof JButton) {
-                        CreateOrder createOrder = new CreateOrder();
+                        CreateOrder createOrder = new CreateOrder(a);
+                        JButton B1 = (JButton) e.getSource();
+                        createOrder.getLblHeader().setText("Thao tác với bàn số : " + B1.getText());
                         createOrder.setVisible(true);
                     }
                 }

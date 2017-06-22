@@ -25,11 +25,13 @@ public class JModel {
       * @return
       */
      public static int loginAdmin(String username, String password) {
+         System.out.println(password);
 	  int count = 0;
 	  try {
 	       String checklogin = String.format("SELECT * FROM admins WHERE username = '%s' AND password = '%s'", username, password);
 	       ResultSet rs = DAO.getConnection().createStatement().executeQuery(checklogin);
-	       while (rs.next()) {
+               
+	       while (rs.next() && password.equals(rs.getString("password"))) {
 		    ++count;
 		    SessionAdmin.setId(rs.getInt("id"));
 		    SessionAdmin.setUsername(rs.getString("username"));
@@ -41,6 +43,7 @@ public class JModel {
 		    return -1;
 	       }
 	  } catch (SQLException e) {
+              e.printStackTrace();
 	       System.out.println("Loi kiem tra Admin");
 	  }
 	  return count;

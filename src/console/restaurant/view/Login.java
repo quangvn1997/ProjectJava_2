@@ -243,10 +243,10 @@ public class Login extends javax.swing.JFrame {
             fixPassword.setFont(new Font("Serif", Font.PLAIN, 20));
             return;
         }
-        int login = JModel.loginAdmin(txtAccount.getText(), new String(txtPasswordCharArray.getPassword()));
-        if (login > 0) {
-//	       JOptionPane.showMessageDialog(this, "Đăng nhập thành công!");
+        System.out.println(String.valueOf(txtPasswordCharArray.getPassword()));
+        int login = JModel.loginAdmin(txtAccount.getText(), String.valueOf(txtPasswordCharArray.getPassword()));
 
+        if (login > 0) {
         } else {
             JOptionPane.showMessageDialog(this, "Sai thông tin đăng nhập!\n Vui lòng thử lại!");
             return;
@@ -273,31 +273,31 @@ public class Login extends javax.swing.JFrame {
     }//GEN-LAST:event_txtAccountActionPerformed
 
     private void txtPasswordCharArrayKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtPasswordCharArrayKeyPressed
-        if(evt.getKeyCode() == KeyEvent.VK_ENTER){
+        if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
             if (txtAccount.getText().isEmpty()) {
 //              JOptionPane.showMessageDialog(null, "Hãy nhập Account!", "Failure", JOptionPane.ERROR_MESSAGE);
-            fixAccount.setText("* Nhập tài khoản hợp lệ.");
-            fixAccount.setForeground(Color.red);
-            fixAccount.setFont(new Font("Serif", Font.PLAIN, 20));
-            return;
-        }
-        if (txtPasswordCharArray.getPassword().length == 0) {
-            fixPassword.setText("* Nhập mật khẩu hợp lệ.");
-            fixPassword.setForeground(Color.red);
-            fixPassword.setFont(new Font("Serif", Font.PLAIN, 20));
-            return;
-        }
-        int login = JModel.loginAdmin(txtAccount.getText(), new String(txtPasswordCharArray.getPassword()));
-        if (login > 0) {
+                fixAccount.setText("* Nhập tài khoản hợp lệ.");
+                fixAccount.setForeground(Color.red);
+                fixAccount.setFont(new Font("Serif", Font.PLAIN, 20));
+                return;
+            }
+            if (txtPasswordCharArray.getPassword().length == 0) {
+                fixPassword.setText("* Nhập mật khẩu hợp lệ.");
+                fixPassword.setForeground(Color.red);
+                fixPassword.setFont(new Font("Serif", Font.PLAIN, 20));
+                return;
+            }
+            int login = JModel.loginAdmin(txtAccount.getText(), new String(txtPasswordCharArray.getPassword()));
+            if (login > 0) {
 //	       JOptionPane.showMessageDialog(this, "Đăng nhập thành công!");
 
-        } else {
-            JOptionPane.showMessageDialog(this, "Sai thông tin đăng nhập!\n Vui lòng thử lại!");
-            return;
-        }
-        PanelManager danhmucban = new PanelManager();
-        danhmucban.setVisible(true);
-        setVisible(false);
+            } else {
+                JOptionPane.showMessageDialog(this, "Sai thông tin đăng nhập!\n Vui lòng thử lại!");
+                return;
+            }
+            PanelManager danhmucban = new PanelManager();
+            danhmucban.setVisible(true);
+            setVisible(false);
         }
     }//GEN-LAST:event_txtPasswordCharArrayKeyPressed
 
