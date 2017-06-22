@@ -32,9 +32,10 @@ public class ListTable extends javax.swing.JPanel {
     JButton[] listtrang = new JButton[sotrang];
     private TablesModel model = new TablesModel();
     private Map<String, JButton> dynamicButtons;
+    private ManagerPayment jframePaymen;
 
     public ListTable() {
-        
+
         initComponents();
         loadTable();
     }
@@ -63,7 +64,7 @@ public class ListTable extends javax.swing.JPanel {
                 listBan[i].setBackground(new Color(142, 242, 144));
             } else if (list.get(i).getStatus() == 2) {
                 listBan[i].setBackground(new Color(255, 26, 26));
-            }else {
+            } else {
                 listBan[i].setBackground(new Color(255, 255, 255));
             }
             int a = list.get(i).getId();
@@ -77,6 +78,17 @@ public class ListTable extends javax.swing.JPanel {
                         JButton B1 = (JButton) e.getSource();
                         createOrder.getLblHeader().setText("Thao tác với bàn số : " + B1.getText());
                         createOrder.setVisible(true);
+                        createOrder.getBtnCreateOrder().addActionListener(new ActionListener() {
+                            @Override
+                            public void actionPerformed(ActionEvent e) {
+                                jframePaymen = new ManagerPayment(B1.getText());
+                                jframePaymen.setVisible(true);
+                                B1.setBackground(new Color(255, 26, 26));
+                                TablesModel tableModel = new TablesModel();
+                                tableModel.update(2, a);
+                                createOrder.setVisible(false);
+                            }
+                        });
                     }
                 }
             });

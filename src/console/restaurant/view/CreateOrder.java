@@ -29,16 +29,10 @@ public class CreateOrder extends JFrame {
     public JButton getBtnCreateOrder() {
         return btnCreateOrder;
     }
-
-    public ManagerPayment getJframePaymen() {
-        return jframePaymen;
-    }
     private JPanel orderPanel;
     private JLabel lblHeader;
     private JButton btnCreateOrder;
     private JButton btnExit;
-
-    private ManagerPayment jframePaymen = new ManagerPayment();
 
     public CreateOrder(int id) {
         this.setSize(450, 350);
@@ -56,18 +50,7 @@ public class CreateOrder extends JFrame {
         this.btnExit = new JButton("Thoát");
 //
         this.btnCreateOrder.setBounds(125, 110, 200, 40);
-        this.btnExit.setBounds(125, 180, 200, 40);
-
-        this.btnCreateOrder.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                jframePaymen.setVisible(true);
-                 TablesModel tableModel = new TablesModel();                                
-                 tableModel.update(2,id);
-                setVisible(false);
-            }
-        });
-
+        this.btnExit.setBounds(125, 180, 200, 40);       
         this.btnExit.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
