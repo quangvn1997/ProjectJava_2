@@ -167,19 +167,19 @@ public class FoodForm extends JFrame {
         this.btnSubmit.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                if (txtName.getText().isEmpty()) {
+                if (txtName.getText().trim().isEmpty()) {
                     JOptionPane.showMessageDialog(null, "Vui lòng điền tên dịch vụ !", "Báo lỗi", JOptionPane.ERROR_MESSAGE);
                     return;
                 }
-                if (txtAreaDescription.getText().isEmpty()) {
+                if (txtAreaDescription.getText().trim().isEmpty()) {
                     JOptionPane.showMessageDialog(null, "Vui lòng điền miêu tả dịch vụ!", "Báo lỗi", JOptionPane.ERROR_MESSAGE);
                     return;
                 }
-                if (txtImage.getText().isEmpty()) {
+                if (txtImage.getText().trim().isEmpty()) {
                     JOptionPane.showMessageDialog(null, "Vui lòng điền ảnh đại diện !", "Báo lỗi", JOptionPane.ERROR_MESSAGE);
                     return;
                 }
-                if (txtPrice.getText().isEmpty()) {
+                if (txtPrice.getText().trim().isEmpty()) {
                     JOptionPane.showMessageDialog(null, "Vui lòng điền giá dịch vụ !", "Báo lỗi", JOptionPane.ERROR_MESSAGE);
                     return;
                 }
