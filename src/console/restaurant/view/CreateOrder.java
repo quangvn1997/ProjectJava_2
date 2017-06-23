@@ -44,7 +44,7 @@ public class CreateOrder extends JFrame {
 
         this.lblHeader = new JLabel("Thao tác với bàn số : ");
         this.lblHeader.setFont(new Font("Serif", Font.BOLD, 18));
-        this.lblHeader.setBounds(125, 30, 220, 50);
+        this.lblHeader.setBounds(100, 30, 270, 50);
 
         this.btnCreateOrder = new JButton("Tạo mới hóa đơn");
         this.btnExit = new JButton("Thoát");

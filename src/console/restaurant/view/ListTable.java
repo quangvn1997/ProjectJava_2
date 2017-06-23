@@ -81,7 +81,7 @@ public class ListTable extends javax.swing.JPanel {
                         createOrder.getBtnCreateOrder().addActionListener(new ActionListener() {
                             @Override
                             public void actionPerformed(ActionEvent e) {
-                                jframePaymen = new ManagerPayment(B1.getText());
+                                jframePaymen = new ManagerPayment();
                                 jframePaymen.setVisible(true);
                                 B1.setBackground(new Color(255, 26, 26));
                                 TablesModel tableModel = new TablesModel();
