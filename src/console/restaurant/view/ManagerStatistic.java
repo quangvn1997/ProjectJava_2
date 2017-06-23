@@ -5,12 +5,18 @@
  */
 package console.restaurant.view;
 
-import static console.restaurant.view.ManagerFood.table;
+
+import console.restaurant.entities.Order;
+import console.restaurant.models.StatisticModel;
 import java.awt.Color;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
+import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
@@ -24,6 +30,12 @@ import org.jdesktop.swingx.JXDatePicker;
  * @author Anh Tiến ơi.Có Trộm!
  */
 public class ManagerStatistic extends JPanel {
+    public static int page = 1;
+    public static int limit = 14;
+    public static int count = 0;
+    public static int totalPage = 0;
+    
+    private static StatisticModel statisticModel= new StatisticModel();
 
     private JLabel lblStartD;
     private JLabel lblEndD;
@@ -31,19 +43,18 @@ public class ManagerStatistic extends JPanel {
     private JXDatePicker startPicker;
     private JXDatePicker endPicker;
     
-    private JButton btnSubmit;
+    private JComboBox cbList;
     
-    private JButton btnFirst;
-    private JButton btnPrevious;
-    private JButton btnNext;
-    private JButton btnLast;
-    private JButton btnPage;
+    private static JButton btnFirst;
+    private static JButton btnPrevious;
+    private static JButton btnNext;
+    private static JButton btnLast;
+    private static JButton btnPage;
     
     public static JTable table;
-    private DefaultTableModel modelFood;
+    private DefaultTableModel modelStatistic;
     private JScrollPane scrollPane;
 
-    private int page = 1;
     
     public ManagerStatistic() {
         this.setBackground(new Color(250, 250, 250));
@@ -57,8 +68,9 @@ public class ManagerStatistic extends JPanel {
         this.lblEndD = new JLabel("Chọn Ngày Cuối Cùng:");
         this.lblEndD.setBounds(400, 20, 140, 34);
         //Button.
-        this.btnSubmit = new JButton("Hiển thị");
-        this.btnSubmit.setBounds(820, 20, 100, 34);
+        String[] petStrings = { "Theo hóa đơn", "Theo món"};
+        this.cbList = new JComboBox(petStrings);
+        this.cbList.setBounds(820, 20, 150, 34);
         
         this.btnFirst = new JButton("<<");
         this.btnPrevious = new JButton("<");
@@ -88,7 +100,7 @@ public class ManagerStatistic extends JPanel {
         this.add(lblEndD);
         this.add(startPicker);
         this.add(endPicker);
-        this.add(btnSubmit);
+        this.add(cbList);
         this.add(btnFirst);
         this.add(btnPrevious);
         this.add(btnPage);
@@ -96,22 +108,15 @@ public class ManagerStatistic extends JPanel {
         this.add(btnLast);
         
         //Table.
-        String[] columnNames = {"ID", "Tên", "category_id", "Miêu tả", "Ảnh", "Giá", "Ngày tạo", "Ngày cập nhật"};
+        String[] columnNames = {"ID", "Tổng giá", "Ngày tạo"};
         Object[][] data = {};
-        this.modelFood = new DefaultTableModel(data, columnNames);
-        this.table = new JTable(modelFood);
-        // this.table.setFont(new Font("Serif", Font.PLAIN, 20));      
-        // this.table.getTableHeader().setFont(new Font("Serif", Font.BOLD, 20));
+        this.modelStatistic = new DefaultTableModel(data, columnNames);
+        this.table = new JTable(modelStatistic);
         //chinh with column
         this.table.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
-        this.table.getColumnModel().getColumn(0).setPreferredWidth(42);
-        this.table.getColumnModel().getColumn(1).setPreferredWidth(200);
-        this.table.getColumnModel().getColumn(2).setPreferredWidth(100);
-        this.table.getColumnModel().getColumn(3).setPreferredWidth(100);
-        this.table.getColumnModel().getColumn(4).setPreferredWidth(100);
-        this.table.getColumnModel().getColumn(5).setPreferredWidth(150);
-        this.table.getColumnModel().getColumn(6).setPreferredWidth(150);
-        this.table.getColumnModel().getColumn(7).setPreferredWidth(150);
+        this.table.getColumnModel().getColumn(0).setPreferredWidth(300);
+        this.table.getColumnModel().getColumn(1).setPreferredWidth(350);
+        this.table.getColumnModel().getColumn(2).setPreferredWidth(350);
         this.table.setRowHeight(24);
         this.table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 
@@ -123,6 +128,67 @@ public class ManagerStatistic extends JPanel {
         
         this.setLayout(null);
         this.setVisible(false);
+        
+        this.btnNext.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                page += 1;
+                loadOrder();
+            }
+        });
+
+        this.btnLast.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                page = totalPage;
+                loadOrder();
+            }
+        });
+
+        this.btnPrevious.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                page -= 1;
+                loadOrder();
+            }
+        });
+
+        this.btnFirst.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                page = 1;
+                loadOrder();
+            }
+        });
+    }
+        public static void loadOrder() {
+        DefaultTableModel model = (DefaultTableModel) table.getModel();
+        model.setRowCount(0);
+        ArrayList<Order> listOrder = statisticModel.getListOrder(page, limit);
+        listOrder.forEach((food) -> {
+            model.addRow(new Object[]{String.valueOf(food.getId()), food.getTotalPrice(), food.getCreatedAt()});
+        });
+        count = statisticModel.countActive();
+        totalPage = count / limit + (count % limit > 0 ? 1 : 0);
+        btnPage.setText(String.valueOf(page));
+        handlePaginateButton();
     }
 
+    // Xử lý việc hiển thị các nút phân trang.
+    private static void handlePaginateButton() {
+        if (page <= 1) {
+            btnFirst.setEnabled(false);
+            btnPrevious.setEnabled(false);
+        } else {
+            btnFirst.setEnabled(true);
+            btnPrevious.setEnabled(true);
+        }
+        if (page == totalPage) {
+            btnNext.setEnabled(false);
+            btnLast.setEnabled(false);
+        } else {
+            btnNext.setEnabled(true);
+            btnLast.setEnabled(true);
+        }
+    }
 }

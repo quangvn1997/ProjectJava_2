@@ -5,10 +5,7 @@
  */
 package console.restaurant.models;
 
-import console.restaurant.controller.AdminsController;
 import console.restaurant.entities.Admin;
-import console.restaurant.entities.Food;
-import console.restaurant.utilities.ScannerUtilities;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -113,10 +110,6 @@ public class AdminsModel {
         ArrayList<Admin> listAdmin = new ArrayList<>();
         try {
             String strQuery = "select * from admins ";
-//            strQuery += "FROM `foods` as food_table ";
-//            strQuery += "INNER join categories as category_table ";
-//            strQuery += "ON food_table.category_id = category_table.id ";
-//            strQuery += "WHERE admins.status = 1 ORDER BY admins.created_at DESC ";
             strQuery += "LIMIT " + limit + " OFFSET " + (page - 1) * limit;
             ResultSet rs = DAO.getConnection().createStatement().executeQuery(strQuery);
             while (rs.next()) {
@@ -173,8 +166,6 @@ public class AdminsModel {
         try {
             String strQuery = "select * ";
             strQuery += "FROM `admins` as food_table ";
-//            strQuery += "INNER join categories as category_table ";
-//            strQuery += "ON food_table.category_id = category_table.id ";
             strQuery += "WHERE food_table.status = 1 AND food_table.name like '%" + searchObj + "%' " + " ORDER BY food_table.created_at DESC";
             ResultSet rs = DAO.getConnection().createStatement().executeQuery(strQuery);
             while (rs.next()) {
