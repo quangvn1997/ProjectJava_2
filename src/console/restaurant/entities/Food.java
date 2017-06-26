@@ -22,6 +22,16 @@ public class Food {
     private String updateAt;
     private int status;
 
+    private int orderQuantity;
+
+    public int getOrderQuantity() {
+        return orderQuantity;
+    }
+
+    public void setOrderQuantity(int orderQuantity) {
+        this.orderQuantity = orderQuantity;
+    }
+
     public String getCategoryName() {
         return categoryName;
     }

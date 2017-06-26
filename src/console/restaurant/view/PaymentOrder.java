@@ -105,11 +105,13 @@ public class PaymentOrder extends JFrame {
         this.btnPrint.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                JButton B1 = (JButton) e.getSource();
+                B1.setBackground(new Color(250, 250, 250));
                 JOptionPane.showMessageDialog(null, "In hóa đơn thành công.", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
                 setVisible(false);
             }
         });
-        String[] columnNames = {"Stt", "Tên dịch vụ", "Đơn giá", "Số lượng", "Thành tiền", "Giờ tạo","Giờ thanh toán"};
+        String[] columnNames = {"Stt", "Tên dịch vụ", "Đơn giá", "Số lượng", "Thành tiền", "Giờ tạo", "Giờ thanh toán"};
         Object[][] data = {};
         this.modelPayment = new DefaultTableModel(data, columnNames);
         this.table = new JTable(modelPayment);
