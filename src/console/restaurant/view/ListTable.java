@@ -74,12 +74,12 @@ public class ListTable extends javax.swing.JPanel {
             banHienTai = i;
             listBan[i].addActionListener(new ActionListener() {
                 public void actionPerformed(ActionEvent e) {
-                    JButton B1 = (JButton) e.getSource();
-                    B1.setBackground(new Color(255, 26, 26));
+                    //JButton B1 = (JButton) e.getSource();
+                    //B1.setBackground(new Color(255, 26, 26));
                     jframePaymen = new ManagerPayment();
                     jframePaymen.setVisible(true);
-                    TablesModel tableModel = new TablesModel();
-                    tableModel.update(2, a);
+//                    TablesModel tableModel = new TablesModel();
+//                    tableModel.update(2, a);
                 }
             });
 

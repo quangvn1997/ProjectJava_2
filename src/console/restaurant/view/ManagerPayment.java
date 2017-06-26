@@ -17,7 +17,9 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 import javax.swing.JTable;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
@@ -34,8 +36,11 @@ public class ManagerPayment extends javax.swing.JFrame {
      * Creates new form QuanLyThanhToan
      */
     private static FoodsModel foodModel = new FoodsModel();
+    private QuanlityOrder quanlityForm;
+    public static HashMap<Integer, Food> foodsOrder;
 
     public ManagerPayment() {
+        foodsOrder = new HashMap<>();
         initComponents();
         setLocationRelativeTo(null);
         clockThanhToan();
@@ -51,31 +56,23 @@ public class ManagerPayment extends javax.swing.JFrame {
                     int colum = target.getSelectedColumn();
                     if (row != -1) {
                         TableModel tblModel = tableMenu.getModel();
-//                        int id = Integer.parseInt(tblModel.getValueAt(row, 0).toString());
-                        QuanlityOrder quanlityForm = new QuanlityOrder();
-                        quanlityForm.setVisible(true);
-                    }
-                }
-            }
-        });
-
-        this.tableOrder.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseClicked(MouseEvent e) {
-                if (e.getClickCount() == 1) {
-
-                    JTable target = (JTable) e.getSource();
-                    int row = target.getSelectedRow();
-                    int colum = target.getSelectedColumn();
-                    if (row != -1) {
-                        TableModel tblModel = tableMenu.getModel();
                         int id = Integer.parseInt(tblModel.getValueAt(row, 0).toString());
-                        QuanlityOrder quanlityForm = new QuanlityOrder();
+                        Food food = foodModel.getById(id);
+                        if (food == null) {
+                            JOptionPane.showMessageDialog(null, "Món ăn không tồn tại hoặc đã bị xóa.");
+                            return;
+                        }
+                        if(quanlityForm != null){
+                            quanlityForm.dispose();
+                        }
+                        quanlityForm = new QuanlityOrder(food);
                         quanlityForm.setVisible(true);
                     }
                 }
             }
         });
+
+       
     }
 
     public void clockThanhToan() {
@@ -431,17 +428,18 @@ public class ManagerPayment extends javax.swing.JFrame {
                 .addGap(18, 18, 18)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(jButton4, javax.swing.GroupLayout.PREFERRED_SIZE, 72, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 66, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(jButton6, javax.swing.GroupLayout.PREFERRED_SIZE, 72, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
                         .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 356, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addComponent(jButton4, javax.swing.GroupLayout.PREFERRED_SIZE, 72, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(18, 18, 18)
+                                .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 66, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(18, 18, 18)
+                                .addComponent(jButton6, javax.swing.GroupLayout.PREFERRED_SIZE, 72, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 356, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(0, 0, Short.MAX_VALUE)))
                 .addGap(18, 18, 18)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -611,7 +609,7 @@ public class ManagerPayment extends javax.swing.JFrame {
     private javax.swing.JTextField jTextField2;
     private javax.swing.JTextField jTextField6;
     private javax.swing.JTable tableMenu;
-    private javax.swing.JTable tableOrder;
+    public static javax.swing.JTable tableOrder;
     private javax.swing.JLabel time;
     private javax.swing.JTextField txtSearchFood;
     // End of variables declaration//GEN-END:variables
