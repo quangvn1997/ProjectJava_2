@@ -15,13 +15,12 @@ import java.util.ArrayList;
  * @author Truong
  */
 public class StatisticModel {
-    public ArrayList<Order> getListOrder(int page, int limit) {
-        // limit = 2
-        // page = 2
+    public ArrayList<Order> getListOrder(int page, int limit, String dateStart, String dateEnd) {
+
         ArrayList<Order> listOrder = new ArrayList<>();
         try {
-            String strQuery = "SELECT FROM orders";
-            strQuery += "WHERE status = 1 ORDER BY created_at DESC ";
+            String strQuery = "SELECT * FROM orders ";
+            strQuery += "WHERE created_at BETWEEN"+ dateStart +" AND "+ dateEnd +" ORDER BY created_at DESC ";
             strQuery += "LIMIT " + limit + " OFFSET " + (page - 1) * limit;
             ResultSet rs = DAO.getConnection().createStatement().executeQuery(strQuery);
             while (rs.next()) {
