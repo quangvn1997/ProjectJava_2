@@ -5,7 +5,6 @@
  */
 package console.restaurant.view;
 
-
 import console.restaurant.entities.Order;
 import console.restaurant.models.StatisticModel;
 import java.awt.Color;
@@ -14,6 +13,7 @@ import java.awt.event.ActionListener;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
@@ -30,32 +30,34 @@ import org.jdesktop.swingx.JXDatePicker;
  * @author Anh Tiến ơi.Có Trộm!
  */
 public class ManagerStatistic extends JPanel {
+
     public static int page = 1;
     public static int limit = 14;
     public static int count = 0;
     public static int totalPage = 0;
-    
-    private static StatisticModel statisticModel= new StatisticModel();
+    public static String dateStart;
+    public static String dateEnd;
+
+    private static StatisticModel statisticModel = new StatisticModel();
 
     private JLabel lblStartD;
     private JLabel lblEndD;
 
-    private JXDatePicker startPicker;
-    private JXDatePicker endPicker;
-    
-    private JComboBox cbList;
-    
+    private static JXDatePicker startPicker;
+    private static JXDatePicker endPicker;
+
+    private static JComboBox cbList;
+
     private static JButton btnFirst;
     private static JButton btnPrevious;
     private static JButton btnNext;
     private static JButton btnLast;
     private static JButton btnPage;
-    
-    public static JTable table;
-    private DefaultTableModel modelStatistic;
-    private JScrollPane scrollPane;
 
-    
+    public static JTable table;
+    private static DefaultTableModel modelStatistic;
+    private static JScrollPane scrollPane;
+
     public ManagerStatistic() {
         this.setBackground(new Color(250, 250, 250));
         this.setBounds(350, 90, 1000, 520);
@@ -68,10 +70,10 @@ public class ManagerStatistic extends JPanel {
         this.lblEndD = new JLabel("Chọn Ngày Cuối Cùng:");
         this.lblEndD.setBounds(400, 20, 140, 34);
         //Button.
-        String[] petStrings = { "Theo hóa đơn", "Theo món"};
-        this.cbList = new JComboBox(petStrings);
+        String[] listStrings = {"Theo hóa đơn", "Theo món"};
+        this.cbList = new JComboBox(listStrings);
         this.cbList.setBounds(820, 20, 150, 34);
-        
+
         this.btnFirst = new JButton("<<");
         this.btnPrevious = new JButton("<");
         this.btnPage = new JButton(String.valueOf(page));
@@ -106,11 +108,11 @@ public class ManagerStatistic extends JPanel {
         this.add(btnPage);
         this.add(btnNext);
         this.add(btnLast);
-        
+
         //Table.
-        String[] columnNames = {"ID", "Tổng giá", "Ngày tạo"};
-        Object[][] data = {};
-        this.modelStatistic = new DefaultTableModel(data, columnNames);
+        String[] columnNames1 = {"ID", "Tổng giá", "Ngày tạo"};
+        Object[][] data1 = {};
+        this.modelStatistic = new DefaultTableModel(data1, columnNames1);
         this.table = new JTable(modelStatistic);
         //chinh with column
         this.table.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
@@ -119,21 +121,21 @@ public class ManagerStatistic extends JPanel {
         this.table.getColumnModel().getColumn(2).setPreferredWidth(350);
         this.table.setRowHeight(24);
         this.table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-
         //Hiển thị kích thước bảng
         this.scrollPane = new JScrollPane(table);
         this.scrollPane.setBounds(0, 70, 1000, 380);
-        
+
         this.add(scrollPane);
-        
+        this.scrollPane.setVisible(true);
+
         this.setLayout(null);
-        this.setVisible(false);
-        
+        this.setVisible(true);
+
         this.btnNext.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 page += 1;
-                loadOrder();
+                loadStatistic();
             }
         });
 
@@ -141,7 +143,7 @@ public class ManagerStatistic extends JPanel {
             @Override
             public void actionPerformed(ActionEvent e) {
                 page = totalPage;
-                loadOrder();
+                loadStatistic();
             }
         });
 
@@ -149,7 +151,7 @@ public class ManagerStatistic extends JPanel {
             @Override
             public void actionPerformed(ActionEvent e) {
                 page -= 1;
-                loadOrder();
+                loadStatistic();
             }
         });
 
@@ -157,16 +159,58 @@ public class ManagerStatistic extends JPanel {
             @Override
             public void actionPerformed(ActionEvent e) {
                 page = 1;
-                loadOrder();
+                loadStatistic();
             }
         });
+
+        this.cbList.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                if (cbList.getSelectedIndex() == 0) {
+                    //Table.
+                    String[] columnNames = {"ID", "Tổng giá", "Ngày tạo"};
+                    DefaultTableModel model = (DefaultTableModel) table.getModel();
+                    Object[][] data = {};
+                    model = new DefaultTableModel(data, columnNames);
+                    table.setModel(model);
+                    //chinh with column
+                    table.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
+                    table.getColumnModel().getColumn(0).setPreferredWidth(300);
+                    table.getColumnModel().getColumn(1).setPreferredWidth(350);
+                    table.getColumnModel().getColumn(2).setPreferredWidth(350);
+                    table.setRowHeight(24);
+                    model.fireTableDataChanged();
+                } else {
+                     //Table.
+                    String[] columnNames = {"ID", "Món Ăn", "Ngày tạo"};
+                    DefaultTableModel model = (DefaultTableModel) table.getModel();
+                    Object[][] data = {};
+                    model = new DefaultTableModel(data, columnNames);
+                    table.setRowHeight(24);
+                    table.setModel(model);
+                    //chinh with column
+                    table.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
+                    table.getColumnModel().getColumn(0).setPreferredWidth(300);
+                    table.getColumnModel().getColumn(1).setPreferredWidth(350);
+                    table.getColumnModel().getColumn(2).setPreferredWidth(350);
+                    model.fireTableDataChanged();
+                }
+
+            }
+        });
+
     }
-        public static void loadOrder() {
+
+    public static void loadStatistic() {
         DefaultTableModel model = (DefaultTableModel) table.getModel();
         model.setRowCount(0);
-        ArrayList<Order> listOrder = statisticModel.getListOrder(page, limit);
-        listOrder.forEach((food) -> {
-            model.addRow(new Object[]{String.valueOf(food.getId()), food.getTotalPrice(), food.getCreatedAt()});
+        SimpleDateFormat Sdate = new SimpleDateFormat("dd/MM/yyyy");
+        dateStart = Sdate.format(startPicker.getDate()).toString();
+        SimpleDateFormat Edate = new SimpleDateFormat("dd/MM/yyyy");
+        dateEnd = Edate.format(endPicker.getDate()).toString();
+        
+        ArrayList<Order> listOrder = statisticModel.getListOrder(page, limit, dateStart, dateEnd);
+        listOrder.forEach((order) -> {
+            model.addRow(new Object[]{String.valueOf(order.getId()), order.getTotalPrice(), order.getCreatedAt()});
         });
         count = statisticModel.countActive();
         totalPage = count / limit + (count % limit > 0 ? 1 : 0);
