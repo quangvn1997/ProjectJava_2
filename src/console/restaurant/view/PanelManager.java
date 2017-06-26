@@ -53,8 +53,7 @@ public class PanelManager extends JFrame {
         trangthai.setBounds(50, 425, 100, 70);
         trangthai.setFont(new Font("Serif", Font.PLAIN, 18));
         panelBan.add(trangthai);
-        String[] bookTitles = new String[]{"Sẵn sàng", "Đang phục vụ",
-            "Đã đặt", "Bàn hỏng"};
+        String[] bookTitles = new String[]{"Sẵn sàng", "Đang phục vụ"};
         JComboBox<String> bookList = new JComboBox<>(bookTitles);
         bookList.setFont(new Font("Serif", Font.PLAIN, 18));
         bookList.setBounds(150, 440, 150, 40);
@@ -279,12 +278,12 @@ public class PanelManager extends JFrame {
                 .addGap(6, 6, 6))
         );
 
-        jLabel1.setFont(new java.awt.Font("Cambria Math", 2, 48)); // NOI18N
+        jLabel1.setFont(new java.awt.Font("Brush Script MT", 2, 65)); // NOI18N
         jLabel1.setText("Furious Food & Drinks");
 
-        date.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        date.setFont(new java.awt.Font("Tahoma", 0, 20)); // NOI18N
 
-        time.setFont(new java.awt.Font("Tahoma", 0, 28)); // NOI18N
+        time.setFont(new java.awt.Font("Arial", 1, 36)); // NOI18N
 
         jButton3.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         jButton3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/console/restaurant/Image/exit.jpg"))); // NOI18N
@@ -329,8 +328,8 @@ public class PanelManager extends JFrame {
                             .addGroup(panelLayout.createSequentialGroup()
                                 .addGap(203, 203, 203)
                                 .addComponent(time, javax.swing.GroupLayout.PREFERRED_SIZE, 171, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addContainerGap(65, Short.MAX_VALUE))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelLayout.createSequentialGroup()
+                        .addContainerGap(36, Short.MAX_VALUE))
+                    .addGroup(panelLayout.createSequentialGroup()
                         .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 143, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(btnLogOut)
@@ -343,21 +342,21 @@ public class PanelManager extends JFrame {
             .addGroup(panelLayout.createSequentialGroup()
                 .addGroup(panelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(panelLayout.createSequentialGroup()
-                        .addComponent(date, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(time, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(28, 28, 28)
+                        .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(panelLayout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 62, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(549, 549, 549)
+                        .addGroup(panelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 62, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(panelLayout.createSequentialGroup()
+                                .addComponent(date, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(time, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGap(536, 536, 536)
                         .addGroup(panelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(btnLogOut, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                    .addGroup(panelLayout.createSequentialGroup()
-                        .addGap(28, 28, 28)
-                        .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE))))
                 .addContainerGap(26, Short.MAX_VALUE))
         );
 
