@@ -77,6 +77,7 @@ public class FoodsModel {
         }
         return false;
     }
+//   Hàm getList trả về quản lý món ăn có offset và limit
 
     public ArrayList<Food> getListFood(int page, int limit) {
         // limit = 2
@@ -89,6 +90,38 @@ public class FoodsModel {
             strQuery += "ON food_table.category_id = category_table.id ";
             strQuery += "WHERE food_table.status = 1 ORDER BY food_table.created_at DESC ";
             strQuery += "LIMIT " + limit + " OFFSET " + (page - 1) * limit;
+            ResultSet rs = DAO.getConnection().createStatement().executeQuery(strQuery);
+            while (rs.next()) {
+                Food food = new Food();
+                food.setId(Integer.valueOf(rs.getString("id")));
+                food.setName(rs.getString("name"));
+                food.setCategoryId(Integer.valueOf(rs.getString("category_id")));
+                food.setCategoryName(rs.getString("category_name"));
+                food.setUnitPrice(rs.getFloat("unit_price"));
+                food.setImgUrl(rs.getString("img_url"));
+                food.setDescription(rs.getString("description"));
+                food.setCreatedAt(rs.getString("created_at"));
+                food.setUpdateAt(rs.getString("updated_at"));
+                listFood.add(food);
+            }
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+        return listFood;
+    }
+
+//    Hàm trả về getList quản lý thanh toán không dùng offset và limit
+    public ArrayList<Food> getListFoodMenu() {
+        // limit = 2
+        // page = 2
+        ArrayList<Food> listFood = new ArrayList<>();
+        try {
+            String strQuery = "SELECT food_table.id, food_table.name, food_table.category_id, category_table.name as category_name, food_table.unit_price, food_table.img_url, food_table.description, food_table.created_at, food_table.updated_at, food_table.status ";
+            strQuery += "FROM `foods` as food_table ";
+            strQuery += "INNER join categories as category_table ";
+            strQuery += "ON food_table.category_id = category_table.id ";
+            strQuery += "WHERE food_table.status = 1 ORDER BY food_table.created_at DESC ";
+//            strQuery += "LIMIT " + limit + " OFFSET " + (page - 1) * limit;
             ResultSet rs = DAO.getConnection().createStatement().executeQuery(strQuery);
             while (rs.next()) {
                 Food food = new Food();

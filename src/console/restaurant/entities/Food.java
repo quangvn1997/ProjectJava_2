@@ -22,6 +22,25 @@ public class Food {
     private String updateAt;
     private int status;
 
+    private int orderQuantity;
+    private String Note;
+
+    public String getNote() {
+        return Note;
+    }
+
+    public void setNote(String Note) {
+        this.Note = Note;
+    }
+    
+    public int getOrderQuantity() {
+        return orderQuantity;
+    }
+
+    public void setOrderQuantity(int orderQuantity) {
+        this.orderQuantity = orderQuantity;
+    }
+
     public String getCategoryName() {
         return categoryName;
     }

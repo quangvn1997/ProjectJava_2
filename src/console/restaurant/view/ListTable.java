@@ -15,6 +15,7 @@ import java.util.ArrayList;
 import java.util.Locale;
 import java.util.Map;
 import javax.swing.JButton;
+import javax.swing.SwingUtilities;
 import static javax.swing.WindowConstants.DISPOSE_ON_CLOSE;
 
 /**
@@ -73,23 +74,12 @@ public class ListTable extends javax.swing.JPanel {
             banHienTai = i;
             listBan[i].addActionListener(new ActionListener() {
                 public void actionPerformed(ActionEvent e) {
-                    if (e.getSource() instanceof JButton) {
-                        CreateOrder createOrder = new CreateOrder(a);
-                        JButton B1 = (JButton) e.getSource();
-                        createOrder.getLblHeader().setText("Thao tác với bàn số : " + B1.getText());
-                        createOrder.setVisible(true);
-                        createOrder.getBtnCreateOrder().addActionListener(new ActionListener() {
-                            @Override
-                            public void actionPerformed(ActionEvent e) {
-                                jframePaymen = new ManagerPayment();
-                                jframePaymen.setVisible(true);
-                                B1.setBackground(new Color(255, 26, 26));
-                                TablesModel tableModel = new TablesModel();
-                                tableModel.update(2, a);
-                                createOrder.setVisible(false);
-                            }
-                        });
-                    }
+                    //JButton B1 = (JButton) e.getSource();
+                    //B1.setBackground(new Color(255, 26, 26));
+                    jframePaymen = new ManagerPayment();
+                    jframePaymen.setVisible(true);
+//                    TablesModel tableModel = new TablesModel();
+//                    tableModel.update(2, a);
                 }
             });
 
