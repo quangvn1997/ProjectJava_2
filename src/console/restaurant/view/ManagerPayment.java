@@ -6,20 +6,21 @@
 package console.restaurant.view;
 
 import console.restaurant.controller.PaymentController;
+import console.restaurant.entities.Category;
 import console.restaurant.entities.Food;
 import console.restaurant.entities.SessionAdmin;
+import console.restaurant.models.CategoryModel;
+import console.restaurant.models.DAO;
 import console.restaurant.models.FoodsModel;
-import static console.restaurant.view.ManagerFood.limit;
-import static console.restaurant.view.ManagerFood.page;
-import java.awt.Color;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.sql.ResultSet;
+import java.sql.Statement;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
-import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JTable;
@@ -37,17 +38,19 @@ public class ManagerPayment extends javax.swing.JFrame {
     /**
      * Creates new form QuanLyThanhToan
      */
+    
     private static FoodsModel foodModel = new FoodsModel();
     private QuanlityOrder quanlityForm;
     public static HashMap<Integer, Food> foodsOrder;
-
+    
     public ManagerPayment() {
         foodsOrder = new HashMap<>();
         initComponents();
         setLocationRelativeTo(null);
         clockThanhToan();
+        fillCombo();
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-
+        
         this.tableMenu.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
@@ -128,6 +131,21 @@ public class ManagerPayment extends javax.swing.JFrame {
             }
         });
     }
+    private void fillCombo(){
+        try {
+            String sqlQuery = "select * from categories where status = 1";
+            Statement stt = DAO.getConnection().createStatement();
+            ResultSet rs = stt.executeQuery(sqlQuery);
+            while (rs.next()) {
+                Category cate = new Category();
+                cate.setId(Integer.parseInt(rs.getString("id")));
+                cate.setName(rs.getString("name"));
+                cbCategories.addItem(cate.getName());
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 
     public void clockThanhToan() {
         Thread clock = new Thread() {
@@ -166,7 +184,6 @@ public class ManagerPayment extends javax.swing.JFrame {
         jPanel1 = new javax.swing.JPanel();
         txtSearchFood = new javax.swing.JTextField();
         jLabel3 = new javax.swing.JLabel();
-        jComboBox1 = new javax.swing.JComboBox<>();
         jLabel4 = new javax.swing.JLabel();
         btnReturn = new javax.swing.JButton();
         jLabel5 = new javax.swing.JLabel();
@@ -193,6 +210,7 @@ public class ManagerPayment extends javax.swing.JFrame {
         jLabel8 = new javax.swing.JLabel();
         jLabel9 = new javax.swing.JLabel();
         jLabel10 = new javax.swing.JLabel();
+        cbCategories = new javax.swing.JComboBox<>();
         jMenuBar1 = new javax.swing.JMenuBar();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -212,14 +230,6 @@ public class ManagerPayment extends javax.swing.JFrame {
 
         jLabel3.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
         jLabel3.setText("Phân loại :");
-
-        jComboBox1.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
-        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "     Tất cả", "    Món ăn", "    Hải sản", "   Nước ngọt", "         Bia" }));
-        jComboBox1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jComboBox1ActionPerformed(evt);
-            }
-        });
 
         jLabel4.setFont(new java.awt.Font("Brush Script MT", 2, 65)); // NOI18N
         jLabel4.setText("Furious Food & Drink");
@@ -397,6 +407,12 @@ public class ManagerPayment extends javax.swing.JFrame {
 
         jLabel10.setText("Mọi thắc mắc xin liên hệ : 01636986950");
 
+        cbCategories.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cbCategoriesActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -416,9 +432,9 @@ public class ManagerPayment extends javax.swing.JFrame {
                                     .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                     .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(txtSearchFood, javax.swing.GroupLayout.PREFERRED_SIZE, 121, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addComponent(txtSearchFood, javax.swing.GroupLayout.DEFAULT_SIZE, 121, Short.MAX_VALUE)
+                                    .addComponent(cbCategories, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                             .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 204, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 42, Short.MAX_VALUE)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -501,7 +517,7 @@ public class ManagerPayment extends javax.swing.JFrame {
                         .addContainerGap()
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(cbCategories, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(txtSearchFood, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -622,13 +638,13 @@ public class ManagerPayment extends javax.swing.JFrame {
 //        });
     }//GEN-LAST:event_txtSearchFoodActionPerformed
 
-    private void jComboBox1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox1ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jComboBox1ActionPerformed
-
     private void jTextField2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField2ActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_jTextField2ActionPerformed
+
+    private void cbCategoriesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbCategoriesActionPerformed
+
+    }//GEN-LAST:event_cbCategoriesActionPerformed
 
     /**
      * @param args the command line arguments
@@ -671,10 +687,10 @@ public class ManagerPayment extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel banso;
     private javax.swing.JButton btnReturn;
+    public javax.swing.JComboBox<String> cbCategories;
     private javax.swing.JLabel date;
     private javax.swing.JButton jButton11;
     private javax.swing.JButton jButton6;
-    private javax.swing.JComboBox<String> jComboBox1;
     private javax.swing.JComboBox<String> jComboBox2;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
