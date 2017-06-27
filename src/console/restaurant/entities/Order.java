@@ -5,6 +5,8 @@
  */
 package console.restaurant.entities;
 
+import java.sql.Date;
+
 /**
  *
  * @author Truong
@@ -12,7 +14,6 @@ package console.restaurant.entities;
 public class Order {
 
     private int id;
-    private String createdAt;
     private String updatedAt;
     private float totalPrice;
     private int discount;
@@ -76,11 +77,11 @@ public class Order {
         this.totalPrice = totalPrice;
     }
 
-    public String getCreatedAt() {
+    public Date getCreatedAt() {
         return createdAt;
     }
 
-    public void setCreatedAt(String createdAt) {
+    public void setCreatedAt(Date createdAt) {
         this.createdAt = createdAt;
     }
 
