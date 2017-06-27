@@ -179,16 +179,16 @@ public class ManagerTable extends JPanel {
                         int id = Integer.parseInt(tblModel.getValueAt(row, 0).toString());
                         TableForm tableForm = new TableForm(2, id);
                         tableForm.setVisible(true);
-                        String name = tblModel.getValueAt(row, 1).toString();                       
+                        String name = tblModel.getValueAt(row, 1).toString();
 //                     thêm vào textFieldaadmin
-                        tableForm.txtName.setText(name);                       
+                        tableForm.txtName.setText(name);
                         tableForm.cmbStatus.setSelectedItem(tblModel.getValueAt(row, 2).toString());
                     }
                 }
             }
         });
-        
-          this.txtSearch.getDocument().addDocumentListener(new DocumentListener() {
+
+        this.txtSearch.getDocument().addDocumentListener(new DocumentListener() {
             public void changedUpdate(DocumentEvent e) {
                 process();
             }
@@ -212,7 +212,7 @@ public class ManagerTable extends JPanel {
                     listTable = tableModel.getListTable(page, limit);
                 }
                 listTable.forEach((table) -> {
-                    model.addRow(new Object[]{String.valueOf(table.getId()), table.getName(),table.getStatus(), table.getCreatedAt(), table.getUpdateAt()});
+                    model.addRow(new Object[]{String.valueOf(table.getId()), table.getName(), table.getStatus() == 0 ? " Đã hỏng " : "  Sẵn sàng ", table.getCreatedAt(), table.getUpdateAt()});
                 });
             }
         });
@@ -226,7 +226,7 @@ public class ManagerTable extends JPanel {
         model.setRowCount(0);
         ArrayList<Table> listAdmin = tableModel.getListTable(page, limit);
         listAdmin.forEach((tableload) -> {
-            model.addRow(new Object[]{String.valueOf(tableload.getId()), tableload.getName(),tableload.getStatus()== 1 ? " Sẵn sàng ":" Đã hỏng ", tableload.getCreatedAt(), tableload.getUpdateAt()});
+            model.addRow(new Object[]{String.valueOf(tableload.getId()), tableload.getName(), tableload.getStatus() == 0 ? " Đã hỏng " : "  Sẵn sàng ", tableload.getCreatedAt(), tableload.getUpdateAt()});
         });
         count = tableModel.countActive();
         totalPage = count / limit + (count % limit > 0 ? 1 : 0);

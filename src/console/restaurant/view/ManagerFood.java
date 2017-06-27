@@ -15,6 +15,7 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.text.NumberFormat;
 import java.util.ArrayList;
+import java.util.Locale;
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JLabel;
@@ -178,7 +179,8 @@ public class ManagerFood extends JPanel {
                     listFood = foodModel.getListFood(page, limit);
                 }
                 listFood.forEach((food) -> {
-                    NumberFormat formatter = NumberFormat.getCurrencyInstance();
+                    Locale format = new Locale("vi", "VN");
+                    NumberFormat formatter = NumberFormat.getCurrencyInstance(format);
                     model.addRow(new Object[]{String.valueOf(food.getId()), food.getName(), food.getCategoryName(), food.getDescription(), food.getImgUrl(), formatter.format(food.getUnitPrice()), food.getCreatedAt(), food.getUpdateAt()});
                 });
             }
