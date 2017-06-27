@@ -5,8 +5,6 @@
  */
 package console.restaurant.models;
 
-import console.restaurant.entities.Food;
-import console.restaurant.entities.Order;
 import console.restaurant.entities.Order;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -100,13 +98,13 @@ public class OrdersModel {
                 if (rs.next()) {
                     orders = new Order();
                     orders.setId(rs.getInt("id"));
-                    orders.setCreatedAt(rs.getString("created_at"));
+                    orders.setCreatedAt(rs.getDate("created_at"));
                     orders.setStatus(rs.getInt("status"));
                     orders.setDiscount(rs.getInt("discount"));
                     orders.setRealPrice(rs.getInt("real_price"));
                     orders.setTableId(rs.getInt("table_id"));
-                    orders.setCreatedAt(rs.getString("created_at"));
-                    orders.setUpdatedAt(rs.getString("updated_at"));
+                    orders.setCreatedAt(rs.getDate("created_at"));
+                    orders.setUpdatedAt(rs.getDate("updated_at"));
                 }
             } catch (Exception e) {
                 e.printStackTrace();
