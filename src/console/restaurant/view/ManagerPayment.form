@@ -294,12 +294,14 @@
                                   </Group>
                               </Group>
                               <Group type="102" attributes="0">
-                                  <Group type="103" groupAlignment="3" attributes="0">
-                                      <Component id="jLabel13" alignment="3" min="-2" pref="42" max="-2" attributes="0"/>
-                                      <Component id="jComboBox2" alignment="3" min="-2" pref="42" max="-2" attributes="0"/>
-                                      <Component id="jLabel12" alignment="3" min="-2" pref="38" max="-2" attributes="0"/>
-                                      <Component id="jTextField6" alignment="3" min="-2" pref="40" max="-2" attributes="0"/>
+                                  <Group type="103" groupAlignment="0" attributes="0">
                                       <Component id="jLabel6" alignment="0" min="-2" pref="40" max="-2" attributes="0"/>
+                                      <Group type="103" groupAlignment="3" attributes="0">
+                                          <Component id="jLabel13" alignment="3" min="-2" pref="42" max="-2" attributes="0"/>
+                                          <Component id="jComboBox2" alignment="3" min="-2" pref="42" max="-2" attributes="0"/>
+                                          <Component id="jLabel12" alignment="3" min="-2" pref="38" max="-2" attributes="0"/>
+                                          <Component id="jTextField6" alignment="3" min="-2" pref="40" max="-2" attributes="0"/>
+                                      </Group>
                                   </Group>
                                   <EmptySpace type="separate" max="-2" attributes="0"/>
                                   <Group type="103" groupAlignment="3" attributes="0">
@@ -364,6 +366,9 @@
               </StringArray>
             </Property>
           </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jComboBox1ActionPerformed"/>
+          </Events>
           <AuxValues>
             <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;String&gt;"/>
           </AuxValues>
