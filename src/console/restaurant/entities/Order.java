@@ -14,18 +14,19 @@ import java.sql.Date;
 public class Order {
 
     private int id;
-    private String updatedAt;
+    private Date updatedAt;
+    private Date createdAt;
     private float totalPrice;
     private int discount;
     private float realPrice;
     private int tableId;
     private int status;
 
-    public String getUpdatedAt() {
+    public Date getUpdatedAt() {
         return updatedAt;
     }
 
-    public void setUpdatedAt(String updatedAt) {
+    public void setUpdatedAt(Date updatedAt) {
         this.updatedAt = updatedAt;
     }
 
