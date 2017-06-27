@@ -188,12 +188,10 @@
                               <Component id="jLabel3" alignment="3" min="-2" pref="41" max="-2" attributes="0"/>
                               <Component id="jComboBox1" alignment="3" min="-2" pref="32" max="-2" attributes="0"/>
                           </Group>
-
                           <EmptySpace max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="3" attributes="0">
                               <Component id="txtSearchFood" alignment="3" min="-2" pref="35" max="-2" attributes="0"/>
                               <Component id="jLabel2" alignment="3" min="-2" pref="41" max="-2" attributes="0"/>
-
                           </Group>
                           <EmptySpace max="-2" attributes="0"/>
                           <Component id="jLabel1" min="-2" pref="25" max="-2" attributes="0"/>
