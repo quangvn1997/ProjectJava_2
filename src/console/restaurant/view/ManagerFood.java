@@ -13,6 +13,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.text.NumberFormat;
 import java.util.ArrayList;
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
@@ -177,7 +178,8 @@ public class ManagerFood extends JPanel {
                     listFood = foodModel.getListFood(page, limit);
                 }
                 listFood.forEach((food) -> {
-                    model.addRow(new Object[]{String.valueOf(food.getId()), food.getName(), food.getCategoryName(), food.getDescription(), food.getImgUrl(), food.getUnitPrice(), food.getCreatedAt(), food.getUpdateAt()});
+                    NumberFormat formatter = NumberFormat.getCurrencyInstance();
+                    model.addRow(new Object[]{String.valueOf(food.getId()), food.getName(), food.getCategoryName(), food.getDescription(), food.getImgUrl(), formatter.format(food.getUnitPrice()), food.getCreatedAt(), food.getUpdateAt()});
                 });
             }
         });
@@ -192,7 +194,7 @@ public class ManagerFood extends JPanel {
                     if (row != -1) {
                         TableModel tblModel = table.getModel();
                         int id = Integer.parseInt(tblModel.getValueAt(row, 0).toString());
-                        FoodForm foodForm = new FoodForm(2 ,id);
+                        FoodForm foodForm = new FoodForm(2, id);
                         foodForm.setVisible(true);
                     }
                 }
@@ -208,7 +210,9 @@ public class ManagerFood extends JPanel {
         model.setRowCount(0);
         ArrayList<Food> listFood = foodModel.getListFood(page, limit);
         listFood.forEach((food) -> {
-            model.addRow(new Object[]{String.valueOf(food.getId()), food.getName(), food.getCategoryName(), food.getDescription(), food.getImgUrl(), food.getUnitPrice(), food.getCreatedAt(), food.getUpdateAt()});
+            NumberFormat formatter = NumberFormat.getCurrencyInstance();
+            model.addRow(new Object[]{String.valueOf(food.getId()), food.getName(), food.getCategoryName(), food.getDescription(), food.getImgUrl(), formatter.format(food.getUnitPrice()), food.getCreatedAt(), food.getUpdateAt()});
+//            model.addRow(new Object[]{String.valueOf(food.getId()), food.getName(), food.getCategoryName(), food.getDescription(), food.getImgUrl(), food.getUnitPrice(), food.getCreatedAt(), food.getUpdateAt()});
         });
         count = foodModel.countActive();
         totalPage = count / limit + (count % limit > 0 ? 1 : 0);

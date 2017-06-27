@@ -23,7 +23,16 @@ public class Food {
     private int status;
 
     private int orderQuantity;
+    private String Note;
 
+    public String getNote() {
+        return Note;
+    }
+
+    public void setNote(String Note) {
+        this.Note = Note;
+    }
+    
     public int getOrderQuantity() {
         return orderQuantity;
     }

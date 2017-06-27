@@ -7,6 +7,7 @@ package console.restaurant.controller;
 
 import console.restaurant.entities.Food;
 import console.restaurant.models.PaymentModel;
+import java.text.NumberFormat;
 import java.util.List;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
@@ -16,12 +17,14 @@ import javax.swing.table.DefaultTableModel;
  * @author Truong
  */
 public class PaymentController {
+
     public static void loadFood(JTable jTable1) {
         DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
         model.setRowCount(0);
         List<Food> listFood = PaymentModel.getAllFood();
         listFood.forEach((food) -> {
-            model.addRow(new Object[]{String.valueOf(food.getId()),food.getName(),food.getUnitPrice()});
+            NumberFormat formatter = NumberFormat.getCurrencyInstance();
+            model.addRow(new Object[]{String.valueOf(food.getId()), food.getName(), formatter.format(food.getUnitPrice())});
         });
     }
 }
