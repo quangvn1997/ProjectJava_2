@@ -5,6 +5,7 @@
  */
 package console.restaurant.view;
 
+import console.restaurant.entities.SessionAdmin;
 import static console.restaurant.view.ManagerAdmin.table;
 import java.awt.Color;
 import java.awt.Font;
@@ -45,9 +46,11 @@ public class PaymentOrder extends JFrame {
     private JLabel lblthanhtoan;
     private JLabel lblThanhtien;
     private JLabel lbldonvi;
+    private JLabel lblPayer;
+    private JLabel txtPayer;
 
     public PaymentOrder() {
-        this.setSize(900, 720);
+        this.setSize(900, 640);
         this.setTitle("Thông báo");
 
         this.panelPayment = new JPanel();
@@ -56,45 +59,40 @@ public class PaymentOrder extends JFrame {
         this.lblTotal = new JLabel("Tổng tiền :");
         this.lblVND = new JLabel("VNĐ");
         this.txtTotal = new JLabel("55,000,000,000");
-        this.btnExit = new JButton("Thoát");
-        this.btnPrint = new JButton("In hóa đơn");
         this.lblSale = new JLabel("Đã giảm giá :");
-        this.txtSale = new JLabel("90");
+        this.txtSale = new JLabel("0");
         this.lblUnit = new JLabel("%");
         this.lblgachngang = new JLabel("______________________________________");
 
         this.lblthanhtoan = new JLabel("Thành tiền :");
-        this.lblThanhtien = new JLabel("550,000,000");
+        this.lblThanhtien = new JLabel("55,000,000,000");
         this.lbldonvi = new JLabel("VNĐ");
+        this.btnExit = new JButton("Thoát");
+        this.btnPrint = new JButton("In hóa đơn");
+        this.lblPayer = new JLabel("Thu ngân :");
+        this.lblPayer.setBounds(50, 535, 100, 50);
+        this.txtPayer = new JLabel();
+        this.txtPayer.setText(SessionAdmin.getName());
 
-        this.lblHeader.setBounds(300, 15, 370, 50);
+        this.lblHeader.setBounds(350, 0, 370, 50);
         this.panelPayment.setBounds(0, 0, 900, 720);
-        this.lblTotal.setBounds(280, 455, 100, 50);
-        this.txtTotal.setBounds(400, 460, 200, 35);
-        this.lblVND.setBounds(560, 452, 100, 50);
+        this.lblTotal.setBounds(320, 405, 100, 50);
+        this.txtTotal.setBounds(400, 413, 200, 35);
+        this.lblVND.setBounds(500, 405, 100, 50);
 
-        this.lblSale.setBounds(260, 505, 120, 35);
-        this.txtSale.setBounds(420, 503, 30, 35);
-        this.lblUnit.setBounds(450, 503, 100, 35);
-        this.lblgachngang.setBounds(300, 530, 300, 35);
+        this.lblSale.setBounds(305, 450, 120, 35);
+        this.txtSale.setBounds(420, 450, 30, 35);
+        this.lblUnit.setBounds(440, 450, 100, 35);
+        this.lblgachngang.setBounds(300, 460, 300, 35);
 
-        this.lblthanhtoan.setBounds(270, 560, 100, 35);
-        this.lblThanhtien.setBounds(390, 560, 200, 35);
-        this.lbldonvi.setBounds(560, 560, 100, 35);
+        this.lblthanhtoan.setBounds(312, 490, 100, 35);
+        this.lblThanhtien.setBounds(400, 490, 200, 35);
+        this.lbldonvi.setBounds(500, 490, 100, 35);
 
-        this.btnExit.setBounds(600, 620, 100, 35);
-        this.btnPrint.setBounds(720, 620, 100, 35);
+        this.btnExit.setBounds(600, 535, 100, 35);
+        this.btnPrint.setBounds(720, 535, 100, 35);
 
-        this.lblHeader.setFont(new Font("Serif", Font.BOLD, 22));
-        this.lblTotal.setFont(new Font("Serif", Font.BOLD, 18));
-        this.txtTotal.setFont(new Font("Serif", Font.BOLD, 22));
-        this.lblVND.setFont(new Font("Serif", Font.BOLD, 18));
-        this.lblSale.setFont(new Font("Serif", Font.BOLD, 18));
-        this.txtSale.setFont(new Font("Serif", Font.BOLD, 22));
-        this.lblUnit.setFont(new Font("Serif", Font.BOLD, 22));
-        this.lblthanhtoan.setFont(new Font("Serif", Font.BOLD, 18));
-        this.lblThanhtien.setFont(new Font("Serif", Font.BOLD, 22));
-        this.lbldonvi.setFont(new Font("Serif", Font.BOLD, 18));
+        this.txtPayer.setBounds(115, 543, 120, 34);
 
         this.btnExit.addActionListener(new ActionListener() {
             @Override
@@ -126,7 +124,7 @@ public class PaymentOrder extends JFrame {
         this.table.setRowHeight(24);
         this.table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         this.scrollPane = new JScrollPane(table);
-        this.scrollPane.setBounds(40, 70, 800, 380);
+        this.scrollPane.setBounds(40, 45, 800, 350);
 
         this.add(this.lblthanhtoan);
         this.add(this.lblThanhtien);
@@ -142,6 +140,8 @@ public class PaymentOrder extends JFrame {
         this.add(this.btnPrint);
         this.add(scrollPane);
         this.add(this.lblHeader);
+        this.add(this.lblPayer);
+        this.add(this.txtPayer);
         this.add(this.panelPayment);
         this.setLayout(null);
         this.setLocationRelativeTo(null);

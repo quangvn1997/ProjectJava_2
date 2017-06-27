@@ -160,20 +160,20 @@ public class TablesModel {
         return false;
     }
     
-    public boolean update(int status,int id) {
-        try {
-            PreparedStatement pstmt = DAO.getConnection().prepareStatement("UPDATE tables SET status=? WHERE id = ?");
-            pstmt.setInt(1, status);
-            pstmt.setInt(2,id);
-            int a = pstmt.executeUpdate();
-            if (a > 0) {
-                return true;
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return false;
-    }
+//    public boolean update(int status,int id) {
+//        try {
+//            PreparedStatement pstmt = DAO.getConnection().prepareStatement("UPDATE tables SET status=? WHERE id = ?");
+//            pstmt.setInt(1, status);
+//            pstmt.setInt(2,id);
+//            int a = pstmt.executeUpdate();
+//            if (a > 0) {
+//                return true;
+//            }
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
+//        return false;
+//    }
 
     public boolean insertTable(Table table) {
         try {
