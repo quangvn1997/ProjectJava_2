@@ -13,7 +13,6 @@ import java.awt.event.ActionListener;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
@@ -23,12 +22,13 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.ListSelectionModel;
 import javax.swing.table.DefaultTableModel;
-import org.jdesktop.swingx.JXDatePicker;
 
 /**
  *
  * @author Anh Tiến ơi.Có Trộm!
  */
+import com.toedter.calendar.JDateChooser;
+import java.text.DateFormat;
 public class ManagerStatistic extends JPanel {
 
     public static int page = 1;
@@ -43,8 +43,8 @@ public class ManagerStatistic extends JPanel {
     private JLabel lblStartD;
     private JLabel lblEndD;
 
-    private static JXDatePicker startPicker;
-    private static JXDatePicker endPicker;
+    private static JDateChooser startPicker;
+    private static JDateChooser endPicker;
 
     private static JComboBox cbList;
 
@@ -87,16 +87,13 @@ public class ManagerStatistic extends JPanel {
         this.btnLast.setBounds(580, 470, 50, 34);
         //Date.
         //Start.
-        this.startPicker = new JXDatePicker();
+        this.startPicker = new JDateChooser();
         this.startPicker.setBounds(160, 20, 200, 34);
         this.startPicker.setDate(Calendar.getInstance().getTime());
-        this.startPicker.setFormats(new SimpleDateFormat("dd.MM.yyyy"));
         //End.
-        this.endPicker = new JXDatePicker();
+        this.endPicker = new JDateChooser();
         this.endPicker.setBounds(550, 20, 200, 34);
         this.endPicker.setDate(Calendar.getInstance().getTime());
-        this.endPicker.setFormats(new SimpleDateFormat("dd.MM.yyyy"));
-        
         //Add Item.
         this.add(lblStartD);
         this.add(lblEndD);
@@ -130,12 +127,13 @@ public class ManagerStatistic extends JPanel {
 
         this.setLayout(null);
         this.setVisible(true);
-
+        loadStatistic();
+        
         this.btnNext.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 page += 1;
-                loadStatistic();
+                loadStatisticOrder();
             }
         });
 
@@ -143,7 +141,7 @@ public class ManagerStatistic extends JPanel {
             @Override
             public void actionPerformed(ActionEvent e) {
                 page = totalPage;
-                loadStatistic();
+                loadStatisticOrder();
             }
         });
 
@@ -151,7 +149,7 @@ public class ManagerStatistic extends JPanel {
             @Override
             public void actionPerformed(ActionEvent e) {
                 page -= 1;
-                loadStatistic();
+                loadStatisticOrder();
             }
         });
 
@@ -159,7 +157,7 @@ public class ManagerStatistic extends JPanel {
             @Override
             public void actionPerformed(ActionEvent e) {
                 page = 1;
-                loadStatistic();
+                loadStatisticOrder();
             }
         });
 
@@ -179,8 +177,9 @@ public class ManagerStatistic extends JPanel {
                     table.getColumnModel().getColumn(2).setPreferredWidth(350);
                     table.setRowHeight(24);
                     model.fireTableDataChanged();
+                    loadStatisticOrder();
                 } else {
-                     //Table.
+                    //Table.
                     String[] columnNames = {"ID", "Món Ăn", "Ngày tạo"};
                     DefaultTableModel model = (DefaultTableModel) table.getModel();
                     Object[][] data = {};
@@ -193,6 +192,7 @@ public class ManagerStatistic extends JPanel {
                     table.getColumnModel().getColumn(1).setPreferredWidth(350);
                     table.getColumnModel().getColumn(2).setPreferredWidth(350);
                     model.fireTableDataChanged();
+
                 }
 
             }
@@ -200,14 +200,26 @@ public class ManagerStatistic extends JPanel {
 
     }
 
+    // Lấy dữ liệu hiển thị ra bảng.
     public static void loadStatistic() {
         DefaultTableModel model = (DefaultTableModel) table.getModel();
         model.setRowCount(0);
-        SimpleDateFormat Sdate = new SimpleDateFormat("dd/MM/yyyy");
-        dateStart = Sdate.format(startPicker.getDate()).toString();
-        SimpleDateFormat Edate = new SimpleDateFormat("dd/MM/yyyy");
-        dateEnd = Edate.format(endPicker.getDate()).toString();
-        
+        ArrayList<Order> listOrder = statisticModel.getListSatistic(page, limit);
+        listOrder.forEach((order) -> {
+            model.addRow(new Object[]{String.valueOf(order.getId()), order.getTotalPrice(), order.getCreatedAt()});
+        });
+        count = statisticModel.countActive();
+        totalPage = count / limit + (count % limit > 0 ? 1 : 0);
+        btnPage.setText(String.valueOf(page));
+        handlePaginateButton();
+    }
+    public static void loadStatisticOrder() {
+        DefaultTableModel model = (DefaultTableModel) table.getModel();
+        model.setRowCount(0);
+
+        SimpleDateFormat formatDate = new SimpleDateFormat("yyyy/MM/dd");
+        dateStart = formatDate.format(startPicker.getDate()); 
+        dateEnd = formatDate.format(endPicker.getDate());
         ArrayList<Order> listOrder = statisticModel.getListOrder(page, limit, dateStart, dateEnd);
         listOrder.forEach((order) -> {
             model.addRow(new Object[]{String.valueOf(order.getId()), order.getTotalPrice(), order.getCreatedAt()});
