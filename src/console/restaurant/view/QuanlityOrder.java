@@ -12,6 +12,7 @@ import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.text.NumberFormat;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Vector;
 import javax.swing.BorderFactory;
@@ -91,7 +92,8 @@ public class QuanlityOrder extends JFrame {
                     ManagerPayment.foodsOrder.put(food.getId(), food);
 
 //                  Format thành giá tiền VN
-                    NumberFormat formatter = NumberFormat.getCurrencyInstance();
+                    Locale format = new Locale("vi","VN");
+                    NumberFormat formatter = NumberFormat.getCurrencyInstance(format);
 
                     for (Map.Entry<Integer, Food> entry : ManagerPayment.foodsOrder.entrySet()) {
                         Food f1 = entry.getValue();
