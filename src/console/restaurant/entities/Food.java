@@ -22,17 +22,18 @@ public class Food {
     private String updateAt;
     private int status;
 
+    // Các trường này ko lưu vào db, chỉ dùng để thao tác dữ liệu.
     private int orderQuantity;
-    private String Note;
+    private String note;
 
     public String getNote() {
-        return Note;
+        return note;
     }
 
-    public void setNote(String Note) {
-        this.Note = Note;
+    public void setNote(String note) {
+        this.note = note;
     }
-    
+
     public int getOrderQuantity() {
         return orderQuantity;
     }

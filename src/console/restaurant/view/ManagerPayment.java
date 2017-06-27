@@ -7,19 +7,20 @@ package console.restaurant.view;
 
 import console.restaurant.controller.PaymentController;
 import console.restaurant.entities.Food;
+import console.restaurant.entities.Order;
+import console.restaurant.entities.OrderDetail;
 import console.restaurant.entities.SessionAdmin;
 import console.restaurant.models.FoodsModel;
-import static console.restaurant.view.ManagerFood.limit;
-import static console.restaurant.view.ManagerFood.page;
-import java.awt.Color;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.text.DateFormat;
+import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
-import javax.swing.JButton;
+import java.util.Locale;
+import java.util.Map;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JTable;
@@ -40,6 +41,9 @@ public class ManagerPayment extends javax.swing.JFrame {
     private static FoodsModel foodModel = new FoodsModel();
     private QuanlityOrder quanlityForm;
     public static HashMap<Integer, Food> foodsOrder;
+    public static long totalPrice;
+    public static int disc;
+    public static long realPrice;
 
     public ManagerPayment() {
         foodsOrder = new HashMap<>();
@@ -74,32 +78,31 @@ public class ManagerPayment extends javax.swing.JFrame {
             }
         });
 
-        this.tableOrder.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseClicked(MouseEvent e) {
-                if (e.getClickCount() == 1) {
-
-                    JTable target = (JTable) e.getSource();
-                    int row = target.getSelectedRow();
-                    int colum = target.getSelectedColumn();
-                    if (row != -1) {
-                        TableModel tblModel = tableOrder.getModel();
-                        int id = Integer.parseInt(tblModel.getValueAt(row, 0).toString());
-                        Food food = foodModel.getById(id);
-                        if (food == null) {
-                            JOptionPane.showMessageDialog(null, "Món ăn không tồn tại hoặc đã bị xóa.");
-                            return;
-                        }
-                        if (quanlityForm != null) {
-                            quanlityForm.dispose();
-                        }
-                        quanlityForm = new QuanlityOrder(food);
-                        quanlityForm.setVisible(true);
-                    }
-                }
-            }
-        });
-
+//        this.tableOrder.addMouseListener(new MouseAdapter() {
+//            @Override
+//            public void mouseClicked(MouseEvent e) {
+//                if (e.getClickCount() == 1) {
+//
+//                    JTable target = (JTable) e.getSource();
+//                    int row = target.getSelectedRow();
+//                    int colum = target.getSelectedColumn();
+//                    if (row != -1) {
+//                        TableModel tblModel = tableOrder.getModel();
+//                        int id = Integer.parseInt(tblModel.getValueAt(row, 0).toString());
+//                        Food food = foodModel.getById(id);
+//                        if (food == null) {
+//                            JOptionPane.showMessageDialog(null, "Món ăn không tồn tại hoặc đã bị xóa.");
+//                            return;
+//                        }
+//                        if (quanlityForm != null) {
+//                            quanlityForm.dispose();
+//                        }
+//                        quanlityForm = new QuanlityOrder(food);
+//                        quanlityForm.setVisible(true);
+//                    }
+//                }
+//            }
+//        });
         this.txtSearchFood.getDocument().addDocumentListener(new DocumentListener() {
             public void changedUpdate(DocumentEvent e) {
                 process();
@@ -166,13 +169,13 @@ public class ManagerPayment extends javax.swing.JFrame {
         jPanel1 = new javax.swing.JPanel();
         txtSearchFood = new javax.swing.JTextField();
         jLabel3 = new javax.swing.JLabel();
-        jComboBox1 = new javax.swing.JComboBox<>();
+        cmbOption = new javax.swing.JComboBox<>();
         jLabel4 = new javax.swing.JLabel();
         btnReturn = new javax.swing.JButton();
         jLabel5 = new javax.swing.JLabel();
         jLabel12 = new javax.swing.JLabel();
         jTextField2 = new javax.swing.JTextField();
-        jComboBox2 = new javax.swing.JComboBox<>();
+        discount = new javax.swing.JComboBox<>();
         banso = new javax.swing.JLabel();
         jLabel13 = new javax.swing.JLabel();
         date = new javax.swing.JLabel();
@@ -190,8 +193,8 @@ public class ManagerPayment extends javax.swing.JFrame {
         jLabel1 = new javax.swing.JLabel();
         jLabel15 = new javax.swing.JLabel();
         jLabel7 = new javax.swing.JLabel();
-        jLabel8 = new javax.swing.JLabel();
-        jLabel9 = new javax.swing.JLabel();
+        lblRealPayment = new javax.swing.JLabel();
+        lblTotal = new javax.swing.JLabel();
         jLabel10 = new javax.swing.JLabel();
         jMenuBar1 = new javax.swing.JMenuBar();
 
@@ -213,11 +216,11 @@ public class ManagerPayment extends javax.swing.JFrame {
         jLabel3.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
         jLabel3.setText("Phân loại :");
 
-        jComboBox1.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
-        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "     Tất cả", "    Món ăn", "    Hải sản", "   Nước ngọt", "         Bia" }));
-        jComboBox1.addActionListener(new java.awt.event.ActionListener() {
+        cmbOption.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
+        cmbOption.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "     Tất cả", "    Món ăn", "    Hải sản", "   Nước ngọt", "         Bia" }));
+        cmbOption.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jComboBox1ActionPerformed(evt);
+                cmbOptionActionPerformed(evt);
             }
         });
 
@@ -245,15 +248,20 @@ public class ManagerPayment extends javax.swing.JFrame {
             }
         });
 
-        jComboBox2.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
-        jComboBox2.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "   0%", "  10%", "  20%", "  30%", "  40%", "  50%", "  60%", "  70%", "  80%", "  90%" }));
+        discount.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        discount.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "   0", "  10", "  20", "  30", "  40", "  50", "  60", "  70", "  80", "  90" }));
+        discount.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                discountActionPerformed(evt);
+            }
+        });
 
         banso.setFont(new java.awt.Font("Tahoma", 0, 24)); // NOI18N
         banso.setText("1");
         banso.setBorder(javax.swing.BorderFactory.createTitledBorder("Bàn số"));
 
         jLabel13.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
-        jLabel13.setText("   GIẢM GIÁ :");
+        jLabel13.setText("   GIẢM GIÁ (%) :");
 
         date.setFont(new java.awt.Font("Arial", 0, 18)); // NOI18N
 
@@ -389,11 +397,9 @@ public class ManagerPayment extends javax.swing.JFrame {
         jLabel7.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
         jLabel7.setText(" VNĐ");
 
-        jLabel8.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
-        jLabel8.setText("555,000,000,000");
+        lblRealPayment.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
 
-        jLabel9.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
-        jLabel9.setText("555,000,000,000");
+        lblTotal.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
 
         jLabel10.setText("Mọi thắc mắc xin liên hệ : 01636986950");
 
@@ -418,7 +424,7 @@ public class ManagerPayment extends javax.swing.JFrame {
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(txtSearchFood, javax.swing.GroupLayout.PREFERRED_SIZE, 121, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                    .addComponent(cmbOption, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                             .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 204, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 42, Short.MAX_VALUE)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -428,31 +434,29 @@ public class ManagerPayment extends javax.swing.JFrame {
                                 .addContainerGap())
                             .addGroup(jPanel1Layout.createSequentialGroup()
                                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                                        .addGap(0, 0, Short.MAX_VALUE)
+                                        .addComponent(jLabel12)
+                                        .addGap(18, 18, 18)
+                                        .addComponent(lblTotal, javax.swing.GroupLayout.PREFERRED_SIZE, 104, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addGap(10, 10, 10)
+                                        .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 66, javax.swing.GroupLayout.PREFERRED_SIZE))
                                     .addGroup(jPanel1Layout.createSequentialGroup()
                                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                             .addGroup(jPanel1Layout.createSequentialGroup()
                                                 .addGap(540, 540, 540)
                                                 .addComponent(jLabel15, javax.swing.GroupLayout.PREFERRED_SIZE, 87, javax.swing.GroupLayout.PREFERRED_SIZE)
                                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                                .addComponent(jLabel8, javax.swing.GroupLayout.PREFERRED_SIZE, 104, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                .addComponent(lblRealPayment, javax.swing.GroupLayout.PREFERRED_SIZE, 104, javax.swing.GroupLayout.PREFERRED_SIZE)
                                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                                                 .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 66, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                            .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 796, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                        .addGap(0, 1, Short.MAX_VALUE))
-                                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                                        .addGap(0, 0, Short.MAX_VALUE)
-                                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                            .addComponent(jLabel12)
-                                            .addComponent(jLabel13, javax.swing.GroupLayout.PREFERRED_SIZE, 67, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 796, javax.swing.GroupLayout.PREFERRED_SIZE)
                                             .addGroup(jPanel1Layout.createSequentialGroup()
-                                                .addGap(18, 18, 18)
-                                                .addComponent(jLabel9, javax.swing.GroupLayout.PREFERRED_SIZE, 104, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                                .addGap(10, 10, 10)
-                                                .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 66, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                                .addGap(28, 28, 28)
-                                                .addComponent(jComboBox2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                                                .addGap(553, 553, 553)
+                                                .addComponent(jLabel13)
+                                                .addGap(8, 8, 8)
+                                                .addComponent(discount, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                        .addGap(0, 1, Short.MAX_VALUE)))
                                 .addGap(6, 6, 6)
                                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                                     .addComponent(saveOrder, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -501,7 +505,7 @@ public class ManagerPayment extends javax.swing.JFrame {
                         .addContainerGap()
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(cmbOption, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(txtSearchFood, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -524,18 +528,18 @@ public class ManagerPayment extends javax.swing.JFrame {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(jLabel9, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(lblTotal, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addComponent(jLabel12, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGap(0, 0, 0)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jComboBox2, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(discount, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel13, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel15, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel8, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(lblRealPayment, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addContainerGap(39, Short.MAX_VALUE))
                     .addGroup(jPanel1Layout.createSequentialGroup()
@@ -578,57 +582,50 @@ public class ManagerPayment extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton11ActionPerformed
 
     private void saveOrderActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveOrderActionPerformed
-        // TODO add your handling code here:
-//        JButton B1 = (JButton) e.getSource();
-//        B1.setBackground(new Color(255, 26, 26));
+        Order order = new Order();
+        
+        for (Map.Entry<Integer, Food> entry : ManagerPayment.foodsOrder.entrySet()) {
+            OrderDetail orderDetail = new OrderDetail();
+            Food f = entry.getValue();
+            orderDetail.setFoodId(f.getId());
+            orderDetail.setUnitPrice(f.getUnitPrice());
+            orderDetail.setQuantity(f.getOrderQuantity());
+            orderDetail.setTotalPrice(f.getOrderQuantity() * f.getUnitPrice());
+            
+            orderDetail.setStatus(1);
+        }
+        order.setTotalPrice(totalPrice);
+        order.setDiscount(disc);
+        order.setRealPrice(totalPrice - (totalPrice * disc / 100));
+
     }//GEN-LAST:event_saveOrderActionPerformed
 
     private void btnReturnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnReturnActionPerformed
         // jPanel1.setVisible(false);
         this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
         this.setVisible(false);
-        //        PanelManager quanly = new PanelManager();
-        //        quanly.setVisible(true);
     }//GEN-LAST:event_btnReturnActionPerformed
 
     private void txtSearchFoodActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtSearchFoodActionPerformed
         // TODO add your handling code here:
-//        this.txtSearchFood.getDocument().addDocumentListener(new DocumentListener() {
-//            public void changedUpdate(DocumentEvent e) {
-//                process();
-//            }
-//
-//            public void removeUpdate(DocumentEvent e) {
-//                process();
-//            }
-//
-//            public void insertUpdate(DocumentEvent e) {
-//                process();
-//            }
-//
-//            public void process() {
-//                ArrayList<Food> listFood = new ArrayList<>();
-//                DefaultTableModel model = (DefaultTableModel) tableMenu.getModel();
-//                model.setRowCount(0);
-//                if (txtSearchFood != null && txtSearchFood.getText().length() > 0) {
-//                    listFood = foodModel.searchFood(txtSearchFood.getText());
-//                } else {
-//                    listFood = foodModel.getListFood(page, limit);
-//                }
-//                listFood.forEach((food) -> {
-//                    model.addRow(new Object[]{String.valueOf(food.getId()), food.getName(), food.getUnitPrice()});
-//                });
-//            }
-//        });
     }//GEN-LAST:event_txtSearchFoodActionPerformed
 
-    private void jComboBox1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox1ActionPerformed
+    private void cmbOptionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmbOptionActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jComboBox1ActionPerformed
+    }//GEN-LAST:event_cmbOptionActionPerformed
 
     private void jTextField2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField2ActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_jTextField2ActionPerformed
+
+    private void discountActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_discountActionPerformed
+        Locale format = new Locale("vi", "VN");
+        NumberFormat formatter = NumberFormat.getCurrencyInstance(format);
+        int discount = Integer.parseInt(String.valueOf(ManagerPayment.discount.getSelectedItem()).trim());
+        ManagerPayment.realPrice =  ManagerPayment.totalPrice - ( ManagerPayment.totalPrice * discount / 100);
+        ManagerPayment.lblTotal.setText(formatter.format(ManagerPayment.totalPrice));
+        ManagerPayment.lblRealPayment.setText(formatter.format(ManagerPayment.realPrice));
+    }//GEN-LAST:event_discountActionPerformed
 
     /**
      * @param args the command line arguments
@@ -671,11 +668,11 @@ public class ManagerPayment extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel banso;
     private javax.swing.JButton btnReturn;
+    private javax.swing.JComboBox<String> cmbOption;
     private javax.swing.JLabel date;
+    public static javax.swing.JComboBox<String> discount;
     private javax.swing.JButton jButton11;
     private javax.swing.JButton jButton6;
-    private javax.swing.JComboBox<String> jComboBox1;
-    private javax.swing.JComboBox<String> jComboBox2;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel12;
@@ -687,14 +684,14 @@ public class ManagerPayment extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
-    private javax.swing.JLabel jLabel8;
-    private javax.swing.JLabel jLabel9;
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JTextField jTextField2;
+    public static javax.swing.JLabel lblRealPayment;
+    public static javax.swing.JLabel lblTotal;
     public static javax.swing.JButton saveOrder;
     private javax.swing.JTable tableMenu;
     public static javax.swing.JTable tableOrder;

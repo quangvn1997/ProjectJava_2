@@ -89,19 +89,32 @@ public class QuanlityOrder extends JFrame {
                     model.setRowCount(0);
                     food.setNote(txtNote.getText());
                     food.setOrderQuantity(number);
+                    if (ManagerPayment.foodsOrder.containsKey(food.getId())) {
+                        Food existFood = ManagerPayment.foodsOrder.get(food.getId());
+                        food.setOrderQuantity(food.getOrderQuantity() + existFood.getOrderQuantity());
+                    }
                     ManagerPayment.foodsOrder.put(food.getId(), food);
 
 //                  Format thành giá tiền VN
-                    Locale format = new Locale("vi","VN");
+                    Locale format = new Locale("vi", "VN");
                     NumberFormat formatter = NumberFormat.getCurrencyInstance(format);
 
+                    long totalPayment = 0;
+                    long realPayment = 0;
                     for (Map.Entry<Integer, Food> entry : ManagerPayment.foodsOrder.entrySet()) {
                         Food f1 = entry.getValue();
+                        totalPayment += f1.getOrderQuantity() * f1.getUnitPrice();
                         model.addRow(new Object[]{String.valueOf(f1.getId()), f1.getName(), formatter.format(f1.getUnitPrice()), f1.getOrderQuantity(), formatter.format(f1.getUnitPrice() * f1.getOrderQuantity()), f1.getNote(), ""});
                     }
 
+                    int discount = Integer.parseInt(String.valueOf(ManagerPayment.discount.getSelectedItem()).trim());
+                    ManagerPayment.totalPrice = totalPayment;
+                    ManagerPayment.realPrice = totalPayment - (totalPayment * discount / 100);
+                    ManagerPayment.lblTotal.setText(formatter.format(ManagerPayment.totalPrice));
+                    ManagerPayment.lblRealPayment.setText(formatter.format(ManagerPayment.realPrice));
                     setVisible(false);
                 } catch (NumberFormatException exception) {
+                    exception.printStackTrace();
                     JOptionPane.showMessageDialog(null, "Vui lòng nhập số.");
                     return;
                 }
