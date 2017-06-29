@@ -22,24 +22,16 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.ListSelectionModel;
 import javax.swing.table.DefaultTableModel;
-
-import com.toedter.calendar.JDateChooser;
-
-
-
 /**
  *
  * @author Anh Tiến ơi.Có Trộm!
  */
-
-
 import com.toedter.calendar.JDateChooser;
 import console.restaurant.models.TablesModel;
 import java.awt.Font;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.sql.Date;
-
 import java.text.DateFormat;
 
 public class ManagerStatistic extends JPanel {
@@ -66,6 +58,7 @@ public class ManagerStatistic extends JPanel {
     private static DefaultTableModel modelStatistic;
     private static JScrollPane scrollPane;
 
+//    ManagerStatistic
     public ManagerStatistic() {
         this.setBackground(new Color(250, 250, 250));
         this.setBounds(350, 90, 1000, 520);
@@ -147,8 +140,6 @@ public class ManagerStatistic extends JPanel {
         this.scrollPane.setVisible(true);
         this.setLayout(null);
         this.setVisible(true);
-        loadStatistic();
-
         loadStatisticOrder();
 
         this.endPicker.getDateEditor().addPropertyChangeListener(new PropertyChangeListener() {
@@ -160,7 +151,7 @@ public class ManagerStatistic extends JPanel {
                 }
             }
         });
-         this.startPicker.getDateEditor().addPropertyChangeListener(new PropertyChangeListener() {
+        this.startPicker.getDateEditor().addPropertyChangeListener(new PropertyChangeListener() {
             @Override
             public void propertyChange(PropertyChangeEvent e) {
                 if ("date".equals(e.getPropertyName())) {
@@ -169,7 +160,6 @@ public class ManagerStatistic extends JPanel {
                 }
             }
         });
-
 
         this.btnNext.addActionListener(new ActionListener() {
             @Override
@@ -206,29 +196,6 @@ public class ManagerStatistic extends JPanel {
     }
 
     // Lấy dữ liệu hiển thị ra bảng.
-
-    public static void loadStatistic() {
-        DefaultTableModel model = (DefaultTableModel) table.getModel();
-        model.setRowCount(0);
-        ArrayList<Order> listOrder = statisticModel.getListSatistic(page, limit);
-        listOrder.forEach((order) -> {
-            model.addRow(new Object[]{String.valueOf(order.getId()), order.getTotalPrice(), order.getCreatedAt()});
-        });
-        count = statisticModel.countActive();
-        totalPage = count / limit + (count % limit > 0 ? 1 : 0);
-        btnPage.setText(String.valueOf(page));
-        handlePaginateButton();
-    }
-
-    public static void loadStatisticOrder() {
-        DefaultTableModel model = (DefaultTableModel) table.getModel();
-        model.setRowCount(0);
-
-        SimpleDateFormat formatDate = new SimpleDateFormat("yyyy/MM/dd");
-        dateStart = formatDate.format(startPicker.getDate());
-        dateEnd = formatDate.format(endPicker.getDate());
-        ArrayList<Order> listOrder = statisticModel.getListOrder(page, limit, dateStart, dateEnd);
-
     public static void loadStatisticOrder() {
         DefaultTableModel model = (DefaultTableModel) table.getModel();
         model.setRowCount(0);
@@ -241,7 +208,7 @@ public class ManagerStatistic extends JPanel {
             fullPrice += order.getRealPrice();
         }
         listOrder.forEach((order) -> {
-            model.addRow(new Object[]{order.getId(),  order.getTotalPrice(),order.getRealPrice(), order.getDiscount() + "%", order.getTableName(), order.getCreatedAt()});
+            model.addRow(new Object[]{order.getId(), order.getTotalPrice(), order.getRealPrice(), order.getDiscount() + "%", order.getTableName(), order.getCreatedAt()});
         });
         count = statisticModel.countActive();
         totalPage = count / limit + (count % limit > 0 ? 1 : 0);
