@@ -29,7 +29,7 @@ public class ListTable extends javax.swing.JPanel {
     int banHienTai = 0;
     int sotrang = 1;
     public int page = 1;
-    public JButton[] listBan;
+    public static JButton[] listBan;
     JButton[] listtrang = new JButton[sotrang];
     private TablesModel model = new TablesModel();
     private Map<String, JButton> dynamicButtons;
@@ -78,8 +78,6 @@ public class ListTable extends javax.swing.JPanel {
                     //B1.setBackground(new Color(255, 26, 26));
                     jframePaymen = new ManagerPayment();
                     jframePaymen.setVisible(true);
-//                    TablesModel tableModel = new TablesModel();
-//                    tableModel.update(2, a);
                 }
             });
 

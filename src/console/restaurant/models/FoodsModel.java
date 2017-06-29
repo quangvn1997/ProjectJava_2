@@ -35,6 +35,31 @@ public class FoodsModel {
         return food;
     }
 
+    public Food loadId(int id) {
+        Food food = null;
+        if (id > 0) {
+            try {
+                String sql = "select * from foods where category_id = " + id;
+                Statement stt = DAO.getConnection().createStatement();
+                ResultSet rs = stt.executeQuery(sql);
+                if (rs.next()) {
+                    food = new Food();
+                    food.setId(Integer.valueOf(rs.getString("id")));
+                    food.setName(rs.getString("name"));
+//                    food.setCategoryId(Integer.parseInt(rs.getString("category_id")));
+                    food.setUnitPrice(rs.getFloat("unit_price"));
+                    food.setImgUrl(rs.getString("img_url"));
+                    food.setDescription(rs.getString("description"));
+                    food.setCreatedAt(rs.getString("created_at"));
+                    food.setUpdateAt(rs.getString("updated_at"));
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        return food;
+    }
+
     public boolean update(Food food) {
         try {
             PreparedStatement pstmt = DAO.getConnection().prepareStatement("UPDATE foods SET name=?, category_id=?,unit_price=?,img_url=?,description=?,updated_at=NOW() WHERE id = ?");
@@ -144,7 +169,7 @@ public class FoodsModel {
 
     public void delete(int id) {
         try {
-            String sql = "DELETE FROM foods WHERE id =?";
+            String sql = "DELETE FROM categories WHERE id =?";
             PreparedStatement prest = DAO.getConnection().prepareStatement(sql);
             prest.setInt(1, id);
             int val = prest.executeUpdate();

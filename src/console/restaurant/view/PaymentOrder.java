@@ -5,6 +5,7 @@
  */
 package console.restaurant.view;
 
+import console.restaurant.entities.Food;
 import console.restaurant.entities.SessionAdmin;
 import static console.restaurant.view.ManagerAdmin.table;
 import java.awt.Color;
@@ -12,6 +13,7 @@ import java.awt.Font;
 import java.awt.HeadlessException;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.HashMap;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -48,8 +50,16 @@ public class PaymentOrder extends JFrame {
     private JLabel lbldonvi;
     private JLabel lblPayer;
     private JLabel txtPayer;
+    private ManagerPayment manager;
+    private Food food;
+    private JLabel lblCreatedAt;
+    private JLabel lblUpdatedAt;
+    private JLabel lblCreatedDate;
+    private JLabel lblUpdatedDate;
+    public static HashMap<Integer, Food> foodsOrder;
 
     public PaymentOrder() {
+        foodsOrder = new HashMap<>();
         this.setSize(900, 640);
         this.setTitle("Thông báo");
 
@@ -58,14 +68,15 @@ public class PaymentOrder extends JFrame {
         this.lblHeader = new JLabel("HÓA ĐƠN THANH TOÁN : Bàn 1");
         this.lblTotal = new JLabel("Tổng tiền :");
         this.lblVND = new JLabel("VNĐ");
-        this.txtTotal = new JLabel("55,000,000,000");
+        this.txtTotal = new JLabel(manager.lblTotal.getText());
         this.lblSale = new JLabel("Đã giảm giá :");
-        this.txtSale = new JLabel("0");
+        int discount = Integer.parseInt(String.valueOf(ManagerPayment.discount.getSelectedItem()).trim());
+        this.txtSale = new JLabel(Integer.toString(discount));
         this.lblUnit = new JLabel("%");
         this.lblgachngang = new JLabel("______________________________________");
 
         this.lblthanhtoan = new JLabel("Thành tiền :");
-        this.lblThanhtien = new JLabel("55,000,000,000");
+        this.lblThanhtien = new JLabel(manager.lblRealPayment.getText());
         this.lbldonvi = new JLabel("VNĐ");
         this.btnExit = new JButton("Thoát");
         this.btnPrint = new JButton("In hóa đơn");
@@ -73,21 +84,30 @@ public class PaymentOrder extends JFrame {
         this.lblPayer.setBounds(50, 535, 100, 50);
         this.txtPayer = new JLabel();
         this.txtPayer.setText(SessionAdmin.getName());
+        this.lblCreatedAt = new JLabel("Giờ tạo : ");
+        this.lblUpdatedAt = new JLabel("Giờ kết thúc : ");
+        this.lblCreatedDate = new JLabel(" 12:12:12  22-10-2017");
+        this.lblUpdatedDate = new JLabel(" 13:10:12  22-10-2017");
 
         this.lblHeader.setBounds(350, 0, 370, 50);
         this.panelPayment.setBounds(0, 0, 900, 720);
-        this.lblTotal.setBounds(320, 405, 100, 50);
-        this.txtTotal.setBounds(400, 413, 200, 35);
-        this.lblVND.setBounds(500, 405, 100, 50);
+        this.lblTotal.setBounds(360, 405, 100, 50);
+        this.txtTotal.setBounds(440, 413, 200, 35);
+        this.lblVND.setBounds(540, 405, 100, 50);
 
-        this.lblSale.setBounds(305, 450, 120, 35);
-        this.txtSale.setBounds(420, 450, 30, 35);
-        this.lblUnit.setBounds(440, 450, 100, 35);
-        this.lblgachngang.setBounds(300, 460, 300, 35);
+        this.lblSale.setBounds(345, 450, 120, 35);
+        this.txtSale.setBounds(460, 450, 30, 35);
+        this.lblUnit.setBounds(480, 450, 100, 35);
+        this.lblgachngang.setBounds(340, 460, 300, 35);
 
-        this.lblthanhtoan.setBounds(312, 490, 100, 35);
-        this.lblThanhtien.setBounds(400, 490, 200, 35);
-        this.lbldonvi.setBounds(500, 490, 100, 35);
+        this.lblthanhtoan.setBounds(352, 490, 100, 35);
+        this.lblThanhtien.setBounds(440, 490, 200, 35);
+        this.lbldonvi.setBounds(540, 490, 100, 35);
+
+        this.lblCreatedAt.setBounds(70, 420, 200, 35);
+        this.lblUpdatedAt.setBounds(45, 460, 200, 35);
+        this.lblCreatedDate.setBounds(125, 420, 200, 35);
+        this.lblUpdatedDate.setBounds(125, 460, 200, 35);
 
         this.btnExit.setBounds(600, 535, 100, 35);
         this.btnPrint.setBounds(720, 535, 100, 35);
@@ -109,18 +129,17 @@ public class PaymentOrder extends JFrame {
                 setVisible(false);
             }
         });
-        String[] columnNames = {"Stt", "Tên dịch vụ", "Đơn giá", "Số lượng", "Thành tiền", "Giờ tạo", "Giờ thanh toán"};
+        String[] columnNames = {"Stt", "Tên dịch vụ", "Đơn giá", "Số lượng", "Thành tiền", "Ghi chú"};
         Object[][] data = {};
         this.modelPayment = new DefaultTableModel(data, columnNames);
         this.table = new JTable(modelPayment);
         this.table.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
-        this.table.getColumnModel().getColumn(0).setPreferredWidth(50);
-        this.table.getColumnModel().getColumn(1).setPreferredWidth(150);
-        this.table.getColumnModel().getColumn(2).setPreferredWidth(124);
+        this.table.getColumnModel().getColumn(0).setPreferredWidth(80);
+        this.table.getColumnModel().getColumn(1).setPreferredWidth(200);
+        this.table.getColumnModel().getColumn(2).setPreferredWidth(150);
         this.table.getColumnModel().getColumn(3).setPreferredWidth(80);
         this.table.getColumnModel().getColumn(4).setPreferredWidth(150);
-        this.table.getColumnModel().getColumn(5).setPreferredWidth(120);
-        this.table.getColumnModel().getColumn(6).setPreferredWidth(120);
+        this.table.getColumnModel().getColumn(5).setPreferredWidth(133);
         this.table.setRowHeight(24);
         this.table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         this.scrollPane = new JScrollPane(table);
@@ -142,6 +161,10 @@ public class PaymentOrder extends JFrame {
         this.add(this.lblHeader);
         this.add(this.lblPayer);
         this.add(this.txtPayer);
+        this.add(this.lblCreatedAt);
+        this.add(this.lblUpdatedAt);
+        this.add(this.lblCreatedDate);
+        this.add(this.lblUpdatedDate);
         this.add(this.panelPayment);
         this.setLayout(null);
         this.setLocationRelativeTo(null);
