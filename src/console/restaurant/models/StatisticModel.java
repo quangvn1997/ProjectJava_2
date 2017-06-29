@@ -18,11 +18,14 @@ import java.util.ArrayList;
  * @author Truong
  */
 public class StatisticModel {
-    public ArrayList<Order> getListOrder(int page, int limit, Date day1, Date day2) {
 
+    public ArrayList<Order> getListOrder(int page, int limit, Date day1, Date day2) {
         ArrayList<Order> listOrder = new ArrayList<>();
         try {
-            String strQuery = "select * from orders WHERE created_at BETWEEN '" + day1 + "' AND '" + day2 + "'";
+            String strQuery = "select orders.*,tables.name as name from orders ";
+            strQuery += "LEFT JOIN tables ";
+            strQuery += "ON orders.table_id = tables.id ";
+            strQuery += "WHERE orders.created_at BETWEEN '" + day1 + "' AND '" + day2 + "'";
             System.out.println(strQuery);
             strQuery += " LIMIT " + limit + " OFFSET " + (page - 1) * limit;
             ResultSet rs = DAO.getConnection().createStatement().executeQuery(strQuery);
@@ -34,6 +37,7 @@ public class StatisticModel {
                 order.setRealPrice(rs.getFloat("real_price"));
                 order.setDiscount(rs.getInt("discount"));
                 order.setTableId(rs.getInt("table_id"));
+                order.setTableName(rs.getString("name"));
                 listOrder.add(order);
                 System.out.println("Succes");
             }
@@ -42,11 +46,12 @@ public class StatisticModel {
         }
         return listOrder;
     }
-    public ArrayList<Order> getListOrder( Date day1, Date day2) {
+
+    public ArrayList<Order> getListOrder(Date day1, Date day2) {
 
         ArrayList<Order> listOrder = new ArrayList<>();
         try {
-            String strQuery = "select * from orders WHERE created_at BETWEEN '"+ day1 +"' AND '"+ day2 +"'";
+            String strQuery = "select * from orders WHERE created_at BETWEEN '" + day1 + "' AND '" + day2 + "'";
             ResultSet rs = DAO.getConnection().createStatement().executeQuery(strQuery);
             while (rs.next()) {
                 Order order = new Order();
@@ -63,7 +68,7 @@ public class StatisticModel {
         }
         return listOrder;
     }
-    
+
     public int countActive() {
         int count = 0;
         try {
@@ -77,5 +82,5 @@ public class StatisticModel {
         }
         return count;
     }
-    
+
 }
