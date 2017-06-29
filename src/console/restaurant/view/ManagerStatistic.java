@@ -22,13 +22,14 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.ListSelectionModel;
 import javax.swing.table.DefaultTableModel;
+import com.toedter.calendar.JDateChooser;
 
 /**
  *
  * @author Anh Tiến ơi.Có Trộm!
  */
-import com.toedter.calendar.JDateChooser;
 import java.text.DateFormat;
+
 public class ManagerStatistic extends JPanel {
 
     public static int page = 1;
@@ -128,7 +129,7 @@ public class ManagerStatistic extends JPanel {
         this.setLayout(null);
         this.setVisible(true);
         loadStatistic();
-        
+
         this.btnNext.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -213,12 +214,13 @@ public class ManagerStatistic extends JPanel {
         btnPage.setText(String.valueOf(page));
         handlePaginateButton();
     }
+
     public static void loadStatisticOrder() {
         DefaultTableModel model = (DefaultTableModel) table.getModel();
         model.setRowCount(0);
 
         SimpleDateFormat formatDate = new SimpleDateFormat("yyyy/MM/dd");
-        dateStart = formatDate.format(startPicker.getDate()); 
+        dateStart = formatDate.format(startPicker.getDate());
         dateEnd = formatDate.format(endPicker.getDate());
         ArrayList<Order> listOrder = statisticModel.getListOrder(page, limit, dateStart, dateEnd);
         listOrder.forEach((order) -> {

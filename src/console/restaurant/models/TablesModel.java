@@ -47,15 +47,9 @@ public class TablesModel {
     }
 
     public ArrayList<Table> getListTable(int page, int limit) {
-        // limit = 2
-        // page = 2
         ArrayList<Table> listTable = new ArrayList<>();
         try {
             String strQuery = "select * from tables ";
-//            strQuery += "FROM `foods` as food_table ";
-//            strQuery += "INNER join categories as category_table ";
-//            strQuery += "ON food_table.category_id = category_table.id ";
-//            strQuery += "WHERE admins.status = 1 ORDER BY admins.created_at DESC ";
             strQuery += "LIMIT " + limit + " OFFSET " + (page - 1) * limit;
             ResultSet rs = DAO.getConnection().createStatement().executeQuery(strQuery);
             while (rs.next()) {
@@ -66,7 +60,7 @@ public class TablesModel {
                 table.setUpdateAt(rs.getString("updated_at"));
                 table.setStatus(rs.getInt("status"));
                 listTable.add(table);
-            } 
+            }
         } catch (SQLException ex) {
             ex.printStackTrace();
         }
@@ -96,20 +90,6 @@ public class TablesModel {
         return listAvailable;
     }
 
-//    public int getCountTable() {
-//        try {
-//            Connection cnn = DAO
-//                    .getConnection();
-//            Statement stt = cnn.createStatement();
-//            String sqlQuery = "select count from tables";
-//            System.out.println(sqlQuery);
-//            ResultSet rs = stt.executeQuery(sqlQuery);
-//
-//        } catch (Exception e) {
-//        }
-//        return 0;
-//
-//    }
     public int countActive() {
         int count = 0;
         try {
@@ -159,7 +139,7 @@ public class TablesModel {
         }
         return false;
     }
-    
+
 //    public boolean update(int status,int id) {
 //        try {
 //            PreparedStatement pstmt = DAO.getConnection().prepareStatement("UPDATE tables SET status=? WHERE id = ?");
@@ -174,7 +154,6 @@ public class TablesModel {
 //        }
 //        return false;
 //    }
-
     public boolean insertTable(Table table) {
         try {
             PreparedStatement pstmt = DAO.getConnection().prepareStatement(""
