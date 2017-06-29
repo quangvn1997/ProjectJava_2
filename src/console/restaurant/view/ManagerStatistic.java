@@ -147,8 +147,6 @@ public class ManagerStatistic extends JPanel {
         this.scrollPane.setVisible(true);
         this.setLayout(null);
         this.setVisible(true);
-        loadStatistic();
-
         loadStatisticOrder();
 
         this.endPicker.getDateEditor().addPropertyChangeListener(new PropertyChangeListener() {
@@ -206,29 +204,6 @@ public class ManagerStatistic extends JPanel {
     }
 
     // Lấy dữ liệu hiển thị ra bảng.
-
-    public static void loadStatistic() {
-        DefaultTableModel model = (DefaultTableModel) table.getModel();
-        model.setRowCount(0);
-        ArrayList<Order> listOrder = statisticModel.getListSatistic(page, limit);
-        listOrder.forEach((order) -> {
-            model.addRow(new Object[]{String.valueOf(order.getId()), order.getTotalPrice(), order.getCreatedAt()});
-        });
-        count = statisticModel.countActive();
-        totalPage = count / limit + (count % limit > 0 ? 1 : 0);
-        btnPage.setText(String.valueOf(page));
-        handlePaginateButton();
-    }
-
-    public static void loadStatisticOrder() {
-        DefaultTableModel model = (DefaultTableModel) table.getModel();
-        model.setRowCount(0);
-
-        SimpleDateFormat formatDate = new SimpleDateFormat("yyyy/MM/dd");
-        dateStart = formatDate.format(startPicker.getDate());
-        dateEnd = formatDate.format(endPicker.getDate());
-        ArrayList<Order> listOrder = statisticModel.getListOrder(page, limit, dateStart, dateEnd);
-
     public static void loadStatisticOrder() {
         DefaultTableModel model = (DefaultTableModel) table.getModel();
         model.setRowCount(0);
