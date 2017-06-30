@@ -25,8 +25,7 @@ public class StatisticModel {
             String strQuery = "select orders.*,tables.name as name from orders ";
             strQuery += "LEFT JOIN tables ";
             strQuery += "ON orders.table_id = tables.id ";
-            strQuery += "WHERE orders.created_at BETWEEN '" + day1 + "' AND '" + day2 + "'";
-            System.out.println(strQuery);
+            strQuery += "WHERE orders.created_at BETWEEN '" + day1 + "' AND '" + day2 + "'AND orders.status = 1";
             strQuery += " LIMIT " + limit + " OFFSET " + (page - 1) * limit;
             ResultSet rs = DAO.getConnection().createStatement().executeQuery(strQuery);
             while (rs.next()) {
@@ -39,7 +38,6 @@ public class StatisticModel {
                 order.setTableId(rs.getInt("table_id"));
                 order.setTableName(rs.getString("name"));
                 listOrder.add(order);
-                System.out.println("Succes");
             }
         } catch (SQLException ex) {
             ex.printStackTrace();

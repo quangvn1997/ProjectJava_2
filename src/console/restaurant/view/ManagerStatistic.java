@@ -22,6 +22,8 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.ListSelectionModel;
 import javax.swing.table.DefaultTableModel;
+import com.toedter.calendar.JDateChooser;
+
 /**
  *
  * @author Anh Tiến ơi.Có Trộm!
@@ -33,6 +35,7 @@ import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.sql.Date;
 import java.text.DateFormat;
+import javax.swing.JOptionPane;
 
 public class ManagerStatistic extends JPanel {
 
@@ -63,16 +66,13 @@ public class ManagerStatistic extends JPanel {
         this.setBackground(new Color(250, 250, 250));
         this.setBounds(350, 90, 1000, 520);
         this.setBorder(BorderFactory.createLineBorder(Color.BLACK));
-
         //Title.
         this.lblStartD = new JLabel("Chọn Ngày Bắt Đầu:");
         this.lblStartD.setBounds(20, 20, 140, 34);
-
         this.lblEndD = new JLabel("Chọn Ngày Cuối Cùng:");
         this.lblEndD.setBounds(400, 20, 140, 34);
-
         this.lblFullPrice = new JLabel("Tổng Giá : " + fullPrice);
-        this.lblFullPrice.setBounds(700, 470, 200, 40);
+        this.lblFullPrice.setBounds(700, 470, 300, 40);
         this.lblFullPrice.setFont(new Font("Serif", Font.PLAIN, 25));
         //Button.
         String[] listStrings = {"Theo hóa đơn", "Theo món"};
@@ -83,28 +83,25 @@ public class ManagerStatistic extends JPanel {
         this.btnPage = new JButton(String.valueOf(page));
         this.btnNext = new JButton(">");
         this.btnLast = new JButton(">>");
-
         this.btnFirst.setBounds(340, 470, 50, 34);
         this.btnPrevious.setBounds(400, 470, 50, 34);
         this.btnPage.setBounds(460, 470, 50, 34);
         this.btnNext.setBounds(520, 470, 50, 34);
         this.btnLast.setBounds(580, 470, 50, 34);
         //Date.
-        Calendar c = Calendar.getInstance();   // this takes current date
+        Calendar c = Calendar.getInstance();
         c.set(Calendar.DATE, Calendar.getInstance().getActualMinimum(Calendar.DATE));
         //Start.
         this.startPicker = new JDateChooser();
         this.startPicker.setBounds(160, 20, 200, 34);
         this.startPicker.setDateFormatString("dd/MM/yyyy");
         this.startPicker.setDate(c.getTime());
-
         //End.
         this.endPicker = new JDateChooser();
         this.endPicker.setBounds(550, 20, 200, 34);
         this.endPicker.setDateFormatString("dd/MM/yyyy");
-        c.set(Calendar.DATE, Calendar.getInstance().getActualMaximum(Calendar.DATE));
+        c.set(Calendar.DATE,Calendar.getInstance().get(Calendar.DATE));
         this.endPicker.setDate(c.getTime());
-
         //Add Item.
         this.add(lblStartD);
         this.add(lblEndD);
@@ -117,7 +114,6 @@ public class ManagerStatistic extends JPanel {
         this.add(btnNext);
         this.add(btnLast);
         this.add(this.lblFullPrice);
-
         //Table.
         String[] columnNames1 = {"ID", "Giá Trước Giảm", "Giá Sau Giảm", "Giảm Giá", "Bàn Thanh Toán", "Ngày Tạo"};
         Object[][] data1 = {};
@@ -141,13 +137,20 @@ public class ManagerStatistic extends JPanel {
         this.setLayout(null);
         this.setVisible(true);
         loadStatisticOrder();
-
+        // add action 
+        DateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
         this.endPicker.getDateEditor().addPropertyChangeListener(new PropertyChangeListener() {
             @Override
             public void propertyChange(PropertyChangeEvent e) {
                 if ("date".equals(e.getPropertyName())) {
-                    endPicker.setDate((java.util.Date) e.getNewValue());
-                    loadStatisticOrder();
+                    Calendar cale = Calendar.getInstance();
+                    if (endPicker.getDate().after(cale.getInstance().getTime())) {
+                        endPicker.setDate(Calendar.getInstance().getTime());
+                        JOptionPane.showMessageDialog(null, "Vui lòng chọn trước ngày : " + formatter.format(endPicker.getDate()));
+                    } else {
+                        endPicker.setDate((java.util.Date) e.getNewValue());
+                        loadStatisticOrder();
+                    }
                 }
             }
         });
@@ -155,8 +158,15 @@ public class ManagerStatistic extends JPanel {
             @Override
             public void propertyChange(PropertyChangeEvent e) {
                 if ("date".equals(e.getPropertyName())) {
-                    startPicker.setDate((java.util.Date) e.getNewValue());
-                    loadStatisticOrder();
+                    Calendar cale = Calendar.getInstance();
+                    if (startPicker.getDate().after(endPicker.getDate())) {
+                        JOptionPane.showMessageDialog(null, "Vui lòng chọn trước ngày : " + formatter.format(endPicker.getDate()));
+                        cale.set(Calendar.DATE, Calendar.getInstance().getActualMinimum(Calendar.DATE));
+                        startPicker.setDate(cale.getTime());
+                    } else {
+                        startPicker.setDate((java.util.Date) e.getNewValue());
+                        loadStatisticOrder();
+                    }
                 }
             }
         });
@@ -214,7 +224,7 @@ public class ManagerStatistic extends JPanel {
         totalPage = count / limit + (count % limit > 0 ? 1 : 0);
         btnPage.setText(String.valueOf(page));
         handlePaginateButton();
-        ManagerStatistic.lblFullPrice.setText("tổng giá : " + fullPrice);
+        ManagerStatistic.lblFullPrice.setText("Tổng Tiền : " + fullPrice);
         fullPrice = 0;
     }
 

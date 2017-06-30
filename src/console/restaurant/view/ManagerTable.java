@@ -207,12 +207,12 @@ public class ManagerTable extends JPanel {
                 DefaultTableModel model = (DefaultTableModel) table.getModel();
                 model.setRowCount(0);
                 if (txtSearch != null && txtSearch.getText().length() > 0) {
-                    listTable = tableModel.searchAdmin(txtSearch.getText());
+                    listTable = tableModel.searchTable(txtSearch.getText());
                 } else {
                     listTable = tableModel.getListTable(page, limit);
                 }
                 listTable.forEach((table) -> {
-                    model.addRow(new Object[]{String.valueOf(table.getId()), table.getName(), table.getStatus() == 0 ? " Đã hỏng " : "  Sẵn sàng ", table.getCreatedAt(), table.getUpdateAt()});
+                    model.addRow(new Object[]{String.valueOf(table.getId()), table.getName(), table.getStatus() == 0 ? " Đã hỏng " : " Sẵn sàng ", table.getCreatedAt(), table.getUpdateAt()});
                 });
             }
         });
@@ -226,7 +226,7 @@ public class ManagerTable extends JPanel {
         model.setRowCount(0);
         ArrayList<Table> listAdmin = tableModel.getListTable(page, limit);
         listAdmin.forEach((tableload) -> {
-            model.addRow(new Object[]{String.valueOf(tableload.getId()), tableload.getName(), tableload.getStatus() == 0 ? " Đã hỏng " : "  Sẵn sàng ", tableload.getCreatedAt(), tableload.getUpdateAt()});
+            model.addRow(new Object[]{String.valueOf(tableload.getId()), tableload.getName(), tableload.getStatus() == 0 ? " Đã hỏng " : " Sẵn sàng ", tableload.getCreatedAt(), tableload.getUpdateAt()});
         });
         count = tableModel.countActive();
         totalPage = count / limit + (count % limit > 0 ? 1 : 0);
