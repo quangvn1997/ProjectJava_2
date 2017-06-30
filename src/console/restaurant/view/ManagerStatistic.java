@@ -22,7 +22,6 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.ListSelectionModel;
 import javax.swing.table.DefaultTableModel;
-
 import com.toedter.calendar.JDateChooser;
 
 /**
@@ -35,7 +34,6 @@ import java.awt.Font;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.sql.Date;
-
 import java.text.DateFormat;
 import javax.swing.JOptionPane;
 
@@ -63,6 +61,7 @@ public class ManagerStatistic extends JPanel {
     private static DefaultTableModel modelStatistic;
     private static JScrollPane scrollPane;
 
+//    ManagerStatistic
     public ManagerStatistic() {
         this.setBackground(new Color(250, 250, 250));
         this.setBounds(350, 90, 1000, 520);

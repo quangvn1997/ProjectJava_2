@@ -153,8 +153,6 @@ public class TablesModel {
         }
         return false;
     }
-//
-
     public static List<Table> getAllTable() {
         List<Table> tableList = new ArrayList<>();
         ResultSet rs;
