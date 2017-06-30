@@ -45,7 +45,6 @@ public class TablesModel {
         }
         return table;
     }
-
     public ArrayList<Table> getListTable(int page, int limit) {
         ArrayList<Table> listTable = new ArrayList<>();
         try {
@@ -73,7 +72,7 @@ public class TablesModel {
             Connection cnn = DAO
                     .getConnection();
             Statement stt = cnn.createStatement();
-            String sqlQuery = "select * from tables where status = 1 OR status = 2 limit " + limit + " offset " + (page - 1) * limit;
+            String sqlQuery = "select * from tables limit " + limit + " offset " + (page - 1) * limit;
             System.out.println(sqlQuery);
             ResultSet rs = stt.executeQuery(sqlQuery);
             while (rs.next()) {
@@ -93,7 +92,7 @@ public class TablesModel {
     public int countActive() {
         int count = 0;
         try {
-            String strQuery = "select count(id) from tables where status = 1";
+            String strQuery = "select count(id) from tables";
             ResultSet rs = DAO.getConnection().createStatement().executeQuery(strQuery);
             if (rs.next()) {
                 count = rs.getInt("count(id)");
@@ -114,7 +113,6 @@ public class TablesModel {
             JOptionPane.showMessageDialog(null, "Lỗi xóa bàn", "Thông báo", JOptionPane.ERROR_MESSAGE);
         }
     }
-
     public static void main(String[] args) {
         TablesModel model = new TablesModel();
         ArrayList<Table> list = model.getAvailableTable(0, 0);
@@ -123,7 +121,6 @@ public class TablesModel {
             System.out.println(tbl.getName());
         }
     }
-
     public boolean update(Table table) {
         try {
             PreparedStatement pstmt = DAO.getConnection().prepareStatement("UPDATE tables SET name=?,status=?,updated_at=NOW() WHERE id = ?");
@@ -139,21 +136,6 @@ public class TablesModel {
         }
         return false;
     }
-
-//    public boolean update(int status,int id) {
-//        try {
-//            PreparedStatement pstmt = DAO.getConnection().prepareStatement("UPDATE tables SET status=? WHERE id = ?");
-//            pstmt.setInt(1, status);
-//            pstmt.setInt(2,id);
-//            int a = pstmt.executeUpdate();
-//            if (a > 0) {
-//                return true;
-//            }
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        }
-//        return false;
-//    }
     public boolean insertTable(Table table) {
         try {
             PreparedStatement pstmt = DAO.getConnection().prepareStatement(""
@@ -195,14 +177,12 @@ public class TablesModel {
         return tableList;
     }
 
-    public ArrayList<Table> searchAdmin(String searchObj) {
+    public ArrayList<Table> searchTable(String searchObj) {
         ArrayList<Table> listTable = new ArrayList<>();
         try {
             String strQuery = "select * ";
             strQuery += "FROM `tables` as table_load ";
-//            strQuery += "INNER join categories as category_table ";
-//            strQuery += "ON food_table.category_id = category_table.id ";
-            strQuery += "WHERE table_load.status = 1 AND table_load.name like '%" + searchObj + "%' " + " ORDER BY table_load.created_at DESC";
+            strQuery += "WHERE  table_load.name like '%" + searchObj + "%' " + " ORDER BY table_load.created_at DESC";
             ResultSet rs = DAO.getConnection().createStatement().executeQuery(strQuery);
             while (rs.next()) {
                 Table table = new Table();
@@ -218,23 +198,4 @@ public class TablesModel {
         }
         return listTable;
     }
-//    public int getTableMax() {
-//
-//        int id_max = 0;
-//        ResultSet rs;
-//        String column;
-//        String strQuery = "SELECT * FROM `table_control` ORDER by id DESC";
-//        try {
-//            rs = DAO.getConnection().createStatement().executeQuery(strQuery);
-//            while (rs.next()) {
-//                id_max = Integer.valueOf(rs.getString("id"));
-//                break;
-//            }
-//        } catch (SQLException ex) {
-//            System.err.println("Có lỗi xảy ra! " + ex);
-//            return 0;
-//        }
-//        System.out.println(id_max);
-//        return id_max;
-//    }
 }
