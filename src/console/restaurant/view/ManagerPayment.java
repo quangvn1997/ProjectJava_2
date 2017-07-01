@@ -15,6 +15,7 @@ import console.restaurant.models.FoodsModel;
 import console.restaurant.models.OrderDetailModel;
 import console.restaurant.models.OrdersModel;
 import console.restaurant.models.TablesModel;
+import static console.restaurant.view.ManagerFood.table;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.text.DateFormat;
@@ -55,6 +56,7 @@ public class ManagerPayment extends javax.swing.JFrame {
     private ArrayList<OrderDetail> currentOrderDetails;
     private static Locale format;
     private static NumberFormat formatter;
+    private QuanlityOrder foodQuanlityChooser;
 
     public ManagerPayment(int id) {
         // Kiểm tra tồn tại của bàn.
@@ -67,6 +69,7 @@ public class ManagerPayment extends javax.swing.JFrame {
         foodsOrder = new HashMap<>();
         System.out.println("Bắt đầu khởi tạo các component.");
         initComponents();
+        initAnotherComponent();
         // Kiểm tra trạng thái của bàn, nếu là trong trạng thái đang sử dụng
         // thì tìm kiếm, load thông tin order và order detail.
         if (currentTable.getStatus() == 2) {
@@ -81,8 +84,7 @@ public class ManagerPayment extends javax.swing.JFrame {
                 // Bàn ở trong trạng thái đang sử dụng bắt buộc phải có thông tin order.                
                 return;
             }
-            ManagerPayment.discount.setSelectedItem(currentOrder.getDiscount());
-            System.out.println("Discount: " + ManagerPayment.discount.getSelectedItem());
+            ManagerPayment.discount.setSelectedItem(String.valueOf(currentOrder.getDiscount()));
             ManagerPayment.disc = currentOrder.getDiscount();
             // Kiểm tra và lấy thông tin order detail nếu tồn tại.
             currentOrderDetails = orderDetailModel.byOrderID(currentOrder.getId());
@@ -95,8 +97,7 @@ public class ManagerPayment extends javax.swing.JFrame {
                 // Đẩy thông tin order detail vào hash map của food.
                 ManagerPayment.addFood(orderedFood, orderedFood.getOrderQuantity());
             }
-        }
-        initAnotherComponent();
+        }        
 
         // Load thông tin order và order detail ra form nếu đã tồn tại sau khi khởi tạo các component.
         if (currentOrder != null) {
@@ -106,7 +107,6 @@ public class ManagerPayment extends javax.swing.JFrame {
 
         setLocationRelativeTo(null);
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-
         // Mở form chọn số lương món ăn khi click menu.
         this.tableMenu.addMouseListener(new MouseAdapter() {
             @Override
@@ -122,38 +122,36 @@ public class ManagerPayment extends javax.swing.JFrame {
                             JOptionPane.showMessageDialog(null, "Món ăn không tồn tại hoặc đã bị xóa.");
                             return;
                         }
-                        QuanlityOrder foodQuanlityChooser = new QuanlityOrder(food);
+                        foodQuanlityChooser = new QuanlityOrder(food);
                         foodQuanlityChooser.setVisible(true);
                     }
                 }
             }
         });
 
-//        this.tableOrder.addMouseListener(new MouseAdapter() {
-//            @Override
-//            public void mouseClicked(MouseEvent e) {
-//                if (e.getClickCount() == 1) {
-//
-//                    JTable target = (JTable) e.getSource();
-//                    int row = target.getSelectedRow();
-//                    int colum = target.getSelectedColumn();
-//                    if (row != -1) {
-//                        TableModel tblModel = tableOrder.getModel();
-//                        int id = Integer.parseInt(tblModel.getValueAt(row, 0).toString());
-//                        Food food = foodModel.getById(id);
-//                        if (food == null) {
-//                            JOptionPane.showMessageDialog(null, "Món ăn không tồn tại hoặc đã bị xóa.");
-//                            return;
-//                        }
-//                        if (quanlityForm != null) {
-//                            quanlityForm.dispose();
-//                        }
-//                        quanlityForm = new QuanlityOrder(food);
-//                        quanlityForm.setVisible(true);
-//                    }
-//                }
-//            }
-//        });
+        this.tableOrder.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                if (e.getClickCount() == 1) {
+                    JTable target = (JTable) e.getSource();
+                    int row = target.getSelectedRow();
+                    int colum = target.getSelectedColumn();
+                    if (row != -1) {
+                        TableModel tblModel = tableOrder.getModel();
+                        int id = Integer.parseInt(tblModel.getValueAt(row, 0).toString());
+                        Food food = foodModel.getById(id);
+                        if (food == null) {
+                            JOptionPane.showMessageDialog(null, "Món ăn không tồn tại hoặc đã bị xóa.");
+                            return;
+                        }
+
+                        QuanlityOrder quanlityForm = new QuanlityOrder(food);
+                        quanlityForm.setVisible(true);
+                    }
+                }
+            }
+        });
+
         this.txtSearchFood.getDocument().addDocumentListener(new DocumentListener() {
             public void changedUpdate(DocumentEvent e) {
                 process();
@@ -310,7 +308,7 @@ public class ManagerPayment extends javax.swing.JFrame {
         });
 
         discount.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
-        discount.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "   0", "  10", "  20", "  30", "  40", "  50", "  60", "  70", "  80", "  90" }));
+        discount.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "0", "10", "20", "30", "40", "50", "60", "70", "80", "90" }));
         discount.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 discountActionPerformed(evt);
@@ -354,7 +352,7 @@ public class ManagerPayment extends javax.swing.JFrame {
                 {null, null, null, null, null, null}
             },
             new String [] {
-                "            Stt", "           Tên Dịch Vụ", "                 Đơn Giá", "     Số Lượng", "             Thành Tiền", "              Ghi Chú"
+                "            Mã món ăn", "           Tên Dịch Vụ", "                 Đơn Giá", "     Số Lượng", "             Thành Tiền", "              Ghi Chú"
             }
         ));
         jScrollPane2.setViewportView(tableOrder);
@@ -461,7 +459,7 @@ public class ManagerPayment extends javax.swing.JFrame {
 
         lblTotal.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
 
-        jLabel10.setText("Mọi thắc mắc xin liên hệ : 01636986950");
+        jLabel10.setText("Mọi thắc mắc xin liên hệ Mr.Tiến : 01636986950");
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -490,13 +488,6 @@ public class ManagerPayment extends javax.swing.JFrame {
                                 .addContainerGap())
                             .addGroup(jPanel1Layout.createSequentialGroup()
                                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                                        .addGap(0, 0, Short.MAX_VALUE)
-                                        .addComponent(jLabel12)
-                                        .addGap(18, 18, 18)
-                                        .addComponent(lblTotal, javax.swing.GroupLayout.PREFERRED_SIZE, 104, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addGap(10, 10, 10)
-                                        .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 66, javax.swing.GroupLayout.PREFERRED_SIZE))
                                     .addGroup(jPanel1Layout.createSequentialGroup()
                                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                             .addGroup(jPanel1Layout.createSequentialGroup()
@@ -508,11 +499,18 @@ public class ManagerPayment extends javax.swing.JFrame {
                                                 .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 66, javax.swing.GroupLayout.PREFERRED_SIZE))
                                             .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 796, javax.swing.GroupLayout.PREFERRED_SIZE)
                                             .addGroup(jPanel1Layout.createSequentialGroup()
-                                                .addGap(553, 553, 553)
-                                                .addComponent(jLabel13)
-                                                .addGap(8, 8, 8)
+                                                .addGap(648, 648, 648)
                                                 .addComponent(discount, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                                        .addGap(0, 1, Short.MAX_VALUE)))
+                                        .addGap(0, 1, Short.MAX_VALUE))
+                                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                                        .addGap(0, 0, Short.MAX_VALUE)
+                                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                            .addComponent(jLabel13)
+                                            .addComponent(jLabel12))
+                                        .addGap(18, 18, 18)
+                                        .addComponent(lblTotal, javax.swing.GroupLayout.PREFERRED_SIZE, 104, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addGap(10, 10, 10)
+                                        .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 66, javax.swing.GroupLayout.PREFERRED_SIZE)))
                                 .addGap(6, 6, 6)
                                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                                     .addComponent(saveOrder, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -583,7 +581,7 @@ public class ManagerPayment extends javax.swing.JFrame {
                         .addComponent(lblTotal, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addComponent(jLabel12, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGap(0, 0, 0)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(discount, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel13, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -704,7 +702,6 @@ public class ManagerPayment extends javax.swing.JFrame {
 
         int discount = Integer.parseInt(String.valueOf(ManagerPayment.discount.getSelectedItem()).trim());
         ManagerPayment.disc = discount;
-        JOptionPane.showMessageDialog(null, ManagerPayment.disc);
         ManagerPayment.realPrice = ManagerPayment.totalPrice - (ManagerPayment.totalPrice * discount / 100);
         ManagerPayment.lblTotal.setText(ManagerPayment.formatter.format(ManagerPayment.totalPrice));
         ManagerPayment.lblRealPayment.setText(ManagerPayment.formatter.format(ManagerPayment.realPrice));
@@ -712,7 +709,7 @@ public class ManagerPayment extends javax.swing.JFrame {
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JLabel banso;
+    public static javax.swing.JLabel banso;
     private javax.swing.JButton btnReturn;
     private javax.swing.JLabel date;
     public static javax.swing.JComboBox<String> discount;

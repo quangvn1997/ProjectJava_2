@@ -20,7 +20,16 @@ public class Order {
     private int discount;
     private float realPrice;
     private int tableId;
+    private String tableName;
     private int status;
+
+    public String getTableName() {
+        return tableName;
+    }
+
+    public void setTableName(String tableName) {
+        this.tableName = tableName;
+    }
 
     public Date getUpdatedAt() {
         return updatedAt;

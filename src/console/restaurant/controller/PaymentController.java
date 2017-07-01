@@ -29,4 +29,44 @@ public class PaymentController {
             model.addRow(new Object[]{String.valueOf(food.getId()), food.getName(), formatter.format(food.getUnitPrice())});
         }
     }
+
+    public static void loadIndex1(JTable jTable1) {
+        DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
+        model.setRowCount(0);
+        List<Food> listFood = PaymentModel.getAllIndex1();
+        listFood.forEach((food) -> {
+            NumberFormat formatter = NumberFormat.getCurrencyInstance();
+            model.addRow(new Object[]{String.valueOf(food.getId()), food.getName(), formatter.format(food.getUnitPrice())});
+        });
+    }
+
+    public static void loadIndex2(JTable jTable1) {
+        DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
+        model.setRowCount(0);
+        List<Food> listFood = PaymentModel.getAllIndex2();
+        listFood.forEach((food) -> {
+            NumberFormat formatter = NumberFormat.getCurrencyInstance();
+            model.addRow(new Object[]{String.valueOf(food.getId()), food.getName(), formatter.format(food.getUnitPrice())});
+        });
+    }
+
+    public static void loadIndex3(JTable jTable1) {
+        DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
+        model.setRowCount(0);
+        List<Food> listFood = PaymentModel.getAllIndex3();
+        listFood.forEach((food) -> {
+            NumberFormat formatter = NumberFormat.getCurrencyInstance();
+            model.addRow(new Object[]{String.valueOf(food.getId()), food.getName(), formatter.format(food.getUnitPrice())});
+        });
+    }
+
+    public static void loadIndex4(JTable jTable1) {
+        DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
+        model.setRowCount(0);
+        List<Food> listFood = PaymentModel.getAllIndex4();
+        listFood.forEach((food) -> {
+            NumberFormat formatter = NumberFormat.getCurrencyInstance();
+            model.addRow(new Object[]{String.valueOf(food.getId()), food.getName(), formatter.format(food.getUnitPrice())});
+        });
+    }
 }
