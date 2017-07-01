@@ -97,7 +97,7 @@ public class ManagerPayment extends javax.swing.JFrame {
                 // Đẩy thông tin order detail vào hash map của food.
                 ManagerPayment.addFood(orderedFood, orderedFood.getOrderQuantity());
             }
-        }        
+        }
 
         // Load thông tin order và order detail ra form nếu đã tồn tại sau khi khởi tạo các component.
         if (currentOrder != null) {
@@ -627,8 +627,57 @@ public class ManagerPayment extends javax.swing.JFrame {
 
     private void jButton11ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton11ActionPerformed
         // TODO add your handling code here:
-        ConfirmPayment confirmPayment = new ConfirmPayment();
-        confirmPayment.setVisible(true);
+        if (JOptionPane.showConfirmDialog(null, "Thanh toán hoá đơn " + banso.getText()) == JOptionPane.YES_OPTION) {
+            fetchFoodMapToTable();
+            boolean isUpdate = currentOrder != null;
+            Order order = new Order();
+            if (isUpdate) {
+                order = currentOrder;
+            }
+            ArrayList<OrderDetail> listOrderDetail = new ArrayList<>();
+            for (Map.Entry<Integer, Food> entry : ManagerPayment.foodsOrder.entrySet()) {
+                Food f = entry.getValue();
+                OrderDetail orderDetail = new OrderDetail();
+                orderDetail.setFoodId(f.getId());
+                orderDetail.setUnitPrice(f.getUnitPrice());
+                orderDetail.setQuantity(f.getOrderQuantity());
+                orderDetail.setTotalPrice(f.getOrderQuantity() * f.getUnitPrice());
+                orderDetail.setStatus(1);
+                listOrderDetail.add(orderDetail);
+            }
+            order.setTotalPrice(ManagerPayment.totalPrice);
+            order.setDiscount(ManagerPayment.disc);
+            order.setRealPrice(ManagerPayment.realPrice);
+            order.setTableId(currentTable.getId());
+            order.setStatus(1);
+            int orderId = 0;
+            System.out.println("Trạng thái " + isUpdate);
+            if (isUpdate) {
+                orderId = order.getId();
+                orderModel.update(order);
+            } else {
+                orderId = orderModel.insert(order);
+                currentOrder = order;
+            }
+            System.out.println("Lưu thành công hoá đơn với id: " + orderId);
+            for (OrderDetail orderDetail : listOrderDetail) {
+                orderDetail.setOrderId(orderId);
+                OrderDetail existOrderDetail = orderDetailModel.getByOrderIdAndFoodId(orderId, orderDetail.getFoodId());
+                if (existOrderDetail != null) {
+                    orderDetail.setId(existOrderDetail.getId());
+                } else {
+                    orderDetail.setId(0);
+                }
+                if (orderDetail.getId() > 0) {
+                    orderDetailModel.update(orderDetail);
+                } else {
+                    orderDetailModel.insert(orderDetail);
+                }
+            }
+            currentTable.setStatus(1);
+            tableModel.update(currentTable);
+            JOptionPane.showMessageDialog(null, "Thanh toán hoá đơn thành công!");
+        }
     }//GEN-LAST:event_jButton11ActionPerformed
 
     private void saveOrderActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveOrderActionPerformed
