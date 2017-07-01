@@ -60,15 +60,15 @@ public class PanelManager extends JFrame {
         panelBan.add(bookList);
         // Phân trang
 
-        JButton number = new JButton();
+        final JButton number = new JButton();
         number.setText("1");
         number.setBounds(450, 430, 50, 40);
 
-        JButton next = new JButton();
+        final JButton next = new JButton();
         next.setText(">>");
         next.setBounds(515, 430, 50, 40);
 
-        JButton previous = new JButton();
+        final JButton previous = new JButton();
         previous.setText("<<");
         previous.setBounds(385, 430, 50, 40);
 

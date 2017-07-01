@@ -178,11 +178,11 @@ public class ManagerFood extends JPanel {
                 } else {
                     listFood = foodModel.getListFood(page, limit);
                 }
-                listFood.forEach((food) -> {
+                for (Food food : listFood) {
                     Locale format = new Locale("vi", "VN");
                     NumberFormat formatter = NumberFormat.getCurrencyInstance(format);
                     model.addRow(new Object[]{String.valueOf(food.getId()), food.getName(), food.getCategoryName(), food.getDescription(), food.getImgUrl(), formatter.format(food.getUnitPrice()), food.getCreatedAt(), food.getUpdateAt()});
-                });
+                }
             }
         });
 
@@ -211,11 +211,11 @@ public class ManagerFood extends JPanel {
         DefaultTableModel model = (DefaultTableModel) table.getModel();
         model.setRowCount(0);
         ArrayList<Food> listFood = foodModel.getListFood(page, limit);
-        listFood.forEach((food) -> {
+        for (Food food : listFood) {
             NumberFormat formatter = NumberFormat.getCurrencyInstance();
             model.addRow(new Object[]{String.valueOf(food.getId()), food.getName(), food.getCategoryName(), food.getDescription(), food.getImgUrl(), formatter.format(food.getUnitPrice()), food.getCreatedAt(), food.getUpdateAt()});
 //            model.addRow(new Object[]{String.valueOf(food.getId()), food.getName(), food.getCategoryName(), food.getDescription(), food.getImgUrl(), food.getUnitPrice(), food.getCreatedAt(), food.getUpdateAt()});
-        });
+        }
         count = foodModel.countActive();
         totalPage = count / limit + (count % limit > 0 ? 1 : 0);
         btnPage.setText(String.valueOf(page));

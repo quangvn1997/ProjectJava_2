@@ -142,9 +142,9 @@ public class AdminsModel {
     public static void loadAdminsSearch(JTable table, List<Admin> listAdmin) {
         DefaultTableModel model = (DefaultTableModel) table.getModel();
         model.setRowCount(0);
-        listAdmin.forEach((admin) -> {
+        for (Admin admin : listAdmin) {
             model.addRow(new Object[]{String.valueOf(admin.getId()), admin.getName(), admin.getUsername(), admin.getPassword(), admin.getCreatedAt()});
-        });
+        }
     }
 
     public int countActive() {

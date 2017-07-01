@@ -22,8 +22,9 @@ public class TablesController {
         DefaultTableModel model = (DefaultTableModel) table.getModel();
         model.setRowCount(0);
         List<Table> lisTable = TablesModel.getAllTable();
-        lisTable.forEach((table1) -> {
+        for (Table table1:
+             lisTable) {
             model.addRow(new Object[]{String.valueOf(table1.getId()), table1.getName(), table1.getStatus(), table1.getCreatedAt(), table1.getUpdateAt()});
-        });
+        }
     }
 }

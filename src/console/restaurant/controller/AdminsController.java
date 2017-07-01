@@ -26,9 +26,9 @@ public class AdminsController {
         DefaultTableModel model = (DefaultTableModel) table.getModel();
         model.setRowCount(0);
         List<Admin> listAdmin = AdminsModel.getAllAdmin();
-        listAdmin.forEach((admin) -> {
+        for (Admin admin : listAdmin) {
             model.addRow(new Object[]{String.valueOf(admin.getId()), admin.getName(), admin.getUsername(), admin.getPassword(), admin.getCreatedAt(), admin.getUpdateAt()});
-        });
+        }
     }
 
     public static List<Admin> searchAdmin(String keyword, int option) {

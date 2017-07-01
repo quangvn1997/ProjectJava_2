@@ -33,8 +33,7 @@ public class ListTable extends javax.swing.JPanel {
     JButton[] listtrang = new JButton[sotrang];
     private TablesModel model = new TablesModel();
     private Map<String, JButton> dynamicButtons;
-    private ManagerPayment jframePaymen;
-
+    
     public ListTable() {
 
         initComponents();
@@ -76,7 +75,7 @@ public class ListTable extends javax.swing.JPanel {
                 public void actionPerformed(ActionEvent e) {
                     //JButton B1 = (JButton) e.getSource();
                     //B1.setBackground(new Color(255, 26, 26));
-                    jframePaymen = new ManagerPayment();
+                    ManagerPayment jframePaymen = new ManagerPayment(a);
                     jframePaymen.setVisible(true);
 //                    TablesModel tableModel = new TablesModel();
 //                    tableModel.update(2, a);

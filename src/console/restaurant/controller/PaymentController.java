@@ -9,6 +9,7 @@ import console.restaurant.entities.Food;
 import console.restaurant.models.PaymentModel;
 import java.text.NumberFormat;
 import java.util.List;
+import java.util.Locale;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 
@@ -22,9 +23,10 @@ public class PaymentController {
         DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
         model.setRowCount(0);
         List<Food> listFood = PaymentModel.getAllFood();
-        listFood.forEach((food) -> {
-            NumberFormat formatter = NumberFormat.getCurrencyInstance();
+        Locale format = new Locale("vi", "VN");
+        NumberFormat formatter = NumberFormat.getCurrencyInstance(format);
+        for (Food food : listFood) {            
             model.addRow(new Object[]{String.valueOf(food.getId()), food.getName(), formatter.format(food.getUnitPrice())});
-        });
+        }
     }
 }

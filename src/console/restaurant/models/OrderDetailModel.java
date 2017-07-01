@@ -22,18 +22,23 @@ import javax.swing.JOptionPane;
  * @author Asus
  */
 public class OrderDetailModel {
-    
+
     public boolean insert(OrderDetail ordersDetail) {
         try {
-            PreparedStatement pstmt = DAO.getConnection().prepareStatement(""
-                    + "Insert into orderdetail(order_id,food_id,unit_price,quantity,total_price,status,created_at,updated_at"
-                    + ") values(?,?, ?, ?,?,?,NOW(),NOW()");
+            StringBuilder queryStringBuilder = new StringBuilder();
+            queryStringBuilder.append("INSERT INTO orderdetail ");
+            queryStringBuilder.append("(order_id,food_id,unit_price,quantity,total_price,status,created_at,updated_at) ");
+            queryStringBuilder.append("VALUES ");
+            queryStringBuilder.append("(?,?,?,?,?,?,NOW(),NOW())");
+            System.out.println(queryStringBuilder.toString());
+            PreparedStatement pstmt = DAO.getConnection().prepareStatement(queryStringBuilder.toString());
             pstmt.setInt(1, ordersDetail.getOrderId());
             pstmt.setInt(2, ordersDetail.getFoodId());
             pstmt.setFloat(3, ordersDetail.getUnitPrice());
             pstmt.setFloat(4, ordersDetail.getQuantity());
-            pstmt.setFloat(5,ordersDetail.getTotalPrice());
-            pstmt.setFloat(6,ordersDetail.getStatus());
+            pstmt.setFloat(5, ordersDetail.getTotalPrice());
+            pstmt.setFloat(6, ordersDetail.getStatus());
+
             int a = pstmt.executeUpdate();
             if (a > 0) {
                 //System.out.println("them thanh cong");
@@ -44,14 +49,14 @@ public class OrderDetailModel {
         }
         return false;
     }
-    
+
     public boolean update(OrderDetail ordersDetail) {
         try {
-            PreparedStatement pstmt = DAO.getConnection().prepareStatement("UPDATE orderdetail SET total_price=?,quantity=?,status=?,updated_at=NOW() WHERE food_id = ?");
-            pstmt.setFloat(1,ordersDetail.getTotalPrice());
+            PreparedStatement pstmt = DAO.getConnection().prepareStatement("UPDATE orderdetail SET total_price=?,quantity=?,status=?,updated_at=NOW() WHERE id = ?");
+            pstmt.setFloat(1, ordersDetail.getTotalPrice());
             pstmt.setInt(2, ordersDetail.getQuantity());
-            pstmt.setInt(3,ordersDetail.getStatus());
-            pstmt.setInt(4,ordersDetail.getId());
+            pstmt.setInt(3, ordersDetail.getStatus());
+            pstmt.setInt(4, ordersDetail.getId());
             int a = pstmt.executeUpdate();
             if (a > 0) {
 //                System.out.println("sua thanh cong");
@@ -62,8 +67,8 @@ public class OrderDetailModel {
         }
         return false;
     }
-    
-        public void delete(int id) {
+
+    public void delete(int id) {
         try {
             String sql = "DELETE FROM orderdetail WHERE food_id =?";
             PreparedStatement prest = DAO.getConnection().prepareStatement(sql);
@@ -73,12 +78,13 @@ public class OrderDetailModel {
             JOptionPane.showMessageDialog(null, "Lỗi xóa dịch vụ", "Thông báo", JOptionPane.ERROR_MESSAGE);
         }
     }
-    public ArrayList<OrderDetail> byOrderID(int odersID){
+
+    public ArrayList<OrderDetail> byOrderID(int odersID) {
         ArrayList<OrderDetail> listAvailable = new ArrayList<>();
         try {
             Connection cnn = DAO.getConnection();
             Statement stt = cnn.createStatement();
-            String sqlQuery = "select * from orderdetail where order_id ="+odersID ;
+            String sqlQuery = "select * from orderdetail where order_id =" + odersID;
             ResultSet rs = stt.executeQuery(sqlQuery);
             while (rs.next()) {
                 //Assuming you have a user object
@@ -96,5 +102,24 @@ public class OrderDetailModel {
             e.printStackTrace();
         }
         return listAvailable;
+    }
+
+    public OrderDetail getByOrderIdAndFoodId(int orderId, int foodId) {
+        OrderDetail orderDetail = null;
+        try {
+            Connection cnn = DAO.getConnection();
+            Statement stt = cnn.createStatement();
+            String sqlQuery = "select id from orderdetail where order_id =" + orderId + " AND food_id = " + foodId;
+            ResultSet rs = stt.executeQuery(sqlQuery);
+            if (rs.next()) {
+                //Assuming you have a user object
+                orderDetail = new OrderDetail();
+                orderDetail.setId(rs.getInt("id"));
+                return orderDetail;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return orderDetail;
     }
 }

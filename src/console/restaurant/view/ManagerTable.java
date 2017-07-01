@@ -5,43 +5,21 @@
  */
 package console.restaurant.view;
 
-import console.restaurant.controller.AdminsController;
-import console.restaurant.controller.FoodsController;
 import console.restaurant.controller.TablesController;
-import console.restaurant.entities.Admin;
-import console.restaurant.entities.SessionAdmin;
-import java.awt.Color;
-import java.awt.Font;
+import console.restaurant.entities.Table;
+import console.restaurant.models.TablesModel;
+
+import javax.swing.*;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableModel;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import javax.swing.BorderFactory;
-import javax.swing.JButton;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-import javax.swing.JTable;
-import javax.swing.JTextField;
-import javax.swing.ListSelectionModel;
-import javax.swing.table.DefaultTableModel;
-import console.restaurant.models.TablesModel;
-import console.restaurant.entities.Table;
-import console.restaurant.models.AdminsModel;
-import static console.restaurant.view.ManagerAdmin.count;
-import static console.restaurant.view.ManagerAdmin.limit;
-import static console.restaurant.view.ManagerAdmin.loadAdmin;
-import static console.restaurant.view.ManagerAdmin.page;
-import static console.restaurant.view.ManagerAdmin.table;
-import static console.restaurant.view.ManagerAdmin.totalPage;
-import static console.restaurant.view.ManagerFood.table;
-import java.awt.Component;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
-import javax.swing.JComboBox;
-import javax.swing.JOptionPane;
-import javax.swing.event.DocumentEvent;
-import javax.swing.event.DocumentListener;
-import javax.swing.table.TableModel;
 
 /**
  *
@@ -211,9 +189,10 @@ public class ManagerTable extends JPanel {
                 } else {
                     listTable = tableModel.getListTable(page, limit);
                 }
-                listTable.forEach((table) -> {
+                for (Table table :
+                        listTable) {
                     model.addRow(new Object[]{String.valueOf(table.getId()), table.getName(), table.getStatus() == 0 ? " Đã hỏng " : "  Sẵn sàng ", table.getCreatedAt(), table.getUpdateAt()});
-                });
+                }
             }
         });
         this.add(scrollPane);
@@ -225,9 +204,10 @@ public class ManagerTable extends JPanel {
         DefaultTableModel model = (DefaultTableModel) table.getModel();
         model.setRowCount(0);
         ArrayList<Table> listAdmin = tableModel.getListTable(page, limit);
-        listAdmin.forEach((tableload) -> {
+        for (Table tableload :
+                listAdmin) {
             model.addRow(new Object[]{String.valueOf(tableload.getId()), tableload.getName(), tableload.getStatus() == 0 ? " Đã hỏng " : "  Sẵn sàng ", tableload.getCreatedAt(), tableload.getUpdateAt()});
-        });
+        }
         count = tableModel.countActive();
         totalPage = count / limit + (count % limit > 0 ? 1 : 0);
         btnPage.setText(String.valueOf(page));

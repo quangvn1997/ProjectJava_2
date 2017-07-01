@@ -10,7 +10,11 @@ import console.restaurant.entities.Food;
 import console.restaurant.entities.Order;
 import console.restaurant.entities.OrderDetail;
 import console.restaurant.entities.SessionAdmin;
+import console.restaurant.entities.Table;
 import console.restaurant.models.FoodsModel;
+import console.restaurant.models.OrderDetailModel;
+import console.restaurant.models.OrdersModel;
+import console.restaurant.models.TablesModel;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.text.DateFormat;
@@ -39,27 +43,77 @@ public class ManagerPayment extends javax.swing.JFrame {
      * Creates new form QuanLyThanhToan
      */
     private static FoodsModel foodModel = new FoodsModel();
-    private QuanlityOrder quanlityForm;
+    private OrdersModel orderModel = new OrdersModel();
+    private OrderDetailModel orderDetailModel = new OrderDetailModel();
+    private TablesModel tableModel = new TablesModel();
     public static HashMap<Integer, Food> foodsOrder;
     public static long totalPrice;
     public static int disc;
     public static long realPrice;
+    private Table currentTable;
+    private Order currentOrder = null;
+    private ArrayList<OrderDetail> currentOrderDetails;
+    private static Locale format;
+    private static NumberFormat formatter;
 
-    public ManagerPayment() {
+    public ManagerPayment(int id) {
+        // Kiểm tra tồn tại của bàn.
+        currentTable = tableModel.getById(id);
+        if (currentTable == null) {
+            JOptionPane.showMessageDialog(null, "Bàn không tồn tại hoặc đã bị xoá!");
+            return;
+        }
+        System.out.println("Bắt đầu tạo hoá đơn cho " + currentTable.getName());
         foodsOrder = new HashMap<>();
+        System.out.println("Bắt đầu khởi tạo các component.");
         initComponents();
+        // Kiểm tra trạng thái của bàn, nếu là trong trạng thái đang sử dụng
+        // thì tìm kiếm, load thông tin order và order detail.
+        if (currentTable.getStatus() == 2) {
+            System.out.println("Bàn đang được sử dụng, tìm thông tin hoá đơn...");
+            // Load thông tin order.
+            currentOrder = orderModel.getTableCurrentOrder(currentTable.getId());
+            System.out.println("Discount: " + currentOrder.getDiscount());
+            // Bàn chỉ ở trạng thái đang sử dụng khi hoá đơn đã được lưu,
+            // trong trường hợp không tồn tại order, thông báo lỗi.
+            if (currentOrder == null) {
+                System.err.println("Sai trạng thái của bàn, bàn ở trạng thái sử dụng mà không tồn tại hoá đơn.");
+                // Bàn ở trong trạng thái đang sử dụng bắt buộc phải có thông tin order.                
+                return;
+            }
+            ManagerPayment.discount.setSelectedItem(currentOrder.getDiscount());
+            System.out.println("Discount: " + ManagerPayment.discount.getSelectedItem());
+            ManagerPayment.disc = currentOrder.getDiscount();
+            // Kiểm tra và lấy thông tin order detail nếu tồn tại.
+            currentOrderDetails = orderDetailModel.byOrderID(currentOrder.getId());
+
+            for (OrderDetail currentOrderDetail : currentOrderDetails) {
+                // Lấy thông tin thức ăn từ food id trong order detail.
+                Food orderedFood = foodModel.getById(currentOrderDetail.getFoodId());
+                // Set số lượng order cho món theo order detail.
+                orderedFood.setOrderQuantity(currentOrderDetail.getQuantity());
+                // Đẩy thông tin order detail vào hash map của food.
+                ManagerPayment.addFood(orderedFood, orderedFood.getOrderQuantity());
+            }
+        }
+        initAnotherComponent();
+
+        // Load thông tin order và order detail ra form nếu đã tồn tại sau khi khởi tạo các component.
+        if (currentOrder != null) {
+            // Tính toán tiền từ hoá đơn cũ.
+            ManagerPayment.fetchFoodMapToTable();
+        }
+
         setLocationRelativeTo(null);
-        clockThanhToan();
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 
+        // Mở form chọn số lương món ăn khi click menu.
         this.tableMenu.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
                 if (e.getClickCount() == 1) {
-
                     JTable target = (JTable) e.getSource();
                     int row = target.getSelectedRow();
-                    int colum = target.getSelectedColumn();
                     if (row != -1) {
                         TableModel tblModel = tableMenu.getModel();
                         int id = Integer.parseInt(tblModel.getValueAt(row, 0).toString());
@@ -68,11 +122,8 @@ public class ManagerPayment extends javax.swing.JFrame {
                             JOptionPane.showMessageDialog(null, "Món ăn không tồn tại hoặc đã bị xóa.");
                             return;
                         }
-                        if (quanlityForm != null) {
-                            quanlityForm.dispose();
-                        }
-                        quanlityForm = new QuanlityOrder(food);
-                        quanlityForm.setVisible(true);
+                        QuanlityOrder foodQuanlityChooser = new QuanlityOrder(food);
+                        foodQuanlityChooser.setVisible(true);
                     }
                 }
             }
@@ -125,26 +176,51 @@ public class ManagerPayment extends javax.swing.JFrame {
                 } else {
                     listFood = foodModel.getListFoodMenu();
                 }
-                listFood.forEach((food) -> {
-                    model.addRow(new Object[]{String.valueOf(food.getId()), food.getName(), food.getUnitPrice()});
-                });
+                for (Food food : listFood) {
+                    model.addRow(new Object[]{String.valueOf(food.getId()), food.getName(), formatter.format(food.getUnitPrice())});
+                }
             }
         });
     }
 
-    public void clockThanhToan() {
+    // Thêm món ăn vào order
+    public static void addFood(Food food, int quantity) {
+        if (ManagerPayment.foodsOrder.containsKey(food.getId())) {
+            Food existFood = ManagerPayment.foodsOrder.get(food.getId());
+            food.setOrderQuantity(food.getOrderQuantity() + existFood.getOrderQuantity());
+        }
+        ManagerPayment.foodsOrder.put(food.getId(), food);
+    }
+
+    public static void fetchFoodMapToTable() {
+        DefaultTableModel model = (DefaultTableModel) ManagerPayment.tableOrder.getModel();
+        model.setRowCount(0);
+        long totalPayment = 0;
+        for (Map.Entry<Integer, Food> entry : ManagerPayment.foodsOrder.entrySet()) {
+            Food f1 = entry.getValue();
+            totalPayment += f1.getOrderQuantity() * f1.getUnitPrice();
+            model.addRow(new Object[]{String.valueOf(f1.getId()), f1.getName(), formatter.format(f1.getUnitPrice()), f1.getOrderQuantity(), formatter.format(f1.getUnitPrice() * f1.getOrderQuantity()), f1.getNote(), ""});
+        }
+        int discountNumber = Integer.parseInt(String.valueOf(ManagerPayment.discount.getSelectedItem()).trim());
+        ManagerPayment.totalPrice = totalPayment;
+        ManagerPayment.realPrice = totalPayment - (totalPayment * discountNumber / 100);
+        ManagerPayment.lblTotal.setText(formatter.format(ManagerPayment.totalPrice));
+        ManagerPayment.lblRealPayment.setText(formatter.format(ManagerPayment.realPrice));
+    }
+
+    public void initAnotherComponent() {
+        format = new Locale("vi", "VN");
+        formatter = NumberFormat.getCurrencyInstance(format);
+        banso.setText("Hoá đơn " + currentTable.getName());
         Thread clock = new Thread() {
             public void run() {
-                Date today = new Date();
                 try {
-                    for (;;) {
-                        DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
-                        DateFormat timeFormat = new SimpleDateFormat("HH:mm:ss");
+                    DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+                    DateFormat timeFormat = new SimpleDateFormat("HH:mm:ss");
+                    while (true) {
                         Date date1 = new Date();
-//                      
                         date.setText("Hôm nay ngày: " + dateFormat.format(date1));
                         time.setText(timeFormat.format(date1));
-//                        TimeZone.setDefault(TimeZone.getTimeZone("UTC+7"));
                         sleep(1000);
                     }
                 } catch (InterruptedException ex) {
@@ -153,8 +229,6 @@ public class ManagerPayment extends javax.swing.JFrame {
             }
         };
         clock.start();
-        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     }
 
     /**
@@ -168,8 +242,6 @@ public class ManagerPayment extends javax.swing.JFrame {
 
         jPanel1 = new javax.swing.JPanel();
         txtSearchFood = new javax.swing.JTextField();
-        jLabel3 = new javax.swing.JLabel();
-        cmbOption = new javax.swing.JComboBox<>();
         jLabel4 = new javax.swing.JLabel();
         btnReturn = new javax.swing.JButton();
         jLabel5 = new javax.swing.JLabel();
@@ -213,17 +285,6 @@ public class ManagerPayment extends javax.swing.JFrame {
             }
         });
 
-        jLabel3.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
-        jLabel3.setText("Phân loại :");
-
-        cmbOption.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
-        cmbOption.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "     Tất cả", "    Món ăn", "    Hải sản", "   Nước ngọt", "         Bia" }));
-        cmbOption.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                cmbOptionActionPerformed(evt);
-            }
-        });
-
         jLabel4.setFont(new java.awt.Font("Brush Script MT", 2, 65)); // NOI18N
         jLabel4.setText("Furious Food & Drink");
 
@@ -256,9 +317,8 @@ public class ManagerPayment extends javax.swing.JFrame {
             }
         });
 
-        banso.setFont(new java.awt.Font("Tahoma", 0, 24)); // NOI18N
+        banso.setFont(new java.awt.Font("Arial", 1, 12)); // NOI18N
         banso.setText("1");
-        banso.setBorder(javax.swing.BorderFactory.createTitledBorder("Bàn số"));
 
         jLabel13.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
         jLabel13.setText("   GIẢM GIÁ (%) :");
@@ -349,12 +409,12 @@ public class ManagerPayment extends javax.swing.JFrame {
                 {null, null, null}
             },
             new String [] {
-                "Mã DV", "Tên dịch vụ", "Đơn giá"
+                "Id", "Tên dịch vụ", "Đơn giá"
             }
         ));
         jScrollPane1.setViewportView(tableMenu);
         if (tableMenu.getColumnModel().getColumnCount() > 0) {
-            tableMenu.getColumnModel().getColumn(0).setPreferredWidth(50);
+            tableMenu.getColumnModel().getColumn(0).setPreferredWidth(20);
             tableMenu.getColumnModel().getColumn(1).setPreferredWidth(120);
         }
 
@@ -370,7 +430,7 @@ public class ManagerPayment extends javax.swing.JFrame {
             }
         });
 
-        time.setFont(new java.awt.Font("Arial", 1, 36)); // NOI18N
+        time.setFont(new java.awt.Font("Arial", 1, 24)); // NOI18N
 
         jLabel6.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
         jLabel6.setText(" VNĐ");
@@ -418,13 +478,9 @@ public class ManagerPayment extends javax.swing.JFrame {
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 253, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                    .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 58, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(txtSearchFood, javax.swing.GroupLayout.PREFERRED_SIZE, 121, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(cmbOption, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                .addComponent(txtSearchFood, javax.swing.GroupLayout.PREFERRED_SIZE, 121, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 204, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 42, Short.MAX_VALUE)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -486,14 +542,14 @@ public class ManagerPayment extends javax.swing.JFrame {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(4, 4, 4)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                        .addComponent(date, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addComponent(date, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(time, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addComponent(banso, javax.swing.GroupLayout.PREFERRED_SIZE, 72, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(9, 9, 9)))
+                                .addGap(5, 5, 5)
+                                .addComponent(banso, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -503,10 +559,6 @@ public class ManagerPayment extends javax.swing.JFrame {
                         .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 79, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                         .addContainerGap()
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(cmbOption, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(txtSearchFood, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -582,22 +634,56 @@ public class ManagerPayment extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton11ActionPerformed
 
     private void saveOrderActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveOrderActionPerformed
+        boolean isUpdate = currentOrder != null;
         Order order = new Order();
-        
+        if (isUpdate) {
+            order = currentOrder;
+        }
+        ArrayList<OrderDetail> listOrderDetail = new ArrayList<>();
         for (Map.Entry<Integer, Food> entry : ManagerPayment.foodsOrder.entrySet()) {
-            OrderDetail orderDetail = new OrderDetail();
             Food f = entry.getValue();
+            OrderDetail orderDetail = new OrderDetail();
             orderDetail.setFoodId(f.getId());
             orderDetail.setUnitPrice(f.getUnitPrice());
             orderDetail.setQuantity(f.getOrderQuantity());
             orderDetail.setTotalPrice(f.getOrderQuantity() * f.getUnitPrice());
-            
-            orderDetail.setStatus(1);
+            orderDetail.setStatus(2);
+            listOrderDetail.add(orderDetail);
         }
-        order.setTotalPrice(totalPrice);
+        order.setTotalPrice(ManagerPayment.totalPrice);
         order.setDiscount(disc);
-        order.setRealPrice(totalPrice - (totalPrice * disc / 100));
-
+        order.setRealPrice(ManagerPayment.realPrice);
+        order.setTableId(currentTable.getId());
+        order.setStatus(2);
+        int orderId = 0;
+        System.out.println("Trạng thái " + isUpdate);
+        if (isUpdate) {
+            orderId = order.getId();
+            orderModel.update(order);
+        } else {
+            orderId = orderModel.insert(order);
+            currentOrder = order;
+        }
+        System.out.println("Lưu thành công hoá đơn với id: " + orderId);
+        for (OrderDetail orderDetail : listOrderDetail) {
+            orderDetail.setOrderId(orderId);
+            OrderDetail existOrderDetail = orderDetailModel.getByOrderIdAndFoodId(orderId, orderDetail.getFoodId());
+            if (existOrderDetail != null) {
+                orderDetail.setId(existOrderDetail.getId());
+            } else {
+                orderDetail.setId(0);
+            }
+            if (orderDetail.getId() > 0) {
+                orderDetailModel.update(orderDetail);
+            } else {
+                orderDetailModel.insert(orderDetail);
+            }
+        }
+        if (!isUpdate) {
+            currentTable.setStatus(2);
+            tableModel.update(currentTable);
+        }
+        JOptionPane.showMessageDialog(null, "Lưu hoá đơn thành công!");
     }//GEN-LAST:event_saveOrderActionPerformed
 
     private void btnReturnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnReturnActionPerformed
@@ -610,65 +696,24 @@ public class ManagerPayment extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_txtSearchFoodActionPerformed
 
-    private void cmbOptionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmbOptionActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_cmbOptionActionPerformed
-
     private void jTextField2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField2ActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_jTextField2ActionPerformed
 
     private void discountActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_discountActionPerformed
-        Locale format = new Locale("vi", "VN");
-        NumberFormat formatter = NumberFormat.getCurrencyInstance(format);
+
         int discount = Integer.parseInt(String.valueOf(ManagerPayment.discount.getSelectedItem()).trim());
-        ManagerPayment.realPrice =  ManagerPayment.totalPrice - ( ManagerPayment.totalPrice * discount / 100);
-        ManagerPayment.lblTotal.setText(formatter.format(ManagerPayment.totalPrice));
-        ManagerPayment.lblRealPayment.setText(formatter.format(ManagerPayment.realPrice));
+        ManagerPayment.disc = discount;
+        JOptionPane.showMessageDialog(null, ManagerPayment.disc);
+        ManagerPayment.realPrice = ManagerPayment.totalPrice - (ManagerPayment.totalPrice * discount / 100);
+        ManagerPayment.lblTotal.setText(ManagerPayment.formatter.format(ManagerPayment.totalPrice));
+        ManagerPayment.lblRealPayment.setText(ManagerPayment.formatter.format(ManagerPayment.realPrice));
     }//GEN-LAST:event_discountActionPerformed
 
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(ManagerPayment.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(ManagerPayment.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(ManagerPayment.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(ManagerPayment.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
 
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new ManagerPayment().setVisible(true);
-
-            }
-        });
-    }
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel banso;
     private javax.swing.JButton btnReturn;
-    private javax.swing.JComboBox<String> cmbOption;
     private javax.swing.JLabel date;
     public static javax.swing.JComboBox<String> discount;
     private javax.swing.JButton jButton11;
@@ -679,7 +724,6 @@ public class ManagerPayment extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel13;
     private javax.swing.JLabel jLabel15;
     private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;

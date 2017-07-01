@@ -38,6 +38,7 @@ public class TablesModel {
                     table.setName(rs.getString("name"));
                     table.setCreatedAt(rs.getString("created_at"));
                     table.setUpdateAt(rs.getString("updated_at"));
+                    table.setStatus(rs.getInt("status"));
                 }
             } catch (Exception e) {
                 e.printStackTrace();

@@ -197,9 +197,9 @@ public class ManagerAdmin extends JPanel {
                 } else {
                     listAdmin = adminModel.getListAdmin(page, limit);
                 }
-                listAdmin.forEach((food) -> {
+                for (Admin food : listAdmin) {
                     model.addRow(new Object[]{String.valueOf(food.getId()), food.getName(), food.getUsername(), food.getPassword(), food.getCreatedAt(), food.getUpdateAt()});
-                });
+                }
             }
         });
 
@@ -231,9 +231,9 @@ public class ManagerAdmin extends JPanel {
         DefaultTableModel model = (DefaultTableModel) table.getModel();
         model.setRowCount(0);
         ArrayList<Admin> listAdmin = adminModel.getListAdmin(page, limit);
-        listAdmin.forEach((admin) -> {
+        for (Admin admin : listAdmin) {
             model.addRow(new Object[]{String.valueOf(admin.getId()), admin.getName(), admin.getUsername(), admin.getPassword(), admin.getCreatedAt(), admin.getUpdateAt()});
-        });
+        }
         count = adminModel.countActive();
         totalPage = count / limit + (count % limit > 0 ? 1 : 0);
         btnPage.setText(String.valueOf(page));

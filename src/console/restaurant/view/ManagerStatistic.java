@@ -205,9 +205,9 @@ public class ManagerStatistic extends JPanel {
         DefaultTableModel model = (DefaultTableModel) table.getModel();
         model.setRowCount(0);
         ArrayList<Order> listOrder = statisticModel.getListSatistic(page, limit);
-        listOrder.forEach((order) -> {
+        for (Order order : listOrder) {
             model.addRow(new Object[]{String.valueOf(order.getId()), order.getTotalPrice(), order.getCreatedAt()});
-        });
+        }
         count = statisticModel.countActive();
         totalPage = count / limit + (count % limit > 0 ? 1 : 0);
         btnPage.setText(String.valueOf(page));
@@ -221,9 +221,9 @@ public class ManagerStatistic extends JPanel {
         dateStart = formatDate.format(startPicker.getDate()); 
         dateEnd = formatDate.format(endPicker.getDate());
         ArrayList<Order> listOrder = statisticModel.getListOrder(page, limit, dateStart, dateEnd);
-        listOrder.forEach((order) -> {
+        for (Order order : listOrder) {
             model.addRow(new Object[]{String.valueOf(order.getId()), order.getTotalPrice(), order.getCreatedAt()});
-        });
+        }
         count = statisticModel.countActive();
         totalPage = count / limit + (count % limit > 0 ? 1 : 0);
         btnPage.setText(String.valueOf(page));
