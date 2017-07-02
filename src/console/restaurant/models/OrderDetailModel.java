@@ -84,7 +84,7 @@ public class OrderDetailModel {
         try {
             Connection cnn = DAO.getConnection();
             Statement stt = cnn.createStatement();
-            String sqlQuery = "select * from orderdetail where order_id =" + odersID;
+            String sqlQuery = "select * from orderdetail where order_id =" + odersID + " AND (status = 1 OR status = 2)";
             ResultSet rs = stt.executeQuery(sqlQuery);
             while (rs.next()) {
                 //Assuming you have a user object

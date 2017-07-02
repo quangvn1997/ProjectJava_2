@@ -16,6 +16,7 @@ import console.restaurant.models.OrderDetailModel;
 import console.restaurant.models.OrdersModel;
 import console.restaurant.models.TablesModel;
 import static console.restaurant.view.ManagerFood.table;
+import java.awt.Color;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.text.DateFormat;
@@ -26,6 +27,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
+import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JTable;
@@ -95,7 +97,7 @@ public class ManagerPayment extends javax.swing.JFrame {
                 // Set số lượng order cho món theo order detail.
                 orderedFood.setOrderQuantity(currentOrderDetail.getQuantity());
                 // Đẩy thông tin order detail vào hash map của food.
-                ManagerPayment.addFood(orderedFood, orderedFood.getOrderQuantity());
+                ManagerPayment.addFood(orderedFood, orderedFood.getOrderQuantity(), false);
             }
         }
 
@@ -122,7 +124,9 @@ public class ManagerPayment extends javax.swing.JFrame {
                             JOptionPane.showMessageDialog(null, "Món ăn không tồn tại hoặc đã bị xóa.");
                             return;
                         }
-                        foodQuanlityChooser = new QuanlityOrder(food);
+                        food.setStatus(2);
+                        food.setOrderQuantity(1);
+                        foodQuanlityChooser = new QuanlityOrder(food, false);
                         foodQuanlityChooser.setVisible(true);
                     }
                 }
@@ -141,11 +145,15 @@ public class ManagerPayment extends javax.swing.JFrame {
                         int id = Integer.parseInt(tblModel.getValueAt(row, 0).toString());
                         Food food = foodModel.getById(id);
                         if (food == null) {
-                            JOptionPane.showMessageDialog(null, "Món ăn không tồn tại hoặc đã bị xóa.");
+                            JOptionPane.showMessageDialog(null, "Món ăn không tồn tại hoặc đã bị xóa.!", "Có lỗi xảy ra.", JOptionPane.ERROR_MESSAGE);
                             return;
                         }
-
-                        QuanlityOrder quanlityForm = new QuanlityOrder(food);
+                        Food existFood = foodsOrder.get(food.getId());
+                        if (existFood != null) {
+                            food.setOrderQuantity(existFood.getOrderQuantity());
+                        }
+                        food.setStatus(2);
+                        QuanlityOrder quanlityForm = new QuanlityOrder(food, true);
                         quanlityForm.setVisible(true);
                     }
                 }
@@ -182,12 +190,20 @@ public class ManagerPayment extends javax.swing.JFrame {
     }
 
     // Thêm món ăn vào order
-    public static void addFood(Food food, int quantity) {
-        if (ManagerPayment.foodsOrder.containsKey(food.getId())) {
+    public static void addFood(Food food, int quantity, boolean isUpdate) {
+        if (ManagerPayment.foodsOrder.containsKey(food.getId()) && !isUpdate) {
             Food existFood = ManagerPayment.foodsOrder.get(food.getId());
             food.setOrderQuantity(food.getOrderQuantity() + existFood.getOrderQuantity());
         }
+        food.setStatus(2);
         ManagerPayment.foodsOrder.put(food.getId(), food);
+    }
+
+    public static void deleteFood(Food food) {
+        if (ManagerPayment.foodsOrder.containsKey(food.getId())) {
+            food.setStatus(0);
+            ManagerPayment.foodsOrder.put(food.getId(), food);
+        }
     }
 
     public static void fetchFoodMapToTable() {
@@ -196,8 +212,10 @@ public class ManagerPayment extends javax.swing.JFrame {
         long totalPayment = 0;
         for (Map.Entry<Integer, Food> entry : ManagerPayment.foodsOrder.entrySet()) {
             Food f1 = entry.getValue();
-            totalPayment += f1.getOrderQuantity() * f1.getUnitPrice();
-            model.addRow(new Object[]{String.valueOf(f1.getId()), f1.getName(), formatter.format(f1.getUnitPrice()), f1.getOrderQuantity(), formatter.format(f1.getUnitPrice() * f1.getOrderQuantity()), f1.getNote(), ""});
+            if (f1.getStatus() != 0) {
+                totalPayment += f1.getOrderQuantity() * f1.getUnitPrice();
+                model.addRow(new Object[]{String.valueOf(f1.getId()), f1.getName(), formatter.format(f1.getUnitPrice()), f1.getOrderQuantity(), formatter.format(f1.getUnitPrice() * f1.getOrderQuantity()), f1.getNote(), ""});
+            }
         }
         int discountNumber = Integer.parseInt(String.valueOf(ManagerPayment.discount.getSelectedItem()).trim());
         ManagerPayment.totalPrice = totalPayment;
@@ -259,13 +277,13 @@ public class ManagerPayment extends javax.swing.JFrame {
         time = new javax.swing.JLabel();
         jLabel6 = new javax.swing.JLabel();
         jButton11 = new javax.swing.JButton();
-        jButton6 = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
         jLabel15 = new javax.swing.JLabel();
         jLabel7 = new javax.swing.JLabel();
         lblRealPayment = new javax.swing.JLabel();
         lblTotal = new javax.swing.JLabel();
         jLabel10 = new javax.swing.JLabel();
+        jButton7 = new javax.swing.JButton();
         jMenuBar1 = new javax.swing.JMenuBar();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -442,10 +460,6 @@ public class ManagerPayment extends javax.swing.JFrame {
             }
         });
 
-        jButton6.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
-        jButton6.setIcon(new javax.swing.ImageIcon(getClass().getResource("/console/restaurant/Image/delete.jpg"))); // NOI18N
-        jButton6.setText("HỦY HÓA ĐƠN");
-
         jLabel1.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
         jLabel1.setText("Danh sách thực đơn :");
 
@@ -460,6 +474,15 @@ public class ManagerPayment extends javax.swing.JFrame {
         lblTotal.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
 
         jLabel10.setText("Mọi thắc mắc xin liên hệ Mr.Tiến : 01636986950");
+
+        jButton7.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        jButton7.setIcon(new javax.swing.ImageIcon(getClass().getResource("/console/restaurant/Image/delete.jpg"))); // NOI18N
+        jButton7.setText("HỦY HÓA ĐƠN");
+        jButton7.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton7ActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -514,9 +537,9 @@ public class ManagerPayment extends javax.swing.JFrame {
                                 .addGap(6, 6, 6)
                                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                                     .addComponent(saveOrder, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(jButton6, javax.swing.GroupLayout.DEFAULT_SIZE, 154, Short.MAX_VALUE)
                                     .addComponent(btnReturn, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(jButton11, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                    .addComponent(jButton11, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(jButton7, javax.swing.GroupLayout.DEFAULT_SIZE, 154, Short.MAX_VALUE))
                                 .addContainerGap(40, Short.MAX_VALUE))
                             .addGroup(jPanel1Layout.createSequentialGroup()
                                 .addGap(10, 10, 10)
@@ -568,11 +591,11 @@ public class ManagerPayment extends javax.swing.JFrame {
                     .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addComponent(saveOrder, javax.swing.GroupLayout.PREFERRED_SIZE, 52, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(jButton6, javax.swing.GroupLayout.PREFERRED_SIZE, 49, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jButton11, javax.swing.GroupLayout.PREFERRED_SIZE, 49, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jButton7, javax.swing.GroupLayout.PREFERRED_SIZE, 49, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(btnReturn, javax.swing.GroupLayout.PREFERRED_SIZE, 49, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGap(18, 18, 18)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -642,7 +665,11 @@ public class ManagerPayment extends javax.swing.JFrame {
                 orderDetail.setUnitPrice(f.getUnitPrice());
                 orderDetail.setQuantity(f.getOrderQuantity());
                 orderDetail.setTotalPrice(f.getOrderQuantity() * f.getUnitPrice());
-                orderDetail.setStatus(1);
+                if(f.getStatus()==2){
+                    orderDetail.setStatus(1);
+                }else{
+                    orderDetail.setStatus(f.getStatus());
+                }               
                 listOrderDetail.add(orderDetail);
             }
             order.setTotalPrice(ManagerPayment.totalPrice);
@@ -677,6 +704,13 @@ public class ManagerPayment extends javax.swing.JFrame {
             currentTable.setStatus(1);
             tableModel.update(currentTable);
             JOptionPane.showMessageDialog(null, "Thanh toán hoá đơn thành công!");
+            for (JButton jButton : ListTable.listBan) {
+                if (jButton.getText().equals(currentTable.getName())) {
+                    jButton.setBackground(new Color(142, 242, 144));
+                    break;
+                }
+            }
+            dispose();
         }
     }//GEN-LAST:event_jButton11ActionPerformed
 
@@ -694,7 +728,7 @@ public class ManagerPayment extends javax.swing.JFrame {
             orderDetail.setUnitPrice(f.getUnitPrice());
             orderDetail.setQuantity(f.getOrderQuantity());
             orderDetail.setTotalPrice(f.getOrderQuantity() * f.getUnitPrice());
-            orderDetail.setStatus(2);
+            orderDetail.setStatus(f.getStatus());
             listOrderDetail.add(orderDetail);
         }
         order.setTotalPrice(ManagerPayment.totalPrice);
@@ -729,6 +763,12 @@ public class ManagerPayment extends javax.swing.JFrame {
         if (!isUpdate) {
             currentTable.setStatus(2);
             tableModel.update(currentTable);
+            for (JButton jButton : ListTable.listBan) {
+                if (jButton.getText().equals(currentTable.getName())) {
+                    jButton.setBackground(new Color(255, 26, 26));
+                    break;
+                }
+            }
         }
         JOptionPane.showMessageDialog(null, "Lưu hoá đơn thành công!");
     }//GEN-LAST:event_saveOrderActionPerformed
@@ -756,6 +796,28 @@ public class ManagerPayment extends javax.swing.JFrame {
         ManagerPayment.lblRealPayment.setText(ManagerPayment.formatter.format(ManagerPayment.realPrice));
     }//GEN-LAST:event_discountActionPerformed
 
+    private void jButton7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton7ActionPerformed
+
+        if (JOptionPane.showConfirmDialog(null, "Bạn có chắc muốn huỷ hoá đơn " + banso.getText()) == JOptionPane.YES_OPTION) {
+            currentOrder.setStatus(0);
+            orderModel.update(currentOrder);
+            for (OrderDetail currentOrderDetail : currentOrderDetails) {
+                currentOrderDetail.setStatus(0);
+                orderDetailModel.update(currentOrderDetail);
+            }
+            currentTable.setStatus(1);
+            tableModel.update(currentTable);
+            JOptionPane.showMessageDialog(null, "Huỷ hoá đơn thành công!");
+            for (JButton jButton : ListTable.listBan) {
+                if (jButton.getText().equals(currentTable.getName())) {
+                    jButton.setBackground(new Color(142, 242, 144));
+                    break;
+                }
+            }
+            dispose();
+        }
+    }//GEN-LAST:event_jButton7ActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     public static javax.swing.JLabel banso;
@@ -763,7 +825,7 @@ public class ManagerPayment extends javax.swing.JFrame {
     private javax.swing.JLabel date;
     public static javax.swing.JComboBox<String> discount;
     private javax.swing.JButton jButton11;
-    private javax.swing.JButton jButton6;
+    private javax.swing.JButton jButton7;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel12;

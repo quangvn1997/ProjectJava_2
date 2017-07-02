@@ -6,7 +6,6 @@
 package console.restaurant.view;
 
 import console.restaurant.entities.Food;
-import console.restaurant.models.FoodsModel;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
@@ -16,7 +15,7 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import javax.swing.JSpinner;
+import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
 
 public class QuanlityOrder extends JFrame {
@@ -25,12 +24,15 @@ public class QuanlityOrder extends JFrame {
     private JLabel NameOrder;
     private JPanel panelQuanlity;
     private JLabel lblNumber;
-    private JSpinner txtNumber;
+    private JTextField txtNumber;
     private JButton btnAddOrder;
-    private Food food;    
+    private JButton btnDelete;
+    private Food food;
+    private boolean isUpdate;
 
-    public QuanlityOrder(Food foodPara) {
+    public QuanlityOrder(Food foodPara, boolean isUpdate) {
         this.food = foodPara;
+        this.isUpdate = isUpdate;
         this.setTitle("Chọn số lượng món ăn");
         this.setSize(400, 300);
 
@@ -40,25 +42,29 @@ public class QuanlityOrder extends JFrame {
 //        Fix cứng tên món ăn test
         this.NameOrder = new JLabel(food.getName());
         this.lblNumber = new JLabel("Số lượng :");
-        this.txtNumber = new JSpinner();
-        this.txtNumber.setValue(1);        
-        this.btnAddOrder = new JButton("Thêm vào hóa đơn");
+        this.txtNumber = new JTextField();
+        this.txtNumber.setText(String.valueOf(food.getOrderQuantity()));
+        this.btnAddOrder = new JButton("Thêm");
+        this.btnDelete = new JButton("Xoá");
 
         this.btnAddOrder.setBackground(new Color(187, 189, 193));
+        this.btnDelete.setBackground(new Color(187, 189, 193));
         this.panelQuanlity.setBounds(0, 0, 600, 500);
         this.lblHeader.setBounds(20, 10, 200, 50);
         this.NameOrder.setBounds(20, 45, 400, 40);
         this.NameOrder.setFont(new Font("Serif", Font.BOLD, 22));
         this.txtNumber.setFont(new Font("Serif", Font.BOLD, 24));
         this.lblNumber.setBounds(20, 105, 150, 50);
-        this.txtNumber.setBounds(150, 110, 150, 45);        
-        this.btnAddOrder.setBounds(150, 180, 150, 40);
+        this.txtNumber.setBounds(150, 110, 150, 45);
+        this.btnAddOrder.setBounds(150, 180, 80, 40);
+        this.btnDelete.setBounds(240, 180, 80, 40);
 
         this.add(this.btnAddOrder);
+        this.add(this.btnDelete);
         this.add(this.txtNumber);
         this.add(this.lblNumber);
         this.add(this.NameOrder);
-        this.add(this.lblHeader);        
+        this.add(this.lblHeader);
         this.add(this.panelQuanlity);
 
         this.setLayout(null);
@@ -69,28 +75,39 @@ public class QuanlityOrder extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 try {
-                    // Parse số lượng món ăn.
-                    int number = Integer.parseInt(txtNumber.getValue().toString());
+                    // Validate số lượng món ăn.
+                    int number = Integer.parseInt(txtNumber.getText().toString());
+                    if (number <= 0) {
+                        JOptionPane.showMessageDialog(null, "Số lượng món ăn phải là số lớn hơn 0!", "Có lỗi xảy ra.", JOptionPane.ERROR_MESSAGE);                    
+                        return;
+                    }
                     food.setOrderQuantity(number);
                     // Add món ăn vào table.
                     DefaultTableModel model = (DefaultTableModel) ManagerPayment.tableOrder.getModel();
-                    model.setRowCount(0);                                        
-                    ManagerPayment.addFood(food, number);
+                    model.setRowCount(0);               
+                    ManagerPayment.addFood(food, number, isUpdate);
                     ManagerPayment.fetchFoodMapToTable();
                     dispose();
                 } catch (NumberFormatException exception) {
                     exception.printStackTrace();
-                    JOptionPane.showMessageDialog(null, "Vui lòng nhập số.");
+                    JOptionPane.showMessageDialog(null, "Số lượng món ăn phải là số lớn hơn 0!", "Có lỗi xảy ra.", JOptionPane.ERROR_MESSAGE);                    
                     return;
                 }
             }
         });
+        
+        this.btnDelete.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if (JOptionPane.showConfirmDialog(null, "Bạn có chắc muốn xoá món ăn khỏi hoá đơn?") == JOptionPane.YES_OPTION) {
+                    DefaultTableModel model = (DefaultTableModel) ManagerPayment.tableOrder.getModel();
+                    model.setRowCount(0);               
+                    ManagerPayment.deleteFood(food);
+                    ManagerPayment.fetchFoodMapToTable();                    
+                    dispose();
+                    JOptionPane.showMessageDialog(null, "Món ăn đã được xoá khỏi hoá đơn!");
+                }
+            }
+        });
     }
-
-    public static void main(String[] args) {
-        Food food = new FoodsModel().getById(1);
-        QuanlityOrder quanlity = new QuanlityOrder(food);
-        quanlity.setVisible(true);
-    }
-
 }
