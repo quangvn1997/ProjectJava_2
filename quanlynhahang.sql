@@ -1,15 +1,13 @@
 -- phpMyAdmin SQL Dump
--- version 4.7.0
--- https://www.phpmyadmin.net/
+-- version 4.5.2
+-- http://www.phpmyadmin.net
 --
--- Host: 127.0.0.1
--- Generation Time: Jun 27, 2017 at 03:52 PM
--- Server version: 10.1.22-MariaDB
--- PHP Version: 7.1.4
+-- Host: localhost
+-- Generation Time: Jul 02, 2017 at 02:53 PM
+-- Server version: 10.1.16-MariaDB
+-- PHP Version: 5.6.24
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
-SET AUTOCOMMIT = 0;
-START TRANSACTION;
 SET time_zone = "+00:00";
 
 
@@ -141,6 +139,22 @@ CREATE TABLE `orderdetail` (
   `status` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
+--
+-- Dumping data for table `orderdetail`
+--
+
+INSERT INTO `orderdetail` (`id`, `order_id`, `food_id`, `unit_price`, `quantity`, `total_price`, `created_at`, `updated_at`, `status`) VALUES
+(55, 15, 3, 10000, 7, 70000, '2017-07-02', '2017-07-02', 1),
+(56, 15, 4, 500000, 2, 1000000, '2017-07-02', '2017-07-02', 1),
+(57, 15, 10, 100000, 1, 100000, '2017-07-02', '2017-07-02', 0),
+(58, 15, 11, 10000, 1, 10000, '2017-07-02', '2017-07-02', 0),
+(59, 16, 4, 500000, 1, 500000, '2017-07-02', '2017-07-02', 1),
+(60, 16, 6, 100000, 1, 100000, '2017-07-02', '2017-07-02', 1),
+(61, 16, 8, 10000, 1, 10000, '2017-07-02', '2017-07-02', 0),
+(62, 17, 8, 10000, 1, 10000, '2017-07-02', '2017-07-02', 0),
+(63, 18, 3, 10000, 1, 10000, '2017-07-02', '2017-07-02', 0),
+(64, 19, 9, 150000, 1, 150000, '2017-07-02', '2017-07-02', 2);
+
 -- --------------------------------------------------------
 
 --
@@ -157,6 +171,17 @@ CREATE TABLE `orders` (
   `table_id` int(11) NOT NULL,
   `status` int(11) NOT NULL DEFAULT '1'
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `orders`
+--
+
+INSERT INTO `orders` (`id`, `created_at`, `updated_at`, `total_price`, `discount`, `real_price`, `table_id`, `status`) VALUES
+(15, '2017-07-02', '2017-07-02', 1070000, 20, 856000, 7, 1),
+(16, '2017-07-02', '2017-07-02', 600000, 0, 600000, 7, 1),
+(17, '2017-07-02', '2017-07-02', 10000, 0, 10000, 7, 0),
+(18, '2017-07-02', '2017-07-02', 10000, 0, 10000, 1, 0),
+(19, '2017-07-02', '2017-07-02', 150000, 0, 150000, 2, 2);
 
 -- --------------------------------------------------------
 
@@ -178,40 +203,40 @@ CREATE TABLE `tables` (
 --
 
 INSERT INTO `tables` (`id`, `name`, `created_at`, `updated_at`, `status`, `current_orders`) VALUES
-(1, 'Bàn 1', '2017-06-20', '2017-06-27', 1, NULL),
-(2, 'Bàn 2', '2017-06-20', '2017-06-26', 1, NULL),
-(3, 'Bàn 3', '2017-06-20', '2017-06-26', 2, NULL),
-(4, 'Bàn 4', '2017-06-20', '2017-06-20', 2, NULL),
-(5, 'Bàn 5', '2017-06-20', '2017-06-26', 2, NULL),
-(6, 'Bàn 6', '2017-06-20', '2017-06-20', 2, NULL),
-(7, 'Bàn 7', '2017-06-20', '2017-06-20', 2, NULL),
-(8, 'Bàn 8', '2017-06-20', '2017-06-20', 2, NULL),
-(9, 'Bàn 9', '2017-06-20', '2017-06-20', 2, NULL),
-(10, 'Bàn 10', '2017-06-20', '2017-06-20', 2, NULL),
-(11, 'Bàn 11', '2017-06-20', '2017-06-20', 2, NULL),
-(12, 'Bàn 12', '2017-06-20', '2017-06-20', 2, NULL),
-(13, 'Bàn 13', '2017-06-20', '2017-06-20', 2, NULL),
-(14, 'Bàn 14', '2017-06-20', '2017-06-20', 2, NULL),
-(15, 'Bàn 15', '2017-06-20', '2017-06-20', 2, NULL),
-(16, 'Bàn 16', '2017-06-20', '2017-06-20', 2, NULL),
-(17, 'Bàn 17', '2017-06-20', '2017-06-20', 2, NULL),
-(18, 'Bàn 18', '2017-06-20', '2017-06-20', 2, NULL),
-(19, 'Bàn 19', '2017-06-20', '2017-06-20', 2, NULL),
-(20, 'Bàn 20', '2017-06-20', '2017-06-20', 2, NULL),
-(21, 'Bàn 21', '2017-06-20', '2017-06-20', 2, NULL),
-(22, 'Bàn 22', '2017-06-20', '2017-06-20', 2, NULL),
-(23, 'Bàn 23', '2017-06-20', '2017-06-20', 2, NULL),
-(24, 'Bàn 24', '2017-06-20', '2017-06-20', 2, NULL),
-(25, 'Bàn 25', '2017-06-20', '2017-06-20', 2, NULL),
-(26, 'Bàn 26', '2017-06-20', '2017-06-20', 2, NULL),
-(27, 'Bàn 27', '2017-06-20', '2017-06-20', 2, NULL),
-(28, 'Bàn 28', '2017-06-20', '2017-06-20', 2, NULL),
-(29, 'Bàn 29', '2017-06-20', '2017-06-20', 2, NULL),
-(30, 'Bàn 30', '2017-06-20', '2017-06-20', 2, NULL),
-(31, 'Bàn 31', '2017-06-20', '2017-06-20', 2, NULL),
-(32, 'Bàn 32', '2017-06-20', '2017-06-20', 2, NULL),
-(33, 'Bàn 33', '2017-06-20', '2017-06-20', 2, NULL),
-(34, 'Bàn 34', '2017-06-20', '2017-06-20', 2, NULL);
+(1, 'Bàn 1', '2017-06-20', '2017-07-02', 1, NULL),
+(2, 'Bàn 2', '2017-06-20', '2017-07-02', 2, NULL),
+(3, 'Bàn 3', '2017-06-20', '2017-06-26', 1, NULL),
+(4, 'Bàn 4', '2017-06-20', '2017-06-20', 1, NULL),
+(5, 'Bàn 5', '2017-06-20', '2017-06-26', 1, NULL),
+(6, 'Bàn 6', '2017-06-20', '2017-06-20', 1, NULL),
+(7, 'Bàn 7', '2017-06-20', '2017-07-02', 1, NULL),
+(8, 'Bàn 8', '2017-06-20', '2017-06-20', 1, NULL),
+(9, 'Bàn 9', '2017-06-20', '2017-06-20', 1, NULL),
+(10, 'Bàn 10', '2017-06-20', '2017-06-20', 1, NULL),
+(11, 'Bàn 11', '2017-06-20', '2017-06-20', 1, NULL),
+(12, 'Bàn 12', '2017-06-20', '2017-06-20', 1, NULL),
+(13, 'Bàn 13', '2017-06-20', '2017-06-20', 1, NULL),
+(14, 'Bàn 14', '2017-06-20', '2017-06-20', 1, NULL),
+(15, 'Bàn 15', '2017-06-20', '2017-06-20', 1, NULL),
+(16, 'Bàn 16', '2017-06-20', '2017-06-20', 1, NULL),
+(17, 'Bàn 17', '2017-06-20', '2017-06-20', 1, NULL),
+(18, 'Bàn 18', '2017-06-20', '2017-06-20', 1, NULL),
+(19, 'Bàn 19', '2017-06-20', '2017-06-20', 1, NULL),
+(20, 'Bàn 20', '2017-06-20', '2017-06-20', 1, NULL),
+(21, 'Bàn 21', '2017-06-20', '2017-06-20', 1, NULL),
+(22, 'Bàn 22', '2017-06-20', '2017-06-20', 1, NULL),
+(23, 'Bàn 23', '2017-06-20', '2017-06-20', 1, NULL),
+(24, 'Bàn 24', '2017-06-20', '2017-06-20', 1, NULL),
+(25, 'Bàn 25', '2017-06-20', '2017-06-20', 1, NULL),
+(26, 'Bàn 26', '2017-06-20', '2017-06-20', 1, NULL),
+(27, 'Bàn 27', '2017-06-20', '2017-06-20', 1, NULL),
+(28, 'Bàn 28', '2017-06-20', '2017-06-20', 1, NULL),
+(29, 'Bàn 29', '2017-06-20', '2017-06-20', 1, NULL),
+(30, 'Bàn 30', '2017-06-20', '2017-06-20', 1, NULL),
+(31, 'Bàn 31', '2017-06-20', '2017-06-20', 1, NULL),
+(32, 'Bàn 32', '2017-06-20', '2017-06-20', 1, NULL),
+(33, 'Bàn 33', '2017-06-20', '2017-06-20', 1, NULL),
+(34, 'Bàn 34', '2017-06-20', '2017-06-20', 1, NULL);
 
 --
 -- Indexes for dumped tables
@@ -275,12 +300,17 @@ ALTER TABLE `categories`
 -- AUTO_INCREMENT for table `foods`
 --
 ALTER TABLE `foods`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=30;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=29;
 --
 -- AUTO_INCREMENT for table `orderdetail`
 --
 ALTER TABLE `orderdetail`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=65;
+--
+-- AUTO_INCREMENT for table `orders`
+--
+ALTER TABLE `orders`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=20;
 --
 -- AUTO_INCREMENT for table `tables`
 --
@@ -301,14 +331,13 @@ ALTER TABLE `foods`
 --
 ALTER TABLE `orderdetail`
   ADD CONSTRAINT `orderdetail_ibfk_1` FOREIGN KEY (`food_id`) REFERENCES `foods` (`id`),
-  ADD CONSTRAINT `orderdetail_ibfk_3` FOREIGN KEY (`order_id`) REFERENCES `orders` (`id`);
+  ADD CONSTRAINT `orderdetail_ibfk_2` FOREIGN KEY (`order_id`) REFERENCES `orders` (`id`);
 
 --
 -- Constraints for table `orders`
 --
 ALTER TABLE `orders`
   ADD CONSTRAINT `orders_ibfk_2` FOREIGN KEY (`table_id`) REFERENCES `tables` (`id`);
-COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
