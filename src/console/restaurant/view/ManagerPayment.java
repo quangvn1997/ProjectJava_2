@@ -652,6 +652,7 @@ public class ManagerPayment extends javax.swing.JFrame {
         // TODO add your handling code here:
         if (JOptionPane.showConfirmDialog(null, "Thanh toán hoá đơn " + banso.getText()) == JOptionPane.YES_OPTION) {
             fetchFoodMapToTable();
+            this.currentOrder = orderModel.getTableCurrentOrder(this.currentTable.getId());
             boolean isUpdate = currentOrder != null;
             Order order = new Order();
             if (isUpdate) {
@@ -665,11 +666,11 @@ public class ManagerPayment extends javax.swing.JFrame {
                 orderDetail.setUnitPrice(f.getUnitPrice());
                 orderDetail.setQuantity(f.getOrderQuantity());
                 orderDetail.setTotalPrice(f.getOrderQuantity() * f.getUnitPrice());
-                if(f.getStatus()==2){
+                if (f.getStatus() == 2) {
                     orderDetail.setStatus(1);
-                }else{
+                } else {
                     orderDetail.setStatus(f.getStatus());
-                }               
+                }
                 listOrderDetail.add(orderDetail);
             }
             order.setTotalPrice(ManagerPayment.totalPrice);
@@ -677,6 +678,7 @@ public class ManagerPayment extends javax.swing.JFrame {
             order.setRealPrice(ManagerPayment.realPrice);
             order.setTableId(currentTable.getId());
             order.setStatus(1);
+            System.out.println(order.getStatus() + "-_-");
             int orderId = 0;
             System.out.println("Trạng thái " + isUpdate);
             if (isUpdate) {

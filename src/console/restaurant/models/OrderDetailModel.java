@@ -38,7 +38,7 @@ public class OrderDetailModel {
             pstmt.setFloat(4, ordersDetail.getQuantity());
             pstmt.setFloat(5, ordersDetail.getTotalPrice());
             pstmt.setFloat(6, ordersDetail.getStatus());
-
+            System.out.println(pstmt.toString());
             int a = pstmt.executeUpdate();
             if (a > 0) {
                 //System.out.println("them thanh cong");
