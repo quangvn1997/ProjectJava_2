@@ -35,6 +35,8 @@ import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.sql.Date;
 import java.text.DateFormat;
+import java.text.NumberFormat;
+import java.util.Locale;
 import javax.swing.JOptionPane;
 
 public class ManagerStatistic extends JPanel {
@@ -100,7 +102,7 @@ public class ManagerStatistic extends JPanel {
         this.endPicker = new JDateChooser();
         this.endPicker.setBounds(550, 20, 200, 34);
         this.endPicker.setDateFormatString("dd/MM/yyyy");
-        c.set(Calendar.DATE,Calendar.getInstance().get(Calendar.DATE));
+        c.set(Calendar.DATE, Calendar.getInstance().get(Calendar.DATE));
         this.endPicker.setDate(c.getTime());
         //Add Item.
         this.add(lblStartD);
@@ -206,10 +208,11 @@ public class ManagerStatistic extends JPanel {
     }
 
     // Lấy dữ liệu hiển thị ra bảng.
- public static void loadStatisticOrder() {
+    public static void loadStatisticOrder() {
         DefaultTableModel model = (DefaultTableModel) table.getModel();
         model.setRowCount(0);
         TablesModel tableModel = new TablesModel();
+        NumberFormat formatter = NumberFormat.getCurrencyInstance(new Locale("vi", "VN"));
         Date day1 = new Date(startPicker.getDate().getTime());
         Date day2 = new Date(endPicker.getDate().getTime());
         ArrayList<Order> listOrder = statisticModel.getListOrder(page, limit, day1, day2);
@@ -218,13 +221,13 @@ public class ManagerStatistic extends JPanel {
             fullPrice += order.getRealPrice();
         }
         listOrder.forEach((order) -> {
-            model.addRow(new Object[]{order.getId(), order.getTotalPrice(), order.getRealPrice(), order.getDiscount() + "%", order.getTableName(), order.getCreatedAt()});
+            model.addRow(new Object[]{order.getId(), formatter.format(order.getTotalPrice()), formatter.format(order.getRealPrice()), order.getDiscount() + "%", order.getTableName(), order.getCreatedAt()});
         });
         count = statisticModel.countActive();
         totalPage = count / limit + (count % limit > 0 ? 1 : 0);
         btnPage.setText(String.valueOf(page));
         handlePaginateButton();
-        ManagerStatistic.lblFullPrice.setText("Tổng Tiền : " + fullPrice);
+        ManagerStatistic.lblFullPrice.setText("Tổng Tiền : " + formatter.format(fullPrice));
         fullPrice = 0;
     }
 

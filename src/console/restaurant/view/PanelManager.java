@@ -428,6 +428,7 @@ public class PanelManager extends JFrame {
     private void btnDatBanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDatBanActionPerformed
 //        Bắt sự kiện button đặt bàn        
         panelBan.setVisible(true);
+        panelBan.loadTable();
 //                monan.setVisible(false);
         quanlyadmin.setVisible(false);
         quanlyban.setVisible(false);
@@ -461,6 +462,7 @@ public class PanelManager extends JFrame {
         // TODO add your handling code here:
         //       Bắt sự kiện quản lý thống kê
         quanlythongke.setVisible(true);
+        quanlythongke.loadStatisticOrder();
         
         quanlyadmin.setVisible(false);
         quanlyban.setVisible(false);
