@@ -32,10 +32,10 @@ public class OrdersModel {
         Order orders = null;
         {
             try {
-                String sql = "select * from orders where table_id = " + tableId + " AND status = 2";
-                System.out.println(sql);
+                String sql = "select * from orders where table_id = " + tableId + " AND status = 2";;
                 Statement stt = DAO.getConnection().createStatement();
                 ResultSet rs = stt.executeQuery(sql);
+                System.out.println(stt.toString()+"(-.-)");
                 if (rs.next()) {
                     orders = new Order();
                     orders.setId(rs.getInt("id"));
@@ -86,7 +86,7 @@ public class OrdersModel {
             pstmt.setInt(6, orders.getId());
             int a = pstmt.executeUpdate();
             if (a > 0) {
-//                System.out.println("sua thanh cong");
+                System.out.println(pstmt.toString());
                 return true;
             }
         } catch (Exception e) {
